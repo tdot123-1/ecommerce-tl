@@ -18,8 +18,8 @@ const NavLinks = () => {
         <Link
           key={link.name}
           href={link.href}
-          className={clsx("text-sm   hover:text-zinc-100 hover:font-bold", {
-            "text-zinc-100 font-bold": pathname === link.href,
+          className={clsx("text-sm hover:text-zinc-900 hover:font-bold dark:hover:text-zinc-200", {
+            "text-zinc-900 font-bold dark:text-zinc-200": pathname === link.href,
           })}
         >
           {link.name}

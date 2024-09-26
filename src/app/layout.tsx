@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { roboto } from "./ui/fonts";
 import Navbar from "./ui/customer/navbar";
+import { ThemeProvider } from "./ui/theme-provider";
+import ThemeButton from "./ui/theme-button";
 
 export const metadata: Metadata = {
   title: "App Name",
@@ -16,8 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.className} antialiased`}>
-        <Navbar />
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="system">
+          <Navbar />
+          <ThemeButton />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
