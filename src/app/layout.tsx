@@ -3,7 +3,7 @@ import "./globals.css";
 import { roboto } from "./ui/fonts";
 import Navbar from "./ui/customer/navbar";
 import { ThemeProvider } from "./ui/theme-provider";
-import ThemeButton from "./ui/theme-button";
+
 
 export const metadata: Metadata = {
   title: "App Name",

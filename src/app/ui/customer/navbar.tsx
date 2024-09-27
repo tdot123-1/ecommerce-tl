@@ -2,6 +2,9 @@ import Image from "next/image";
 import NavLinks from "./nav-links";
 import ThemeButton from "../theme-button";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {  ShoppingBasketIcon } from "lucide-react";
+import Basket from "./basket";
 
 const Navbar = () => {
   return (
@@ -14,7 +17,10 @@ const Navbar = () => {
       <div className="flex justify-evenly items-baseline w-60 text-zinc-600 dark:text-zinc-400">
         <NavLinks />
       </div>
+      <div className="flex justify-center gap-1 items-center">
       <ThemeButton />
+      <Basket />
+      </div>
     </nav>
   );
 };
