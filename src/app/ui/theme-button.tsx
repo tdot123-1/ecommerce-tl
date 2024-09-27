@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { MoonIcon, SunIcon, SunMoonIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -9,23 +10,33 @@ const ThemeButton = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    console.log("MOUNT")
+    console.log("MOUNT");
     setMounted(true);
   }, []);
 
   if (!mounted) {
-    return <Button>Loading</Button>;
-  } 
+    return (
+      <Button className="p-2">
+        <SunMoonIcon size={24} />
+      </Button>
+    );
+  }
 
   if (resolvedTheme === "light") {
-    return <Button onClick={() => setTheme("dark")}>Dark</Button>
+    return (
+      <Button className="p-2" onClick={() => setTheme("dark")}>
+        <MoonIcon size={24} />
+      </Button>
+    );
   }
 
   if (resolvedTheme === "dark") {
-    return <Button onClick={() => setTheme("light")}>Light</Button>
+    return (
+      <Button className="p-2" onClick={() => setTheme("light")}>
+        <SunIcon size={24} />
+      </Button>
+    );
   }
-
-
 };
 
 export default ThemeButton;
