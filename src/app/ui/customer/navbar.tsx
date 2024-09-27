@@ -1,5 +1,6 @@
 import Image from "next/image";
 import NavLinks from "./nav-links";
+import ThemeButton from "../theme-button";
 
 const Navbar = () => {
   return (
@@ -10,6 +11,7 @@ const Navbar = () => {
       <div className="flex justify-evenly items-baseline w-60 text-zinc-600 dark:text-zinc-400">
         <NavLinks />
       </div>
+      <ThemeButton />
     </nav>
   );
 };
