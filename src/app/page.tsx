@@ -9,6 +9,7 @@ import {
   ShowerHeadIcon,
   SmileIcon,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -33,7 +34,7 @@ export default function Home() {
           {/* image container */}
           <div className="flex flex-row gap-2">
             {/* large image */}
-            <div className="w-40 sm:w-60 md:w-96">
+            <div className="w-40 sm:w-60 md:w-80 lg:w-96">
               <Image
                 src="/placeholder.png"
                 alt="placeholder"
@@ -43,7 +44,7 @@ export default function Home() {
             </div>
             {/* stacked images */}
             <div className="flex flex-col justify-between">
-              <div className="w-20 sm:w-28 md:w-44">
+              <div className="w-20 sm:w-28 md:w-36 lg:w-44">
                 <Image
                   src="/placeholder.png"
                   alt="placeholder"
@@ -51,7 +52,7 @@ export default function Home() {
                   height={2400}
                 />
               </div>
-              <div className="w-20 sm:w-28 md:w-44">
+              <div className="w-20 sm:w-28 md:w-36 lg:w-44">
                 <Image
                   src="/placeholder.png"
                   alt="placeholder"
@@ -65,7 +66,7 @@ export default function Home() {
           <div className="flex flex-col items-center gap-7">
             <article>
               <h1
-                className={`${montserrat.className} text-center md:text-right mt-4 md:mt-0 text-3xl font-semibold mb-3`}
+                className={`${montserrat.className} text-center md:text-left mt-4 md:mt-0 text-3xl font-semibold mb-3`}
               >
                 Easy Shopping
               </h1>
@@ -76,7 +77,9 @@ export default function Home() {
                 voluptates quasi ea natus accusantium est illum?
               </p>
             </article>
-            <Button>Link</Button>
+            <Link href="/products">
+              <Button>Link</Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -91,15 +94,21 @@ export default function Home() {
           <div>
             {/* category links */}
             <div className="flex justify-evenly items-center gap-3 sm:gap-10 my-16">
-              <div className="p-7 border border-zinc-500 rounded-lg shadow-lg">
-                <ShirtIcon size={32} />
-              </div>
-              <div className="p-7 border border-zinc-500 rounded-lg shadow-lg">
-                <LucideBriefcase size={32} />
-              </div>
-              <div className="p-7 border border-zinc-500 rounded-lg shadow-lg">
-                <SmileIcon size={32} />
-              </div>
+              <Link href="/categories/1">
+                <div className="p-7 border border-zinc-500 rounded-lg shadow-lg">
+                  <ShirtIcon size={32} />
+                </div>
+              </Link>
+              <Link href="/categories/2">
+                <div className="p-7 border border-zinc-500 rounded-lg shadow-lg">
+                  <LucideBriefcase size={32} />
+                </div>
+              </Link>
+              <Link href="/categories/3">
+                <div className="p-7 border border-zinc-500 rounded-lg shadow-lg">
+                  <SmileIcon size={32} />
+                </div>
+              </Link>
             </div>
             <p className="w-72 sm:w-80 md:w-96 text-center mx-auto mt-10 text-zinc-600 dark:text-zinc-300">
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae
@@ -113,9 +122,11 @@ export default function Home() {
 
       <section className="h-screen flex items-center justify-center">
         <div className="flex justify-evenly items-center gap-2 md:gap-0">
-          <div className="w-40 md:w-2/5 flex flex-col gap-7 items-end">
+          <div className="w-40 sm:w-52 md:w-2/5 flex flex-col gap-7 items-end">
             <article className=" text-right">
-              <h1 className={`${montserrat.className} text-3xl font-semibold mb-3`}>
+              <h1
+                className={`${montserrat.className} text-3xl font-semibold mb-3`}
+              >
                 All Products
               </h1>
               <p className="text-zinc-600 dark:text-zinc-300">
@@ -125,9 +136,11 @@ export default function Home() {
                 rerum atque. Est?
               </p>
             </article>
-            <Button>Link</Button>
+            <Link href="/products">
+              <Button>Link</Button>
+            </Link>
           </div>
-          <div className="w-32 sm:w-44 md:w-96">
+          <div className="w-32 sm:w-44 md:w-80 lg:w-96">
             <Image
               src="/placeholder.png"
               alt="placeholder"
