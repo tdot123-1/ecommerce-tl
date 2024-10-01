@@ -1,14 +1,7 @@
 import Image from "next/image";
 import { montserrat } from "./ui/fonts";
 import { Button } from "@/components/ui/button";
-import {
-  ChefHatIcon,
-  LucideBriefcase,
-  LucideDiamond,
-  ShirtIcon,
-  ShowerHeadIcon,
-  SmileIcon,
-} from "lucide-react";
+import { LucideBriefcase, ShirtIcon, SmileIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
