@@ -1,4 +1,3 @@
-import ProductCard from "../ui/customer/product-card";
 import ProductList from "../ui/customer/products-list";
 
 const Page = () => {
