@@ -17,8 +17,8 @@ const Page = async ({ params }: { params: { productId: string } }) => {
   return (
     <div>
       <h1>Product page</h1>
-      <section className="flex flex-col justify-center items-center h-[calc(100vh-80px)]">
-        <div className="flex flex-col md:flex-row">
+      <section className="flex flex-col justify-center items-center gap-4 h-[calc(100vh-80px)]">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center">
           <div className="w-80">
             <Image
               src={product.image_url}
