@@ -1,8 +1,8 @@
-import { fetchProducts } from "@/lib/data";
+import { fetchAllProducts } from "@/lib/data";
 import ProductCard from "./product-card";
 
 const ProductList = async () => {
-  const allProducts = await fetchProducts();
+  const allProducts = await fetchAllProducts();
   return (
     <>
       {allProducts.map((product) => (
