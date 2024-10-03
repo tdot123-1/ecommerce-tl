@@ -4,9 +4,10 @@ import { sql } from "@vercel/postgres";
 export const fetchAllProducts = async () => {
   try {
     // test for skeleton/suspense
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    //await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    const data = await sql`SELECT * FROM products`;
+    const data =
+      await sql`SELECT id, name, price, sizes, category, image_url FROM products`;
 
     return data.rows;
   } catch (error) {
@@ -18,7 +19,7 @@ export const fetchAllProducts = async () => {
 export const fetchOneProduct = async (productId: string) => {
   try {
     const data = await sql`
-      SELECT * FROM products 
+      SELECT name, price, sizes, category, description, image_url FROM products 
       WHERE id = ${productId}`;
 
     if (!data.rowCount) {
@@ -32,7 +33,7 @@ export const fetchOneProduct = async (productId: string) => {
 
     // return product[0];
 
-    return data.rows[0]
+    return data.rows[0];
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch product.");
