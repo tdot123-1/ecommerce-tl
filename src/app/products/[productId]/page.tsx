@@ -1,3 +1,4 @@
+import AddButton from "@/app/ui/customer/basket/add-button";
 import { montserrat } from "@/app/ui/fonts";
 import { Button } from "@/components/ui/button";
 import { fetchOneProduct } from "@/lib/data";
@@ -29,7 +30,9 @@ const Page = async ({ params }: { params: { productId: string } }) => {
             />
           </div>
           <article className="w-48">
-            <h2 className={`text-2xl ${montserrat.className} font-semibold`}>{product.name}</h2>
+            <h2 className={`text-2xl ${montserrat.className} font-semibold`}>
+              {product.name}
+            </h2>
             <p>{product.description}</p>
             <p>{product.sizes}</p>
             <p>{product.category}</p>
@@ -38,7 +41,15 @@ const Page = async ({ params }: { params: { productId: string } }) => {
         </div>
         <div className="flex justify-center gap-8">
           <Button>Buy Now!</Button>
-          <Button>Add to Cart</Button>
+          <AddButton
+            id={productId}
+            name={product.name}
+            price={product.price}
+            currency={product.currency}
+            description={product.description}
+            image={product.image_url}
+            price_id={product.stripe_price_id}
+          />
         </div>
       </section>
     </div>

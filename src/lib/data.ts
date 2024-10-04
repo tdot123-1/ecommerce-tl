@@ -19,19 +19,12 @@ export const fetchAllProducts = async () => {
 export const fetchOneProduct = async (productId: string) => {
   try {
     const data = await sql`
-      SELECT name, price, sizes, category, description, image_url FROM products 
+      SELECT name, price, sizes, category, description, image_url, currency, stripe_price_id FROM products 
       WHERE id = ${productId}`;
 
     if (!data.rowCount) {
       return null;
     }
-
-    // const product = data.rows.map((item) => ({
-    //   ...item,
-    //   price: item.price / 100,
-    // }));
-
-    // return product[0];
 
     return data.rows[0];
   } catch (error) {

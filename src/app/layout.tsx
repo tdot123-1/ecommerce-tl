@@ -3,6 +3,7 @@ import "./globals.css";
 import { roboto } from "./ui/fonts";
 import Navbar from "./ui/customer/navbar";
 import { ThemeProvider } from "./ui/theme-provider";
+import CartProviderWrapper from "./ui/cart-provider";
 
 export const metadata: Metadata = {
   title: "App Name",
@@ -17,15 +18,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          enableSystem
-          defaultTheme="system"
-          disableTransitionOnChange
-        >
-          <Navbar />
-          <main className="px-3">{children}</main>
-        </ThemeProvider>
+        <CartProviderWrapper>
+          <ThemeProvider
+            attribute="class"
+            enableSystem
+            defaultTheme="system"
+            disableTransitionOnChange
+          >
+            <Navbar />
+            <main className="px-3">{children}</main>
+          </ThemeProvider>
+        </CartProviderWrapper>
       </body>
     </html>
   );

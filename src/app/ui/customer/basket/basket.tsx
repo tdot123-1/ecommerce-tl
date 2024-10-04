@@ -6,6 +6,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ShoppingBasketIcon } from "lucide-react";
+import BasketContent from "./basket-content";
 
 const Basket = () => {
   return (
@@ -15,7 +16,9 @@ const Basket = () => {
       </SheetTrigger>
       <SheetContent>
         <SheetTitle>Shopping Basket</SheetTitle>
-        <SheetDescription>Your items</SheetDescription>
+        <SheetDescription>
+          <BasketContent />
+        </SheetDescription>
       </SheetContent>
     </Sheet>
   );
