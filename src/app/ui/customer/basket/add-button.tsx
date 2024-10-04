@@ -23,7 +23,6 @@ const AddButton = ({
   price_id,
 }: AddButtonProps) => {
   const { addItem } = useShoppingCart();
-  console.log("addItem: ", addItem);
 
   const handleAddItem = () => {
     addItem({
