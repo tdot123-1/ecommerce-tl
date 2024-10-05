@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/sheet";
 import { ShoppingBasketIcon } from "lucide-react";
 import BasketContent from "./basket-content";
+import { montserrat } from "../../fonts";
 
 const Basket = () => {
   return (
@@ -15,7 +16,7 @@ const Basket = () => {
         <ShoppingBasketIcon size={24} />
       </SheetTrigger>
       <SheetContent>
-        <SheetTitle>Shopping Basket</SheetTitle>
+        <SheetTitle className={montserrat.className}>Shopping Basket</SheetTitle>
         <SheetDescription>Your selected items</SheetDescription>
         <BasketContent />
       </SheetContent>

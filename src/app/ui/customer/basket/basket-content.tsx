@@ -10,7 +10,7 @@ const BasketContent = () => {
   const { cartCount, cartDetails, totalPrice, clearCart, removeItem } = cart;
 
   if (cartCount === 0) {
-    return <span>Nothing here yet!</span>;
+    return <div className="h-full w-full flex items-center justify-center"><p>Nothing here yet!</p></div>;
   }
 
   return (
@@ -19,22 +19,34 @@ const BasketContent = () => {
         {Object.entries(cartDetails!).map(([id, product]) => (
           <li
             key={id}
-            className="flex justify-between items-center pb-1 border-b border-zinc-400 my-1"
+            className="flex justify-between items-center py-2 border-b border-zinc-400"
           >
             <div className="w-20 h-20 relative">
-              <Image className="rounded-lg" src={product.image!} alt={product.name} fill />
+              <Image
+                className="rounded-lg"
+                src={product.image!}
+                alt={product.name}
+                fill
+              />
             </div>
             <p>{product.name}</p>
             <p>- €{product.price / 100}</p>
             <p>x {product.quantity}</p>
-            <Button onClick={() => removeItem(id)} className="p-1">
-              <TrashIcon size={14} />
+            <Button
+              onClick={() => removeItem(id)}
+              className="p-1"
+              variant="default"
+            >
+              <TrashIcon size={16} />
             </Button>
           </li>
         ))}
       </ul>
       <p>Total: €{totalPrice! / 100}</p>
-      <Button onClick={clearCart}>Clear Cart</Button>
+      <div className="flex justify-evenly mt-4">
+        <Button>Checkout</Button>
+        <Button onClick={clearCart}>Clear Cart</Button>
+      </div>
     </div>
   );
 };
