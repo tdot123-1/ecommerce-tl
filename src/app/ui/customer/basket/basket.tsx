@@ -16,9 +16,8 @@ const Basket = () => {
       </SheetTrigger>
       <SheetContent>
         <SheetTitle>Shopping Basket</SheetTitle>
-        <SheetDescription>
-          <BasketContent />
-        </SheetDescription>
+        <SheetDescription>Your selected items</SheetDescription>
+        <BasketContent />
       </SheetContent>
     </Sheet>
   );

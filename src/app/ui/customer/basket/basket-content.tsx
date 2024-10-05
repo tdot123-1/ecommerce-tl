@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "lucide-react";
+import Image from "next/image";
 import { useShoppingCart } from "use-shopping-cart";
 
 const BasketContent = () => {
@@ -9,16 +10,26 @@ const BasketContent = () => {
   const { cartCount, cartDetails, totalPrice, clearCart, removeItem } = cart;
 
   if (cartCount === 0) {
-    return <p>Nothing here yet!</p>;
+    return <span>Nothing here yet!</span>;
   }
 
   return (
     <div>
       <ul>
         {Object.entries(cartDetails!).map(([id, product]) => (
-          <li key={id}>
-            {product.name} - €{product.price / 100} x {product.quantity}
-            <Button onClick={() => removeItem(id)}><TrashIcon /></Button>
+          <li
+            key={id}
+            className="flex justify-between items-center pb-1 border-b border-zinc-400 my-1"
+          >
+            <div className="w-20 h-20 relative">
+              <Image className="rounded-lg" src={product.image!} alt={product.name} fill />
+            </div>
+            <p>{product.name}</p>
+            <p>- €{product.price / 100}</p>
+            <p>x {product.quantity}</p>
+            <Button onClick={() => removeItem(id)} className="p-1">
+              <TrashIcon size={14} />
+            </Button>
           </li>
         ))}
       </ul>
