@@ -7,3 +7,10 @@ export interface Product {
     stripe_product_id: string | undefined ;
     stripe_price_id: string | undefined;
   }
+
+export interface CartItem {
+  id: string;
+  name: string;
+  price_id: string;
+  quantity: number;
+}

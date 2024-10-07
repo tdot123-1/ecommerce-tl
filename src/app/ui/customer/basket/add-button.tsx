@@ -29,8 +29,7 @@ const AddButton = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAddItem = () => {
-
-    setIsLoading(true)
+    setIsLoading(true);
     addItem({
       id,
       name,
@@ -42,17 +41,19 @@ const AddButton = ({
     });
 
     setTimeout(() => {
-      setIsLoading(false)
-    }, 300)
+      setIsLoading(false);
+    }, 300);
   };
   return (
     <Button onClick={handleAddItem} disabled={isLoading}>
       <div className="flex items-center justify-center gap-2">
-      {
-        isLoading ? <LoaderPinwheelIcon size={20} className="animate-spin" /> : <ShoppingBasketIcon size={20} />
-      }
-      
-      <span>Add to Cart</span>
+        {isLoading ? (
+          <LoaderPinwheelIcon size={20} className="animate-spin" />
+        ) : (
+          <ShoppingBasketIcon size={20} />
+        )}
+
+        <span>Add to Cart</span>
       </div>
     </Button>
   );
