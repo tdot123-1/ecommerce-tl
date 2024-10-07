@@ -48,7 +48,7 @@ const Page = async ({ params }: { params: { productId: string } }) => {
             currency={product.currency}
             description={product.description}
             image={product.image_url}
-            price_id={product.stripe_price_id}
+            stripe_price_id={product.stripe_price_id}
           />
         </div>
       </section>

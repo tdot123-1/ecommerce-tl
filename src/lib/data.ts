@@ -32,3 +32,21 @@ export const fetchOneProduct = async (productId: string) => {
     throw new Error("Failed to fetch product.");
   }
 };
+
+
+// need to get items in cart from db to validate prices
+// needs testing
+export const fetchPriceValidationProducts = async (productIds: string[]) => {
+  try {
+    const data = await sql`
+    SELECT id, name, price, stripe_price_id
+    FROM products
+    WHERE id IN (${productIds.join(", ")});
+    `;
+
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch product.");
+  }
+};

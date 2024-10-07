@@ -11,6 +11,6 @@ export interface Product {
 export interface CartItem {
   id: string;
   name: string;
-  price_id: string;
+  stripe_price_id: string;
   quantity: number;
 }

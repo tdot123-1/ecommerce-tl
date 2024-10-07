@@ -12,7 +12,7 @@ interface AddButtonProps {
   currency: string;
   description: string;
   image: string;
-  price_id: string;
+  stripe_price_id: string;
 }
 
 const AddButton = ({
@@ -22,7 +22,7 @@ const AddButton = ({
   currency,
   description,
   image,
-  price_id,
+  stripe_price_id,
 }: AddButtonProps) => {
   const { addItem } = useShoppingCart();
 
@@ -37,7 +37,7 @@ const AddButton = ({
       currency,
       description,
       image,
-      price_id,
+      stripe_price_id,
     });
 
     setTimeout(() => {

@@ -4,10 +4,13 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   try {
+
+    // (!) validate cart items
+
     const { cartItems }: { cartItems: CartItem[] } = await req.json();
 
     const line_items = cartItems.map((item) => ({
-      price: item.price_id,
+      price: item.stripe_price_id,
       quantity: item.quantity,
     }));
 

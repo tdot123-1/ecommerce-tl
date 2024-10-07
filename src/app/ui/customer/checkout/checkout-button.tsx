@@ -30,8 +30,6 @@ const CheckoutButton = () => {
 
       const data = await response.json();
 
-      console.log("session: ", data);
-
       if (typeof data.sessionID === "string") {
         redirectToCheckout(data.sessionID);
       } else {

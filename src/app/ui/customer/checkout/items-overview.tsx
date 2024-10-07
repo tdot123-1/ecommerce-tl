@@ -6,7 +6,16 @@ import { useShoppingCart } from "use-shopping-cart";
 import CheckoutButton from "./checkout-button";
 
 const ItemsOverview = () => {
-  const { cartDetails, removeItem, clearCart } = useShoppingCart();
+  const { cartDetails, removeItem, clearCart, cartCount } = useShoppingCart();
+
+  if (cartCount === 0) {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <p>Nothing here yet!</p>
+      </div>
+    );
+  }
+  
   return (
     <section>
       <h1>Your Basket Overview</h1>
