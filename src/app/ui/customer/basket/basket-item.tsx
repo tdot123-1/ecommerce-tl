@@ -10,7 +10,7 @@ interface BasketItemProps {
   image: string;
 }
 
-const BasketItem = ({ id, name, price, quantity, image }: BasketItemProps) => {
+const BasketItem = ({ name, price, quantity, image }: BasketItemProps) => {
   return (
     <li>
       <div className="w-10">
