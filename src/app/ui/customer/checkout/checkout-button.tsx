@@ -7,10 +7,18 @@ import { useShoppingCart } from "use-shopping-cart";
 
 const CheckoutButton = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { cartDetails, redirectToCheckout } = useShoppingCart();
+  const [error, setError] = useState("")
+  const { cartDetails, redirectToCheckout, cartCount } = useShoppingCart();
 
   const handleCheckout = async () => {
+    setError("")
     setIsLoading(true);
+
+    if (!cartCount) {
+      setError("No items in basket yet")
+      setIsLoading(false)
+      return
+    }
 
     try {
       const response = await fetch("/api/checkout", {
@@ -22,7 +30,7 @@ const CheckoutButton = () => {
           cartItems: Object.values(cartDetails!).map((item) => ({
             id: item.id,
             name: item.name,
-            price_id: item.price_id,
+            stripe_price_id: item.stripe_price_id,
             quantity: item.quantity,
           })),
         }),
@@ -43,6 +51,8 @@ const CheckoutButton = () => {
   };
 
   return (
+    <>
+    
     <Button className="p-1" disabled={isLoading} onClick={handleCheckout}>
       <div className="flex justify-center items-center gap-2">
         {isLoading ? (
@@ -53,6 +63,10 @@ const CheckoutButton = () => {
         <span>Checkout</span>
       </div>
     </Button>
+    {
+      error && <p className="text-xs font-light text-red-600 italic">{error}</p>
+    }
+    </>
   );
 };
 
