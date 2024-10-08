@@ -18,9 +18,9 @@ const ItemsOverview = () => {
   
   return (
     <section>
-      <h1>Your Basket Overview</h1>
+      <h1 className="text-center my-8">Your Basket Overview</h1>
       <div className="w-full">
-        <ul className="w-1/4 my-auto">
+        <ul className="w-1/4 mx-auto">
           {Object.entries(cartDetails!).map(([id, product]) => (
             <li
               key={id}

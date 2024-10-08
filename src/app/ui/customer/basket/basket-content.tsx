@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useShoppingCart } from "use-shopping-cart";
 
 const BasketContent = () => {
@@ -10,7 +11,11 @@ const BasketContent = () => {
   const { cartCount, cartDetails, totalPrice, clearCart, removeItem } = cart;
 
   if (cartCount === 0) {
-    return <div className="h-full w-full flex items-center justify-center"><p>Nothing here yet!</p></div>;
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <p>Nothing here yet!</p>
+      </div>
+    );
   }
 
   return (
@@ -44,7 +49,9 @@ const BasketContent = () => {
       </ul>
       <p>Total: €{totalPrice! / 100}</p>
       <div className="flex justify-evenly mt-4">
-        <Button>Checkout</Button>
+        <Link href="/checkout">
+          <Button>Checkout</Button>
+        </Link>
         <Button onClick={clearCart}>Clear Cart</Button>
       </div>
     </div>
