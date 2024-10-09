@@ -19,7 +19,7 @@ export const POST = async (req: Request) => {
       line_items,
       mode: "payment",
       payment_method_types: ["card", "ideal"],
-      success_url: `${process.env.NEXT_PUBLIC_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.NEXT_PUBLIC_URL}/checkout/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_URL}/checkout`,
       shipping_address_collection: {
         allowed_countries: ["NL", "FR", "US"],
