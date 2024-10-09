@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeftCircleIcon } from "lucide-react";
 import Link from "next/link";
 
+// (!) empty cart on success
+
 const Page = () => {
   return (
     <div className="flex flex-col justify-center items-center gap-10 mt-8">
