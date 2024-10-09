@@ -4,6 +4,7 @@ import { roboto } from "./ui/fonts";
 import Navbar from "./ui/customer/navbar";
 import { ThemeProvider } from "./ui/theme-provider";
 import CartProviderWrapper from "./ui/cart-provider";
+import Footer from "./ui/customer/footer";
 
 export const metadata: Metadata = {
   title: "App Name",
@@ -26,7 +27,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Navbar />
-            <main className="px-3">{children}</main>
+            <main className="px-3 min-h-[calc(100vh-80px)]">{children}</main>
+            <Footer />
           </ThemeProvider>
         </CartProviderWrapper>
       </body>
