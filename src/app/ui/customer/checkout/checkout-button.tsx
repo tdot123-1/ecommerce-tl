@@ -53,7 +53,7 @@ const CheckoutButton = () => {
   return (
     <>
     
-    <Button className="p-1" disabled={isLoading} onClick={handleCheckout}>
+    <Button className="" disabled={isLoading} onClick={handleCheckout}>
       <div className="flex justify-center items-center gap-2">
         {isLoading ? (
           <LoaderPinwheelIcon size={20} className="animate-spin" />
