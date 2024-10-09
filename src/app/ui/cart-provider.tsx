@@ -15,7 +15,7 @@ const CartProviderWrapper = ({ children }: CartProviderProps) => {
       cartMode="checkout-session"
       stripe={stripe_pk!}
       currency="EUR"
-      shouldPersist={false}
+      shouldPersist
     >
       {children}
     </CartProvider>
