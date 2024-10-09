@@ -1,48 +1,53 @@
-import { syncProductWithStripe } from "@/lib/stripe";
-import { Product } from "@/lib/types";
-import { QueryResult, sql } from "@vercel/postgres";
-import { NextResponse } from "next/server";
+// import { syncProductWithStripe } from "@/lib/stripe";
+// import { Product } from "@/lib/types";
+// import { QueryResult, sql } from "@vercel/postgres";
+// import { NextResponse } from "next/server";
 
 // add a new product to db
 export async function POST(req: Request) {
-  try {
-    const { name, price, sizes, description, category, image_url } =
-      await req.json();
 
-    // insert product data into products table, return created product
+  await req.json()
 
-    const product: QueryResult<Product> = await sql`
-    INSERT INTO products (name, price, sizes, description, category, image_url)
-    VALUES (${name}, ${price}, ${sizes}, ${description}, ${category}, ${image_url})
-    RETURNING id, name, price, description, currency, stripe_product_id, stripe_price_id;
-    `;
+  return Response.json({ message: "Route currently unavailable" });
 
-    // get price_id and product_id from stripe api
+  // try {
+  //   const { name, price, sizes, description, category, image_url } =
+  //     await req.json();
 
-    const createdProduct = product.rows[0];
+  //   // insert product data into products table, return created product
 
-    const { stripeProductId, stripePriceId } = await syncProductWithStripe(
-      createdProduct
-    );
+  //   const product: QueryResult<Product> = await sql`
+  //   INSERT INTO products (name, price, sizes, description, category, image_url)
+  //   VALUES (${name}, ${price}, ${sizes}, ${description}, ${category}, ${image_url})
+  //   RETURNING id, name, price, description, currency, stripe_product_id, stripe_price_id;
+  //   `;
 
-    // insert stripe id's into created product (for payment integration)
+  //   // get price_id and product_id from stripe api
 
-    const updatedProduct = await sql`
-    UPDATE products 
-    SET stripe_product_id = ${stripeProductId}, stripe_price_id = ${stripePriceId}
-    WHERE id = ${createdProduct.id}
-    RETURNING *;
-    `;
+  //   const createdProduct = product.rows[0];
 
-    // return created product
+  //   const { stripeProductId, stripePriceId } = await syncProductWithStripe(
+  //     createdProduct
+  //   );
 
-    return NextResponse.json({ product: updatedProduct.rows[0] });
+  //   // insert stripe id's into created product (for payment integration)
 
-  } catch (error) {
-    console.error("Error creating product: ", error);
-    return NextResponse.json(
-      { message: "Something went wrong" },
-      { status: 500 }
-    );
-  }
+  //   const updatedProduct = await sql`
+  //   UPDATE products
+  //   SET stripe_product_id = ${stripeProductId}, stripe_price_id = ${stripePriceId}
+  //   WHERE id = ${createdProduct.id}
+  //   RETURNING *;
+  //   `;
+
+  //   // return created product
+
+  //   return NextResponse.json({ product: updatedProduct.rows[0] });
+
+  // } catch (error) {
+  //   console.error("Error creating product: ", error);
+  //   return NextResponse.json(
+  //     { message: "Something went wrong" },
+  //     { status: 500 }
+  //   );
+  // }
 }
