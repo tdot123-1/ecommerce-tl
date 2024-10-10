@@ -35,6 +35,7 @@ const BasketContent = () => {
               />
             </div>
             <p>{product.name}</p>
+            <p>{product.size}</p>
             <p>- €{product.price / 100}</p>
             <p>x {product.quantity}</p>
             <Button

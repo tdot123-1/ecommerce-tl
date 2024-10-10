@@ -1,3 +1,4 @@
+import ClearCart from "@/app/ui/customer/checkout/clear-cart";
 import { montserrat } from "@/app/ui/fonts";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftCircleIcon } from "lucide-react";
@@ -12,9 +13,7 @@ const Page = () => {
         Payment Success
       </h1>
       <div className="p-8 border bg-zinc-100 dark:bg-zinc-800 border-zinc-400 shadow-md rounded-md w-11/12 md:w-96 flex flex-col gap-6 justify-center items-center">
-        <h2 className="italic text-zinc-600 dark:text-zinc-300">
-          Thank you for your purchase!
-        </h2>
+        <ClearCart />
         <p>
           A receipt has been sent to your email address, your delivery will
           arrive in 1-2 weeks

@@ -13,6 +13,7 @@ interface AddButtonProps {
   description: string;
   image: string;
   stripe_price_id: string;
+  size: string;
 }
 
 const AddButton = ({
@@ -23,13 +24,22 @@ const AddButton = ({
   description,
   image,
   stripe_price_id,
+  size,
 }: AddButtonProps) => {
   const { addItem } = useShoppingCart();
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [error, setError] = useState(false);
+
   const handleAddItem = () => {
+    setError(false);
+    if (!size) {
+      setError(true);
+      return;
+    }
     setIsLoading(true);
+    
     addItem({
       id,
       name,
@@ -38,6 +48,7 @@ const AddButton = ({
       description,
       image,
       stripe_price_id,
+      size,
     });
 
     setTimeout(() => {
@@ -45,17 +56,24 @@ const AddButton = ({
     }, 300);
   };
   return (
-    <Button onClick={handleAddItem} disabled={isLoading}>
-      <div className="flex items-center justify-center gap-2">
-        {isLoading ? (
-          <LoaderPinwheelIcon size={20} className="animate-spin" />
-        ) : (
-          <ShoppingBasketIcon size={20} />
-        )}
+    <>
+      <Button onClick={handleAddItem} disabled={isLoading}>
+        <div className="flex items-center justify-center gap-2">
+          {isLoading ? (
+            <LoaderPinwheelIcon size={20} className="animate-spin" />
+          ) : (
+            <ShoppingBasketIcon size={20} />
+          )}
 
-        <span>Add to Cart</span>
-      </div>
-    </Button>
+          <span>Add to Cart</span>
+        </div>
+      </Button>
+      {error && (
+        <span className="text-red-600 text-sm italic">
+          Please select a size
+        </span>
+      )}
+    </>
   );
 };
 

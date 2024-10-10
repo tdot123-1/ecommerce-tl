@@ -1,7 +1,15 @@
 import AddButton from "@/app/ui/customer/basket/add-button";
+import AddToBasket from "@/app/ui/customer/basket/add-to-basket";
+import SizeSelect from "@/app/ui/customer/basket/size-select";
 import { montserrat } from "@/app/ui/fonts";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { fetchOneProduct } from "@/lib/data";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -16,13 +24,13 @@ const Page = async ({ params }: { params: { productId: string } }) => {
     notFound();
   }
 
-  const sizesArr = product.sizes.split(",")
+  const sizesArr = product.sizes.split(",");
 
   return (
     <div>
       <h1>Product page</h1>
-      <section className="flex flex-col justify-center items-center gap-4 h-[calc(100vh-80px)]">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center">
+      <section className="flex flex-col justify-center items-center h-[calc(100vh-80px)]">
+        <div className="flex flex-col gap-8 md:flex-row md:items-center">
           <div className="w-72 sm:w-80">
             <Image
               src={product.image_url}
@@ -38,23 +46,22 @@ const Page = async ({ params }: { params: { productId: string } }) => {
             </h2>
             <p>{product.description}</p>
             {/* <p>{product.sizes}</p> */}
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select size" />
-              </SelectTrigger>
-              <SelectContent>
-                {
-                  sizesArr.map((size: string) => (
-                    <SelectItem key={size} value={size}>{size}</SelectItem>
-                  ))
-                }
-              </SelectContent>
-            </Select>
+            {/* <SizeSelect sizes={product.sizes} /> */}
             <p>{product.category}</p>
             <p> $ {product.price / 100}</p>
+            <AddToBasket
+              id={productId}
+              name={product.name}
+              price={product.price}
+              currency={product.currency}
+              description={product.description}
+              image={product.image_url}
+              stripe_price_id={product.stripe_price_id}
+              sizes={product.sizes}
+            />
           </article>
         </div>
-        <div className="flex justify-center gap-8">
+        {/* <div className="flex justify-center gap-8">
           <Button>Buy Now!</Button>
           <AddButton
             id={productId}
@@ -65,7 +72,7 @@ const Page = async ({ params }: { params: { productId: string } }) => {
             image={product.image_url}
             stripe_price_id={product.stripe_price_id}
           />
-        </div>
+        </div> */}
       </section>
     </div>
   );
