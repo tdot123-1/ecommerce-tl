@@ -32,6 +32,7 @@ const CheckoutButton = () => {
             name: item.name,
             stripe_price_id: item.stripe_price_id,
             quantity: item.quantity,
+            size: item.size
           })),
         }),
       });

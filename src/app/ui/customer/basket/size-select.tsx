@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
 
 interface SizeSelectProps {
   sizes: string;
@@ -16,16 +15,6 @@ interface SizeSelectProps {
 
 const SizeSelect = ({ sizes, handleSizeSelect }: SizeSelectProps) => {
   const sizesArr = sizes.split(",");
-
-  // const [selectedSize, setSelectedSize] = useState("");
-
-  // const handleSizeChange = (size: string) => {
-  //   setSelectedSize(size);
-  // };
-
-  // useEffect(() => {
-  //   console.log("SIZE: ", selectedSize);
-  // }, [selectedSize]);
 
   return (
     <Select onValueChange={handleSizeSelect}>

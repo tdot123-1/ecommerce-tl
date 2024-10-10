@@ -10,7 +10,7 @@ const ClearCart = () => {
     console.log("CART CLEARED")
     clearCart();
     localStorage.removeItem("persist:root")
-  }, []);
+  }, [clearCart]);
 
   return (
     <h2 className="italic text-zinc-600 dark:text-zinc-300">

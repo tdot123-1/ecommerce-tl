@@ -13,4 +13,5 @@ export interface CartItem {
   name: string;
   stripe_price_id: string;
   quantity: number;
+  size: string;
 }

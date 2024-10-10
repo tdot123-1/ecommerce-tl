@@ -13,7 +13,15 @@ export const POST = async (req: Request) => {
       quantity: item.quantity,
     }));
 
+    // Add metadata for the entire session (you can store item sizes or other data here)
+    const metadata = cartItems.reduce((acc, item, index) => {
+      acc[`item_${index}_size`] = item.size; // Adding size info for each item
+      acc[`item_${index}_name`] = item.name; // Optional: item name
+      return acc;
+    }, {} as Record<string, string>);
+
     console.log("LINE ITEMS: ", line_items);
+    console.log("META: ", metadata);
 
     const session = await stripe.checkout.sessions.create({
       line_items,
@@ -24,6 +32,9 @@ export const POST = async (req: Request) => {
       shipping_address_collection: {
         allowed_countries: ["NL", "FR", "US"],
       },
+      payment_intent_data: {
+        metadata: {...metadata}
+      }
     });
 
     return NextResponse.json({ sessionID: session.id });
