@@ -1,8 +1,8 @@
 import Image from "next/image";
 import NavLinks from "./nav-links";
-import ThemeButton from "../theme-button";
+import ThemeButton from "../../theme-button";
 import Link from "next/link";
-import Basket from "./basket/basket";
+import Basket from "../basket/basket";
 import NavbarMobile from "./navbar-mobile";
 
 const Navbar = () => {

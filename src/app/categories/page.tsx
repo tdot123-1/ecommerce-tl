@@ -5,26 +5,32 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { categories } from "@/lib/categories";
+import CategoryCard from "../ui/customer/categories/category-card";
+import Link from "next/link";
 
 const Page = () => {
   return (
     <>
-      <h1>All Categories</h1>
-      <Carousel className="w-full max-w-xs mx-auto">
-        <CarouselContent>
-          <CarouselItem>
-            <div className="p-4 border-2 border-zinc-500 h-48">Category 1</div>
-          </CarouselItem>
-          <CarouselItem>
-            <div className="p-4 border-2 border-zinc-500 h-48">Category 2</div>
-          </CarouselItem>
-          <CarouselItem>
-            <div className="p-4 border-2 border-zinc-500 h-48">Category 3</div>
-          </CarouselItem>
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+      <div className="h-[calc(100vh-150px)] flex items-center justify-center">
+        <Carousel className="w-56 sm:w-80 md:w-96 mx-auto">
+          <CarouselContent>
+            {categories.map((category) => (
+              <CarouselItem key={category.title}>
+                <Link href={`categories/${category.title}`}>
+                <CategoryCard
+                  title={category.title}
+                  description={category.description}
+                  image_url={category.image_url}
+                />
+                </Link>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      </div>
     </>
   );
 };

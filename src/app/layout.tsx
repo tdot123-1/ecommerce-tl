@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { roboto } from "./ui/fonts";
-import Navbar from "./ui/customer/navbar";
+import Navbar from "./ui/customer/navbar/navbar";
 import { ThemeProvider } from "./ui/theme-provider";
 import CartProviderWrapper from "./ui/cart-provider";
 import Footer from "./ui/customer/footer";

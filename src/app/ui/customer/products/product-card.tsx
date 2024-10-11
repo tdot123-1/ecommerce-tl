@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { montserrat } from "../fonts";
+import { montserrat } from "../../fonts";
 import Link from "next/link";
 
 interface ProductCardProps {

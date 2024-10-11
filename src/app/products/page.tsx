@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import ProductList from "../ui/customer/products-list";
+import ProductList from "../ui/customer/products/products-list";
 import ProductListSkeleton from "../ui/skeletons/products-list-skeleton";
 
 const Page = () => {
