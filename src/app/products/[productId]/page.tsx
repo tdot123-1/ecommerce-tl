@@ -1,7 +1,16 @@
 import AddToBasket from "@/app/ui/customer/basket/add-to-basket";
 import { montserrat } from "@/app/ui/fonts";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { fetchOneProduct } from "@/lib/data";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const Page = async ({ params }: { params: { productId: string } }) => {
@@ -16,9 +25,29 @@ const Page = async ({ params }: { params: { productId: string } }) => {
 
   return (
     <div>
-      <h1>Product page</h1>
+      <div className="mt-6 mb-4 md:mb-0">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/products">Catalogue</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{product.name}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
       <section className="flex flex-col justify-center items-center min-h-[calc(100vh-80px)]">
-        <div className="flex flex-col gap-8 md:flex-row md:items-center">
+        <div className="flex flex-col gap-8 items-center md:flex-row">
           <div className="w-72 sm:w-80">
             <Image
               src={product.image_url}

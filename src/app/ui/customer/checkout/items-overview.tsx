@@ -9,7 +9,8 @@ import { montserrat } from "../../fonts";
 import Link from "next/link";
 
 const ItemsOverview = () => {
-  const { cartDetails, removeItem, clearCart, cartCount } = useShoppingCart();
+  const { cartDetails, removeItem, clearCart, cartCount, totalPrice } =
+    useShoppingCart();
 
   if (cartCount === 0) {
     return (
@@ -50,7 +51,7 @@ const ItemsOverview = () => {
                   fill
                 />
               </div>
-              <p>{product.name}</p>
+              <p className="font-bold">{product.name}</p>
               <p>{product.size}</p>
               <p>€{product.price / 100}</p>
               <p>x {product.quantity}</p>
@@ -64,6 +65,9 @@ const ItemsOverview = () => {
             </li>
           ))}
         </ul>
+        <p className="text-right mt-4 sm:w-11/12 md:w-3/4 lg:w-1/2 mx-auto underline">
+          <span className="font-bold">Total:</span> €{totalPrice! / 100}
+        </p>
       </div>
       <p className="text-sm text-zinc-600 dark:text-zinc-400 text-center w-full md:w-10/12 mx-auto mt-4">
         Please review the items in your shopping basket. When ready, click the

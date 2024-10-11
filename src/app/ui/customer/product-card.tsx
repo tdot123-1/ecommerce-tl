@@ -41,10 +41,10 @@ const ProductCard = ({
             Sizes: <span>{sizes}</span>
           </p>
           <p className="text-sm">
-            Price: $<span>{price}</span>
+            Category: <span>{category}</span>
           </p>
           <p className="text-sm">
-            Category: <span>{category}</span>
+            Price: €<span>{price / 100}</span>
           </p>
         </div>
       </Link>

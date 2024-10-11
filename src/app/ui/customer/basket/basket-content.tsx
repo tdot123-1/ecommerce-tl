@@ -34,8 +34,8 @@ const BasketContent = () => {
                 fill
               />
             </div>
-            <p>{product.name}</p>
-            <p>{product.size}</p>
+            <p className="font-bold text-sm">{product.name}</p>
+            <p className="text-sm">{product.size}</p>
             <p>- €{product.price / 100}</p>
             <p>x {product.quantity}</p>
             <Button
@@ -48,7 +48,7 @@ const BasketContent = () => {
           </li>
         ))}
       </ul>
-      <p>Total: €{totalPrice! / 100}</p>
+      <p className="text-right underline my-2"><span className="font-bold">Total:</span> €{totalPrice! / 100}</p>
       <div className="flex justify-evenly mt-4">
         <Link href="/checkout">
           <Button>Checkout</Button>

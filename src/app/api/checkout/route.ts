@@ -52,24 +52,24 @@ export const POST = async (req: Request) => {
 
 // get checkout session (probably not used anymore)
 
-export const GET = async (req: Request) => {
-  const { searchParams } = new URL(req.url);
+// export const GET = async (req: Request) => {
+//   const { searchParams } = new URL(req.url);
 
-  const sessionId = searchParams.get("session_id");
+//   const sessionId = searchParams.get("session_id");
 
-  if (!sessionId) {
-    return NextResponse.json({ error: "Session ID required" }, { status: 400 });
-  }
+//   if (!sessionId) {
+//     return NextResponse.json({ error: "Session ID required" }, { status: 400 });
+//   }
 
-  try {
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
+//   try {
+//     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    return NextResponse.json(session, { status: 200 });
-  } catch (error) {
-    console.error("Error retrieving checkout session", error);
-    return NextResponse.json(
-      { error: "Failed to retrieve session" },
-      { status: 500 }
-    );
-  }
-};
+//     return NextResponse.json(session, { status: 200 });
+//   } catch (error) {
+//     console.error("Error retrieving checkout session", error);
+//     return NextResponse.json(
+//       { error: "Failed to retrieve session" },
+//       { status: 500 }
+//     );
+//   }
+// };
