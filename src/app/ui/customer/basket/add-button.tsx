@@ -33,15 +33,19 @@ const AddButton = ({
   const [error, setError] = useState(false);
 
   const handleAddItem = () => {
+
+    // check if size is selected
     setError(false);
     if (!size) {
       setError(true);
       return;
     }
+    
     setIsLoading(true);
     
+    // add size to id to differentiate between same products of different sizes in shopping cart
     addItem({
-      id,
+      id: `${id} - ${size}`,
       name,
       price,
       currency,

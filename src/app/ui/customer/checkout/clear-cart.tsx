@@ -6,6 +6,7 @@ import { useShoppingCart } from "use-shopping-cart";
 const ClearCart = () => {
   const { clearCart } = useShoppingCart();
 
+  // clear cart from local storage on succesful payment. 
   useEffect(() => {
     console.log("CART CLEARED")
     clearCart();

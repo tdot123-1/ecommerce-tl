@@ -6,23 +6,27 @@ export const POST = async (req: Request) => {
   try {
     // (!) validate cart items
 
+    // get cart items in request
     const { cartItems }: { cartItems: CartItem[] } = await req.json();
 
+    // create array of line items with price id to send to Stripe checkout
     const line_items = cartItems.map((item) => ({
       price: item.stripe_price_id,
       quantity: item.quantity,
     }));
 
-    // Add metadata for the entire session (you can store item sizes or other data here)
+    // add metadata to display size for selected items in Stripe dashboard
     const metadata = cartItems.reduce((acc, item, index) => {
-      acc[`item_${index}_size`] = item.size; // Adding size info for each item
-      acc[`item_${index}_name`] = item.name; // Optional: item name
+      acc[`item_${index}_quantity`] = item.quantity.toString();
+      acc[`item_${index}_size`] = item.size; 
+      acc[`item_${index}_name`] = item.name; 
       return acc;
     }, {} as Record<string, string>);
 
     console.log("LINE ITEMS: ", line_items);
     console.log("META: ", metadata);
 
+    // create checkout session
     const session = await stripe.checkout.sessions.create({
       line_items,
       mode: "payment",
@@ -45,6 +49,8 @@ export const POST = async (req: Request) => {
     });
   }
 };
+
+// get checkout session (probably not used anymore)
 
 export const GET = async (req: Request) => {
   const { searchParams } = new URL(req.url);

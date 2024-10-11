@@ -7,20 +7,21 @@ import { useShoppingCart } from "use-shopping-cart";
 
 const CheckoutButton = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
   const { cartDetails, redirectToCheckout, cartCount } = useShoppingCart();
 
   const handleCheckout = async () => {
-    setError("")
+    setError("");
     setIsLoading(true);
 
     if (!cartCount) {
-      setError("No items in basket yet")
-      setIsLoading(false)
-      return
+      setError("No items in basket yet");
+      setIsLoading(false);
+      return;
     }
 
     try {
+      // send selected cart items to api route to create checkout session
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: {
@@ -32,11 +33,12 @@ const CheckoutButton = () => {
             name: item.name,
             stripe_price_id: item.stripe_price_id,
             quantity: item.quantity,
-            size: item.size
+            size: item.size,
           })),
         }),
       });
 
+      // await response, check if session was correctly created
       const data = await response.json();
 
       if (typeof data.sessionID === "string") {
@@ -53,20 +55,19 @@ const CheckoutButton = () => {
 
   return (
     <>
-    
-    <Button className="" disabled={isLoading} onClick={handleCheckout}>
-      <div className="flex justify-center items-center gap-2">
-        {isLoading ? (
-          <LoaderPinwheelIcon size={20} className="animate-spin" />
-        ) : (
-          <LucideCreditCard size={20} />
-        )}
-        <span>Checkout</span>
-      </div>
-    </Button>
-    {
-      error && <p className="text-xs font-light text-red-600 italic">{error}</p>
-    }
+      <Button className="" disabled={isLoading} onClick={handleCheckout}>
+        <div className="flex justify-center items-center gap-2">
+          {isLoading ? (
+            <LoaderPinwheelIcon size={20} className="animate-spin" />
+          ) : (
+            <LucideCreditCard size={20} />
+          )}
+          <span>Checkout</span>
+        </div>
+      </Button>
+      {error && (
+        <p className="text-xs font-light text-red-600 italic">{error}</p>
+      )}
     </>
   );
 };

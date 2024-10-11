@@ -1,5 +1,7 @@
 "use client"
 
+// one component where size is selected and can be passed to 'add-button' 
+
 import { Button } from "@/components/ui/button";
 import SizeSelect from "./size-select";
 import AddButton from "./add-button";
@@ -27,8 +29,10 @@ const AddToBasket = ({
   sizes,
 }: AddToBasketProps) => {
 
+  // save selected size in parent component, so that 'add-button' component can use it
   const [selectedSize, setSelectedSize] = useState("");
 
+  // pass function to set size to 'size select' component
   const handleSizeSelect = (size: string) => {
     setSelectedSize(size)
   }
