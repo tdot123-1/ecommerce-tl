@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-// one component where size is selected and can be passed to 'add-button' 
+// one component where size is selected and can be passed to 'add-button'
 
 import { Button } from "@/components/ui/button";
 import SizeSelect from "./size-select";
@@ -29,29 +29,41 @@ const AddToBasket = ({
   sizes,
 }: AddToBasketProps) => {
 
-  // save selected size in parent component, so that 'add-button' component can use it
+  // save selected size in this component, so that 'add-button' child component can use it
   const [selectedSize, setSelectedSize] = useState("");
+
+  // save error in this component to display centered under both buttons
+  const [sizeError, setSizeError] = useState("");
+
+  // set error in 'add-btn' component if no size was selected
+  const handleSizeError = (error: string) => {
+    setSizeError(error);
+  };
 
   // pass function to set size to 'size select' component
   const handleSizeSelect = (size: string) => {
-    setSelectedSize(size)
-  }
+    setSelectedSize(size);
+  };
 
   return (
     <>
       <SizeSelect sizes={sizes} handleSizeSelect={handleSizeSelect} />
-      <div className="flex justify-center items-center gap-4">
-        <Button>Buy Now!</Button>
-        <AddButton
-          id={id}
-          name={name}
-          price={price}
-          currency={currency}
-          description={description}
-          image={image}
-          stripe_price_id={stripe_price_id}
-          size={selectedSize}
-        />
+      <div className="flex flex-col justify-center items-center">
+        <div className="flex justify-center items-center gap-4">
+          <Button>Buy Now!</Button>
+          <AddButton
+            id={id}
+            name={name}
+            price={price}
+            currency={currency}
+            description={description}
+            image={image}
+            stripe_price_id={stripe_price_id}
+            size={selectedSize}
+            handleSizeError={handleSizeError}
+          />
+        </div>
+        <p className="text-red-600 text-sm italic mt-1">{sizeError}</p>
       </div>
     </>
   );

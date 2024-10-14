@@ -33,7 +33,6 @@ const Page = ({ params }: { params: { category: string } }) => {
             <BreadcrumbItem>
               <BreadcrumbPage>{category}</BreadcrumbPage>
             </BreadcrumbItem>
-            <BreadcrumbSeparator />
           </BreadcrumbList>
         </Breadcrumb>
       </div>

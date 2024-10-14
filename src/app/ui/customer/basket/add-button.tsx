@@ -14,6 +14,7 @@ interface AddButtonProps {
   image: string;
   stripe_price_id: string;
   size: string;
+  handleSizeError: (arg0: string) => void;
 }
 
 const AddButton = ({
@@ -25,24 +26,25 @@ const AddButton = ({
   image,
   stripe_price_id,
   size,
+  handleSizeError,
 }: AddButtonProps) => {
   const { addItem } = useShoppingCart();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [error, setError] = useState(false);
+
 
   const handleAddItem = () => {
-
     // check if size is selected
-    setError(false);
+    handleSizeError("")
     if (!size) {
-      setError(true);
+      // display error in parent component
+      handleSizeError("Please select a size.")
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     // add size to id to differentiate between same products of different sizes in shopping cart
     addItem({
       id: `${id} - ${size}`,
@@ -61,22 +63,17 @@ const AddButton = ({
   };
   return (
     <>
-      <Button onClick={handleAddItem} disabled={isLoading}>
-        <div className="flex items-center justify-center gap-2">
-          {isLoading ? (
-            <LoaderPinwheelIcon size={20} className="animate-spin" />
-          ) : (
-            <ShoppingBasketIcon size={20} />
-          )}
+        <Button onClick={handleAddItem} disabled={isLoading}>
+          <div className="flex items-center justify-center gap-2">
+            {isLoading ? (
+              <LoaderPinwheelIcon size={20} className="animate-spin" />
+            ) : (
+              <ShoppingBasketIcon size={20} />
+            )}
 
-          <span>Add to Cart</span>
-        </div>
-      </Button>
-      {error && (
-        <span className="text-red-600 text-sm italic">
-          Please select a size
-        </span>
-      )}
+            <span>Add to Cart</span>
+          </div>
+        </Button>
     </>
   );
 };

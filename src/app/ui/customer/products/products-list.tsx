@@ -1,7 +1,6 @@
 import { fetchAllProducts, fetchProductsByCategory } from "@/lib/data";
 import ProductCard from "./product-card";
 import { notFound } from "next/navigation";
-import { Product } from "@/lib/types";
 
 interface ProductListProps {
   category?: string | undefined

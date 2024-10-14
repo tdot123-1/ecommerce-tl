@@ -18,7 +18,6 @@ const ProductCard = ({
   id,
   name,
   price,
-  sizes,
   category,
   image_url,
 }: ProductCardProps) => {

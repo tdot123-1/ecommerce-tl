@@ -34,10 +34,15 @@ const BasketContent = () => {
                 fill
               />
             </div>
-            <p className="font-bold text-sm">{product.name}</p>
-            <p className="text-sm">{product.size}</p>
-            <p>- €{product.price / 100}</p>
-            <p>x {product.quantity}</p>
+            <div className="flex flex-col justify-center items-center">
+              <p className="font-bold text-sm">{product.name}</p>
+              <p className="text-sm">{product.size}</p>
+            </div>
+            <p>-</p>
+            <div className="flex flex-col justify-center items-center">
+              <p>€{product.price / 100}</p>
+              <p className="text-sm">x {product.quantity}</p>
+            </div>
             <Button
               onClick={() => removeItem(id)}
               className="p-1"
@@ -48,7 +53,9 @@ const BasketContent = () => {
           </li>
         ))}
       </ul>
-      <p className="text-right underline my-2"><span className="font-bold">Total:</span> €{totalPrice! / 100}</p>
+      <p className="text-right underline my-2">
+        <span className="font-bold">Total:</span> €{totalPrice! / 100}
+      </p>
       <div className="flex justify-evenly mt-4">
         <Link href="/checkout">
           <Button>Checkout</Button>

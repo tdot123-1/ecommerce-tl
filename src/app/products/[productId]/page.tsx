@@ -36,7 +36,7 @@ const Page = async ({ params }: { params: { productId: string } }) => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href="/products">Catalogue</Link>
+                <Link href="/products">Products</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
