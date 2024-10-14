@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { montserrat } from "../../fonts";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 interface ProductCardProps {
   id: string;
@@ -33,19 +34,14 @@ const ProductCard = ({
             className="rounded-lg"
           />
         </div>
-        <div className="px-5 py-3">
-          <h2 className={`text-lg font-semibold ${montserrat.className}`}>
+        <div className="px-5 py-3 text-center">
+          <h2 className={`text-xl font-semibold ${montserrat.className}`}>
             {name}
           </h2>
-          <p className="text-sm">
-            Sizes: <span>{sizes}</span>
+          <p className="text-sm italic">
+            <span>{category}</span>
           </p>
-          <p className="text-sm">
-            Category: <span>{category}</span>
-          </p>
-          <p className="text-sm">
-            Price: €<span>{price / 100}</span>
-          </p>
+          <Badge className="text-md mt-4">€ {price / 100}</Badge>
         </div>
       </Link>
     </div>

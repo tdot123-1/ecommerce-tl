@@ -63,7 +63,7 @@ const Page = async ({ params }: { params: { productId: string } }) => {
             </h2>
             <p>{product.description}</p>
             <p>{product.category}</p>
-            <p> $ {product.price / 100}</p>
+            <p>€ {product.price / 100}</p>
             <AddToBasket
               id={productId}
               name={product.name}

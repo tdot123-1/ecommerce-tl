@@ -1,8 +1,21 @@
-import { fetchAllProducts } from "@/lib/data";
+import { fetchAllProducts, fetchProductsByCategory } from "@/lib/data";
 import ProductCard from "./product-card";
+import { notFound } from "next/navigation";
+import { Product } from "@/lib/types";
 
-const ProductList = async () => {
-  const allProducts = await fetchAllProducts();
+interface ProductListProps {
+  category?: string | undefined
+}
+
+const ProductList = async ({category}: ProductListProps) => {
+
+  const allProducts = category ? await fetchProductsByCategory(category) : await fetchAllProducts()
+
+  if (!allProducts) {
+    notFound()
+  }
+  
+  //const allProducts = await fetchAllProducts();
   return (
     <>
       {allProducts.map((product) => (

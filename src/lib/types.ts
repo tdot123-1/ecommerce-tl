@@ -4,6 +4,9 @@ export interface Product {
     price: number;
     description: string;
     currency: string;
+    sizes: string;
+    category: string;
+    image_url: string;
     stripe_product_id: string | undefined ;
     stripe_price_id: string | undefined;
   }

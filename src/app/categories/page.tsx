@@ -13,7 +13,7 @@ const Page = () => {
   return (
     <>
       <div className="h-[calc(100vh-150px)] flex items-center justify-center">
-        <Carousel className="w-56 sm:w-80 md:w-96 mx-auto">
+        <Carousel className="w-4/5 md:w-3/5 lg:w-2/5 mx-auto">
           <CarouselContent>
             {categories.map((category) => (
               <CarouselItem key={category.title}>

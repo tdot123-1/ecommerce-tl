@@ -10,12 +10,11 @@ interface CategoryCardProps {
 const CategoryCard = ({ title, description, image_url }: CategoryCardProps) => {
   return (
     <>
-      <Card className="relative w-full h-[300px] rounded-lg overflow-hidden">
+      <Card className="relative w-full h-[400px] rounded-lg overflow-hidden">
         <Image
           src={image_url}
           alt={title}
-          layout="fill"
-          objectFit="cover"
+          fill
           className="absolute inset-0 z-0 blur-sm"
         />
         <CardContent className="relative z-10 flex flex-col items-center justify-center h-full text-white bg-black/40 p-4">
