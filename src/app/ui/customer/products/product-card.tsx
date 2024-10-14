@@ -23,7 +23,7 @@ const ProductCard = ({
 }: ProductCardProps) => {
   return (
     <div className="border border-zinc-500 rounded-lg shadow-xl w-full max-w-60 flex flex-col bg-zinc-200 dark:bg-zinc-800 hover:cursor-pointer">
-      <Link href={`products/${id}`}>
+      <Link href={`products/${id}?name=${name}`}>
         <div className="w-fit self-center pt-1 px-1">
           <Image
             src={image_url}
