@@ -23,7 +23,7 @@ export const fetchOneProduct = async (productId: string) => {
   try {
 
     // test for skeleton/suspense
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
 
 
     const data = await sql`
