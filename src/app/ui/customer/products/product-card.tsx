@@ -12,6 +12,8 @@ interface ProductCardProps {
   category: string;
   image_url: string;
   //is_active: boolean;
+  url_base?: string | undefined;
+  url_path?: string | undefined;
 }
 
 const ProductCard = ({
@@ -20,10 +22,18 @@ const ProductCard = ({
   price,
   category,
   image_url,
+  url_base,
+  url_path,
 }: ProductCardProps) => {
   return (
     <div className="border border-zinc-500 rounded-lg shadow-xl w-full max-w-60 flex flex-col bg-zinc-200 dark:bg-zinc-800 hover:cursor-pointer">
-      <Link href={`products/${id}?name=${name}`}>
+      <Link
+        href={`/products/${id}?base=${encodeURIComponent(
+          url_base || ""
+        )}&path=${encodeURIComponent(url_path || "")}&name=${encodeURIComponent(
+          name
+        )}`}
+      >
         <div className="w-fit self-center pt-1 px-1">
           <Image
             src={image_url}

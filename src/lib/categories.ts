@@ -14,4 +14,9 @@ export const categories = [
     description: "The collection of footwear",
     image_url: "/placeholder.png",
   },
+  {
+    title: "test",
+    description: "testing the link",
+    image_url: "/placeholder.png",
+  },
 ];

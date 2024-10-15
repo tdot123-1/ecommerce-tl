@@ -7,7 +7,7 @@ const Page = () => {
     <>
       <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 lg:gap-16 my-10">
         <Suspense fallback={<ProductListSkeleton />}>
-          <ProductList />
+          <ProductList url_base="products" />
         </Suspense>
       </section>
     </>

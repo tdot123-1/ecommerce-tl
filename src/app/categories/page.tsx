@@ -17,7 +17,7 @@ const Page = () => {
           <CarouselContent>
             {categories.map((category) => (
               <CarouselItem key={category.title}>
-                <Link href={`categories/${category.title}`}>
+                <Link href={`categories/${category.title}?base=categories&path=${encodeURIComponent(category.title)}`}>
                 <CategoryCard
                   title={category.title}
                   description={category.description}

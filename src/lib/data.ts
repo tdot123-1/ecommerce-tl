@@ -46,7 +46,7 @@ export const fetchOneProduct = async (productId: string) => {
 export const fetchProductsByCategory = async (category: string) => {
   try {
     const data = await sql`
-      SELECT name, price, sizes, category, description, image_url, currency, stripe_price_id FROM products 
+      SELECT id, name, price, sizes, category, description, image_url, currency, stripe_price_id FROM products 
       WHERE category = ${category}`;
 
     if (!data.rowCount) {
