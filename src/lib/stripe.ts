@@ -1,3 +1,5 @@
+"use server";
+
 import Stripe from "stripe";
 import { Product } from "./types";
 
@@ -10,7 +12,6 @@ if (!process.env.STRIPE_SECRET_KEY) {
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const syncProductWithStripe = async (product: Product) => {
-
   // check if product already has stripe id's
   let stripeProductId = product.stripe_product_id;
   let stripePriceId = product.stripe_price_id;
