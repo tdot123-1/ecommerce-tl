@@ -25,6 +25,9 @@ const ProductCard = ({
   url_base,
   url_path,
 }: ProductCardProps) => {
+
+  // optionally include base && path search params to dynamically change breadcrumbs
+  // based on where user navigated from
   return (
     <div className="border border-zinc-500 rounded-lg shadow-xl w-full max-w-60 flex flex-col bg-zinc-200 dark:bg-zinc-800 hover:cursor-pointer">
       <Link

@@ -8,21 +8,29 @@ import {
 import { categories } from "@/lib/categories";
 import CategoryCard from "../ui/customer/categories/category-card";
 import Link from "next/link";
+import { montserrat } from "../ui/fonts";
 
 const Page = () => {
   return (
     <>
+    <h1 className={`${montserrat.className} font-bold text-2xl mt-6`}>Browse Categories</h1>
       <div className="h-[calc(100vh-150px)] flex items-center justify-center">
         <Carousel className="w-4/5 md:w-3/5 lg:w-2/5 mx-auto">
           <CarouselContent>
             {categories.map((category) => (
               <CarouselItem key={category.title}>
-                <Link href={`categories/${category.title}?base=categories&path=${encodeURIComponent(category.title)}`}>
-                <CategoryCard
-                  title={category.title}
-                  description={category.description}
-                  image_url={category.image_url}
-                />
+                
+                {/* include category name to search params to dynamically create breadcrumbs */}
+                <Link
+                  href={`categories/${
+                    category.title
+                  }?base=categories&path=${encodeURIComponent(category.title)}`}
+                >
+                  <CategoryCard
+                    title={category.title}
+                    description={category.description}
+                    image_url={category.image_url}
+                  />
                 </Link>
               </CarouselItem>
             ))}

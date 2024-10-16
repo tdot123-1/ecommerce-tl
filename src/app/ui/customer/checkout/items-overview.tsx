@@ -31,7 +31,7 @@ const ItemsOverview = () => {
   return (
     <section>
       <h1
-        className={`${montserrat.className} text-center my-8 text-2xl font-semibold`}
+        className={`${montserrat.className} text-center my-8 text-2xl font-bold`}
       >
         Your Basket Overview
       </h1>

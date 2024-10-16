@@ -11,7 +11,7 @@ const Page = async ({ params }: { params: { productId: string } }) => {
   return (
     <div>
       <div className="mt-6 mb-4 md:mb-0">
-        <BreadCrumbComponent previous="products" category={null} />
+        <BreadCrumbComponent />
       </div>
       <section className="flex flex-col justify-center items-center min-h-[calc(100vh-80px)]">
         <div className="flex flex-col gap-8 items-center md:flex-row">

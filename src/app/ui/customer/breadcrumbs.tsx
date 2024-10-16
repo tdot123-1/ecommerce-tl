@@ -9,31 +9,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
-interface BreadCrumbComponentProps {
-  previous: string;
-  category: string | null;
-}
-
-const BreadCrumbComponent = ({
-  previous,
-  category,
-}: BreadCrumbComponentProps) => {
+const BreadCrumbComponent = () => {
+  // use search params to determine where user navigated from
   const searchParams = useSearchParams();
-
-  const pathname = usePathname()
-
-  const pathSegments = pathname.split("/");
-
-  useEffect(() => {
-    pathSegments.forEach((segment) => {
-      console.log(segment)
-    })
-
-    console.log("ref: ", document.referrer)
-  }, [])
 
   const base = decodeURIComponent(searchParams.get("base") || "");
   const name = decodeURIComponent(searchParams.get("name") || "");
@@ -49,10 +29,12 @@ const BreadCrumbComponent = ({
             </BreadcrumbLink>
           </BreadcrumbItem>
 
+          {/* generate additional breadcrumbs based on where user navigated from */}
           {base && (
             <>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
+                {/* render link if this is not the final breadcrumb, else render page */}
                 {name || path ? (
                   <BreadcrumbLink asChild>
                     <Link href={`/${base}?base=${encodeURIComponent(base)}`}>
@@ -74,7 +56,11 @@ const BreadCrumbComponent = ({
               <BreadcrumbItem>
                 {name ? (
                   <BreadcrumbLink asChild>
-                    <Link href={`/${base}/${path}?base=${encodeURIComponent(base)}&path=${encodeURIComponent(path)}`}>
+                    <Link
+                      href={`/${base}/${path}?base=${encodeURIComponent(
+                        base
+                      )}&path=${encodeURIComponent(path)}`}
+                    >
                       {path[0].toUpperCase() + path.slice(1)}
                     </Link>
                   </BreadcrumbLink>
@@ -87,6 +73,7 @@ const BreadCrumbComponent = ({
             </>
           )}
 
+          {/* final breadcrumb */}
           {name && (
             <>
               <BreadcrumbSeparator />

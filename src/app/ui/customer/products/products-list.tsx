@@ -2,13 +2,21 @@ import { fetchAllProducts, fetchProductsByCategory } from "@/lib/data";
 import ProductCard from "./product-card";
 import { notFound } from "next/navigation";
 
+// optionally include category -> to either fetch all products or products by category
+// url base / path -> to dynamically generate breadcrumbs depending on where the user
+// navigated from
+
 interface ProductListProps {
   category?: string | undefined;
   url_base?: string | undefined;
   url_path?: string | undefined;
 }
 
-const ProductList = async ({ category, url_base, url_path }: ProductListProps) => {
+const ProductList = async ({
+  category,
+  url_base,
+  url_path,
+}: ProductListProps) => {
   const allProducts = category
     ? await fetchProductsByCategory(category)
     : await fetchAllProducts();
@@ -17,7 +25,6 @@ const ProductList = async ({ category, url_base, url_path }: ProductListProps) =
     notFound();
   }
 
-  //const allProducts = await fetchAllProducts();
   return (
     <>
       {allProducts.map((product) => (
