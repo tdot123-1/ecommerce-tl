@@ -1,7 +1,8 @@
+import ProductList from "@/app/ui/customer/products/products-list";
+import { montserrat } from "@/app/ui/fonts";
+import ProductListSkeleton from "@/app/ui/skeletons/products-list-skeleton";
 import { Suspense } from "react";
-import ProductList from "../ui/customer/products/products-list";
-import ProductListSkeleton from "../ui/skeletons/products-list-skeleton";
-import { montserrat } from "../ui/fonts";
+
 
 const Page = () => {
   return (

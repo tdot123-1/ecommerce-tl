@@ -1,4 +1,5 @@
-import ItemsOverview from "../ui/customer/checkout/items-overview";
+import ItemsOverview from "@/app/ui/customer/checkout/items-overview";
+
 
 const Page = () => {
   return (

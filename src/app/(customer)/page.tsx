@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { montserrat } from "./ui/fonts";
+import { montserrat } from "../ui/fonts";
 import { Button } from "@/components/ui/button";
 import { LucideBriefcase, ShirtIcon, SmileIcon } from "lucide-react";
 import Link from "next/link";

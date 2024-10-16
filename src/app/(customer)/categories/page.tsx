@@ -1,3 +1,5 @@
+import CategoryCard from "@/app/ui/customer/categories/category-card";
+import { montserrat } from "@/app/ui/fonts";
 import {
   Carousel,
   CarouselContent,
@@ -6,9 +8,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { categories } from "@/lib/categories";
-import CategoryCard from "../ui/customer/categories/category-card";
+
 import Link from "next/link";
-import { montserrat } from "../ui/fonts";
+
 
 const Page = () => {
   return (
