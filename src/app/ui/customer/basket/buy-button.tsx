@@ -1,14 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ToastAction } from "@/components/ui/toast";
-import { useToast } from "@/hooks/use-toast";
-import { LoaderPinwheelIcon, ShoppingBasketIcon } from "lucide-react";
+import { BanknoteIcon, LoaderPinwheelIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useShoppingCart } from "use-shopping-cart";
 
-interface AddButtonProps {
+interface BuyButtonProps {
   id: string;
   name: string;
   price: number;
@@ -20,7 +18,7 @@ interface AddButtonProps {
   handleSizeError: (arg0: string) => void;
 }
 
-const AddButton = ({
+const BuyButton = ({
   id,
   name,
   price,
@@ -30,14 +28,12 @@ const AddButton = ({
   stripe_price_id,
   size,
   handleSizeError,
-}: AddButtonProps) => {
+}: BuyButtonProps) => {
   const { addItem } = useShoppingCart();
-  const { toast } = useToast();
-  const router = useRouter()
-
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const handleAddItem = async () => {
+  const handleBuyItem = async () => {
     // check if size is selected
     handleSizeError("");
     if (!size) {
@@ -60,33 +56,25 @@ const AddButton = ({
       size,
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
-    setIsLoading(false)
+    router.push("/checkout");
 
-    toast({
-      title: "Success!",
-      description: "Item was succesfully added to your basket",
-      action: (
-        <ToastAction onClick={() => router.push("/checkout")} altText="Go to checkout">Checkout</ToastAction>
-      )
-    });
+    setIsLoading(false);
   };
   return (
     <>
-      <Button onClick={handleAddItem} disabled={isLoading}>
+      <Button className="min-w-20" onClick={handleBuyItem} disabled={isLoading}>
         <div className="flex items-center justify-center gap-2">
           {isLoading ? (
             <LoaderPinwheelIcon size={20} className="animate-spin" />
           ) : (
-            <ShoppingBasketIcon size={20} />
+            <span>Buy Now!</span>
           )}
-
-          <span>Add to Cart</span>
         </div>
       </Button>
     </>
   );
 };
 
-export default AddButton;
+export default BuyButton;

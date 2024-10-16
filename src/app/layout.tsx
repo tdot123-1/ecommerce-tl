@@ -5,6 +5,7 @@ import Navbar from "./ui/customer/navbar/navbar";
 import { ThemeProvider } from "./ui/theme-provider";
 import CartProviderWrapper from "./ui/cart-provider";
 import Footer from "./ui/customer/footer";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "App Name",
@@ -29,6 +30,7 @@ export default function RootLayout({
             <Navbar />
             <main className="px-3 min-h-[calc(100vh-80px)]">{children}</main>
             <Footer />
+            <Toaster />
           </ThemeProvider>
         </CartProviderWrapper>
       </body>
