@@ -72,7 +72,16 @@ const AddToBasket = ({
             handleSizeError={handleSizeError}
           />
         </div>
-        <p className="text-red-600 text-sm italic mt-1">{sizeError}</p>
+        {sizeError && (
+          <p
+            aria-atomic="true"
+            aria-live="polite"
+            id="size-error"
+            className="text-red-600 text-sm italic mt-1"
+          >
+            {sizeError}
+          </p>
+        )}
       </div>
     </>
   );

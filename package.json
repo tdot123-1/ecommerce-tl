@@ -29,7 +29,8 @@
     "stripe": "^17.0.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
-    "use-shopping-cart": "^3.2.0"
+    "use-shopping-cart": "^3.2.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",

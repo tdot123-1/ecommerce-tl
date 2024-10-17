@@ -21,7 +21,7 @@ const SizeSelect = ({ sizes, handleSizeSelect }: SizeSelectProps) => {
 
   return (
     <Select onValueChange={handleSizeSelect}>
-      <SelectTrigger>
+      <SelectTrigger aria-describedby="size-error">
         <SelectValue placeholder="Select size" />
       </SelectTrigger>
       <SelectContent>
