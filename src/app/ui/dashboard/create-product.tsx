@@ -11,19 +11,26 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Form = () => {
+  // keep track of errors in form state
   const [state, setState] = useState<State>({ message: null, errors: {} });
+
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    // set loading state, prevent default
     setIsLoading(true);
     event.preventDefault();
 
+    // create form data object, call server action
     const formData = new FormData(event.currentTarget);
     const result = await createProduct(formData);
 
+    // returns errors if there were any
     setState(result);
     setIsLoading(false);
+
+    // returns empty string in case of success -> redirect to products display
     if (!result.message) {
       router.push("/dashboard/products");
     }
@@ -37,7 +44,12 @@ const Form = () => {
         <div>
           {state.errors?.name &&
             state.errors.name.map((error: string, index) => (
-              <p key={`${error}-${index}`} className="text-red-600 text-sm italic mt-1">{error}</p>
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic mt-1"
+              >
+                {error}
+              </p>
             ))}
         </div>
       </div>
@@ -72,13 +84,23 @@ const Form = () => {
         <div>
           {state.errors?.price &&
             state.errors.price.map((error: string, index) => (
-              <p key={`${error}-${index}`} className="text-red-600 text-sm italic mt-1">{error}</p>
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic mt-1"
+              >
+                {error}
+              </p>
             ))}
         </div>
         <div>
           {state.errors?.cents &&
             state.errors.cents.map((error: string, index) => (
-              <p key={`${error}-${index}`} className="text-red-600 text-sm italic mt-1">{error}</p>
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic mt-1"
+              >
+                {error}
+              </p>
             ))}
         </div>
       </div>
@@ -88,7 +110,12 @@ const Form = () => {
         <div>
           {state.errors?.sizes &&
             state.errors.sizes.map((error: string, index) => (
-              <p key={`${error}-${index}`} className="text-red-600 text-sm italic mt-1">{error}</p>
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic mt-1"
+              >
+                {error}
+              </p>
             ))}
         </div>
       </div>
@@ -98,7 +125,12 @@ const Form = () => {
         <div>
           {state.errors?.description &&
             state.errors.description.map((error: string, index) => (
-              <p key={`${error}-${index}`} className="text-red-600 text-sm italic mt-1">{error}</p>
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic mt-1"
+              >
+                {error}
+              </p>
             ))}
         </div>
       </div>
@@ -108,7 +140,12 @@ const Form = () => {
         <div>
           {state.errors?.category &&
             state.errors.category.map((error: string, index) => (
-              <p key={`${error}-${index}`} className="text-red-600 text-sm italic mt-1">{error}</p>
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic mt-1"
+              >
+                {error}
+              </p>
             ))}
         </div>
       </div>
@@ -118,7 +155,12 @@ const Form = () => {
         <div>
           {state.errors?.image &&
             state.errors.image.map((error: string, index) => (
-              <p key={`${error}-${index}`} className="text-red-600 text-sm italic mt-1">{error}</p>
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic mt-1"
+              >
+                {error}
+              </p>
             ))}
         </div>
       </div>

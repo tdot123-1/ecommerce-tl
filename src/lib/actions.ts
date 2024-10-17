@@ -1,12 +1,12 @@
 "use server";
 
-import { db, QueryResult, sql } from "@vercel/postgres";
+import { db, QueryResult } from "@vercel/postgres";
 import { z } from "zod";
 import { Product } from "./types";
 import { syncProductWithStripe } from "./stripe";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
+// validate form using zod, specify error messages
 const FormSchema = z.object({
   id: z.string(),
   name: z
@@ -38,20 +38,25 @@ const FormSchema = z.object({
     .min(1, { message: "Please add a url path to an image" }),
 });
 
+// create schema for creating a new product, omitting ID since it is created in db
 const CreateProduct = FormSchema.omit({ id: true });
 
+// track state of errors to display in UI
 export type State = {
   errors?: Record<string, string[]>;
   message?: string | null;
 };
 
 export async function createProduct(formData: FormData) {
+  // get raw form data
   const rawFormData = Object.fromEntries(formData.entries());
 
   console.log("FORM: ", rawFormData);
 
+  // validate form fields
   const validatedFields = CreateProduct.safeParse(rawFormData);
 
+  // return message early in case of field errors
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
@@ -59,12 +64,15 @@ export async function createProduct(formData: FormData) {
     };
   }
 
+  // get data from validated fields
   const { name, price, cents, sizes, description, category, image } =
     validatedFields.data;
 
+  // combine submitted price and cents data to get full price in cents
   const formattedPrice = price * 100 + cents;
   console.log("formatted price: ", formattedPrice);
 
+  // establish db connection, return early if connection issues
   let client;
 
   try {
@@ -74,8 +82,11 @@ export async function createProduct(formData: FormData) {
     return { message: "Failed to connect to db. Please try again later" };
   }
 
+  // begin transaction
   try {
-    client.sql`BEGIN`;
+    await client.sql`BEGIN`;
+
+    // create product in db without stripe id's
 
     const product: QueryResult<Product> = await client.sql`
     INSERT INTO products (name, price, sizes, description, category, image_url)
@@ -100,12 +111,16 @@ export async function createProduct(formData: FormData) {
 
     await client.sql`COMMIT`;
 
+    // revalidate path to display newly added product
+
     revalidatePath("/dashboard/products");
-    // redirect("/dashboard/products");
+
+    // return empty string to indicate success
     return {
       message: "",
     };
   } catch (error) {
+    // rollback transaction in case of error
     console.error("ERROR CREATING PRODUCT: ", error);
 
     await client.sql`ROLLBACK`;
@@ -114,6 +129,7 @@ export async function createProduct(formData: FormData) {
       message: "Database Error: Failed to create product.",
     };
   } finally {
+    // release db connection
     client.release();
   }
 }

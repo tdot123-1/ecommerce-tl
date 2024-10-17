@@ -1,5 +1,4 @@
 import { roboto } from "../ui/fonts";
-import ThemeButton from "../ui/theme-button";
 import { ThemeProvider } from "../ui/theme-provider";
 import "../globals.css";
 import Header from "../ui/dashboard/header";
