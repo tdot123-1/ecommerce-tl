@@ -2,6 +2,7 @@ import { roboto } from "../ui/fonts";
 import ThemeButton from "../ui/theme-button";
 import { ThemeProvider } from "../ui/theme-provider";
 import "../globals.css";
+import Header from "../ui/dashboard/header";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -13,9 +14,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           defaultTheme="system"
           disableTransitionOnChange
         >
-          <div>
-            <ThemeButton />
-          </div>
+          <Header />
           <main className="h-screen justify-center mx-5">{children}</main>
         </ThemeProvider>
       </body>

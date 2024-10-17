@@ -1,4 +1,4 @@
-"use server";
+
 
 import Stripe from "stripe";
 import { Product } from "./types";

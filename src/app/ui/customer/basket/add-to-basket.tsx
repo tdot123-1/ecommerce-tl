@@ -2,7 +2,6 @@
 
 // one component where size is selected and can be passed to 'add-button'
 
-import { Button } from "@/components/ui/button";
 import SizeSelect from "./size-select";
 import AddButton from "./add-button";
 import { useState } from "react";

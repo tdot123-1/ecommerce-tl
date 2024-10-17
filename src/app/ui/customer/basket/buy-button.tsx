@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { BanknoteIcon, LoaderPinwheelIcon } from "lucide-react";
+import { LoaderPinwheelIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useShoppingCart } from "use-shopping-cart";
