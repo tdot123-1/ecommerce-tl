@@ -35,6 +35,7 @@ const ProductsTable = async () => {
                     src={product.image_url}
                     alt={product.name}
                     fill
+                    sizes="10vw"
                     className="rounded-md"
                   />
                 </div>

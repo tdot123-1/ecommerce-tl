@@ -26,7 +26,7 @@ const SizesInput = ({ handleChosenSizesStr }: SizesInputProps) => {
   useEffect(() => {
     console.log("selected: ", chosenSizes);
     handleChosenSizesStr(chosenSizes)
-  }, [chosenSizes]);
+  }, [chosenSizes, handleChosenSizesStr]);
 
   // user inputted additional sizes
   const [sizeInput, setSizeInput] = useState("");
