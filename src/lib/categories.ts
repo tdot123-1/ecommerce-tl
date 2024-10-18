@@ -1,22 +1,22 @@
 export const categories = [
   {
-    title: "Women's",
+    title: "women",
     description: "The collection of women's clothing",
     image_url: "/placeholder.png",
   },
   {
-    title: "Men's",
-    description: "The collection of Men's clothing",
+    title: "men",
+    description: "The collection of men's clothing",
     image_url: "/placeholder.png",
   },
   {
-    title: "Footwear",
+    title: "footwear",
     description: "The collection of footwear",
     image_url: "/placeholder.png",
   },
   {
-    title: "test",
-    description: "testing the link",
+    title: "other",
+    description: "A variety of items",
     image_url: "/placeholder.png",
   },
 ];

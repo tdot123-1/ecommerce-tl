@@ -3,12 +3,22 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { createProduct, State } from "@/lib/actions";
+import { categories } from "@/lib/categories";
+import { capitalize } from "@/lib/utils";
 import { LoaderPinwheelIcon, PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import SizesInput from "./sizes-input";
 
 const Form = () => {
   // keep track of errors in form state
@@ -104,8 +114,8 @@ const Form = () => {
             ))}
         </div>
       </div>
-      <div className="mb-4">
-        <Label htmlFor="sizes">Sizes</Label>
+      {/* <div className="mb-4">
+        <Label htmlFor="sizes">Sizes</Label>       
         <Input name="sizes" id="sizes" type="text" disabled={isLoading} />
         <div>
           {state.errors?.sizes &&
@@ -118,6 +128,10 @@ const Form = () => {
               </p>
             ))}
         </div>
+      </div> */}
+      <div className="mb-4">
+        <Label htmlFor="sizes">Sizes</Label>
+        <SizesInput />
       </div>
       <div className="mb-4">
         <Label htmlFor="description">Description</Label>
@@ -136,7 +150,19 @@ const Form = () => {
       </div>
       <div className="mb-4">
         <Label htmlFor="category">Category</Label>
-        <Input name="category" id="category" type="text" disabled={isLoading} />
+
+        <Select defaultValue="" name="category" disabled={isLoading}>
+          <SelectTrigger id="category">
+            <SelectValue placeholder="Category" />
+          </SelectTrigger>
+          <SelectContent>
+            {categories.map((category) => (
+              <SelectItem key={category.title} value={category.title}>
+                {capitalize(category.title)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <div>
           {state.errors?.category &&
             state.errors.category.map((error: string, index) => (

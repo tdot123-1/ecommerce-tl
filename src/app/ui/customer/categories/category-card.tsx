@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { capitalize } from "@/lib/utils";
 import Image from "next/image";
 
 interface CategoryCardProps {
@@ -18,7 +19,7 @@ const CategoryCard = ({ title, description, image_url }: CategoryCardProps) => {
           className="absolute inset-0 z-0 blur-sm"
         />
         <CardContent className="relative z-10 flex flex-col items-center justify-center h-full text-white bg-black/40 p-4">
-            <h2 className="text-xl font-bold">{title}</h2>
+            <h2 className="text-xl font-bold">{capitalize(title)}</h2>
             <p className="text-sm">{description}</p>
         </CardContent>
       </Card>
