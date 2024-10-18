@@ -1,6 +1,5 @@
 import ProductsTable from "@/app/ui/dashboard/products-table";
 import ProductTableSkeleton from "@/app/ui/skeletons/product-table-skeleton";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 
 const Page = () => {
