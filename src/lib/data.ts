@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { sql } from "@vercel/postgres";
 
@@ -6,13 +6,16 @@ import { sql } from "@vercel/postgres";
 export const fetchAllProducts = async () => {
   try {
     // test for skeleton/suspense
-    //await new Promise((resolve) => setTimeout(resolve, 5000));
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
 
     // test for error page
     // throw new Error("test error")
 
-    const data =
-      await sql`SELECT id, name, price, sizes, category, image_url FROM products`;
+    const data = await sql`
+      SELECT id, name, price, sizes, category, image_url 
+      FROM products 
+      ORDER BY updated_at DESC
+      `;
 
     return data.rows;
   } catch (error) {
@@ -23,10 +26,8 @@ export const fetchAllProducts = async () => {
 
 export const fetchOneProduct = async (productId: string) => {
   try {
-
     // test for skeleton/suspense
     // await new Promise((resolve) => setTimeout(resolve, 5000));
-
 
     const data = await sql`
       SELECT name, price, sizes, category, description, image_url, currency, stripe_price_id FROM products 
@@ -43,7 +44,6 @@ export const fetchOneProduct = async (productId: string) => {
     return null;
   }
 };
-
 
 export const fetchProductsByCategory = async (category: string) => {
   try {
@@ -62,7 +62,6 @@ export const fetchProductsByCategory = async (category: string) => {
     return null;
   }
 };
-
 
 // need to get items in cart from db to validate prices
 // needs testing

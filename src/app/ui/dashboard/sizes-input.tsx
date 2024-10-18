@@ -3,12 +3,15 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { X } from "lucide-react";
-import { useState } from "react";
+import { PlusIcon, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
-const SizesInput = () => {
-  //   const availableSizes = ["XS", "S", "M", "L", "XL"];
+interface SizesInputProps {
+  handleChosenSizesStr: (sizes: string[]) => void;
+}
 
+const SizesInput = ({ handleChosenSizesStr }: SizesInputProps) => {
+  // standard available sizes
   const [availableSizes, setAvailableSizes] = useState<string[]>([
     "XS",
     "S",
@@ -17,10 +20,18 @@ const SizesInput = () => {
     "XL",
   ]);
 
+  // selected sizes
   const [chosenSizes, setChosenSizes] = useState<string[]>([]);
 
+  useEffect(() => {
+    console.log("selected: ", chosenSizes);
+    handleChosenSizesStr(chosenSizes)
+  }, [chosenSizes]);
+
+  // user inputted additional sizes
   const [sizeInput, setSizeInput] = useState("");
 
+  // move size from available to selected
   const handleAddBage = (selectedBadge: string) => {
     // remove from available sizes
     setAvailableSizes((prevState) =>
@@ -28,9 +39,12 @@ const SizesInput = () => {
     );
 
     // add to selected sizes
-    setChosenSizes((prevState) => [...prevState, selectedBadge]);
+    if (!chosenSizes.includes(selectedBadge)) {
+      setChosenSizes((prevState) => [...prevState, selectedBadge]);
+    }
   };
 
+  // remove size from selected
   const handleRemoveBadge = (selectedBadge: string) => {
     // remove from selected sizes
     setChosenSizes((prevState) =>
@@ -38,18 +52,43 @@ const SizesInput = () => {
     );
 
     // add to available sizes
-    setAvailableSizes((prevState) => [...prevState, selectedBadge]);
+    if (!availableSizes.includes(selectedBadge)) {
+      setAvailableSizes((prevState) => [...prevState, selectedBadge]);
+    }
   };
 
+  // manually inputted additional sizes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setSizeInput(value);
-    console.log(value)
-  }
+    const value = e.target.value;
+
+    console.log(value);
+
+    const isValidInput = /^[a-zA-Z0-9]*$/.test(value);
+
+    if (isValidInput || value === "") {
+      setSizeInput(value);
+    }
+  };
+
+  // add manually added size
+  const handleAddInput = (typedSize: string) => {
+    // add to selected sizes
+    const newSize = typedSize.toUpperCase();
+
+    if (!chosenSizes.includes(newSize)) {
+      setChosenSizes((prevState) => [...prevState, newSize]);
+    }
+
+    setAvailableSizes((prevState) =>
+      prevState.filter((size) => size !== newSize)
+    );
+
+    setSizeInput("");
+  };
 
   return (
-    <div>
-      <div className="flex items-center gap-1 border border-zinc-300 rounded-lg px-2 py-2 min-h-10">
+    <div className="ml-4">
+      <div className="flex flex-wrap items-center gap-1 border border-zinc-300 rounded-lg px-2 py-2 min-h-10 ">
         {chosenSizes.length > 0 ? (
           <>
             {chosenSizes.map((sizeBadge) => (
@@ -67,20 +106,36 @@ const SizesInput = () => {
           <p className="text-sm italic">None selected</p>
         )}
       </div>
-      <div className="flex items-center gap-1 border border-zinc-300 rounded-lg px-2 py-2">
-        {availableSizes.map((sizeBadge) => (
-          <Badge
-            key={sizeBadge}
-            className="flex items-start gap-1 cursor-pointer"
-            onClick={() => handleAddBage(sizeBadge)}
-          >
-            <div>{sizeBadge}</div>
-          </Badge>
-        ))}
+      <div className="flex items-center gap-2">
+        <p className="text-sm">Select from available sizes:</p>
+        <div className="flex flex-wrap flex-grow items-center gap-1 border border-zinc-300 rounded-lg px-2 py-2 my-1 min-h-10">
+          {availableSizes.map((sizeBadge) => (
+            <Badge
+              key={sizeBadge}
+              className="flex items-start gap-1 cursor-pointer"
+              onClick={() => handleAddBage(sizeBadge)}
+            >
+              <div>{sizeBadge}</div>
+            </Badge>
+          ))}
+        </div>
       </div>
-      <div className="flex items-center gap-2 mt-1">
-        <Input className="w-16" type="text" value={sizeInput} onChange={handleInputChange} />
-        <Button>Add size</Button>
+
+      <div className="flex items-center gap-2">
+        <p className="text-sm">Add new size:</p>
+        <Input
+          className="w-16"
+          type="text"
+          value={sizeInput}
+          onChange={handleInputChange}
+        />
+        <Button
+          className="p-2"
+          type="button"
+          onClick={() => handleAddInput(sizeInput)}
+        >
+          <PlusIcon size={24} />
+        </Button>
       </div>
     </div>
   );

@@ -24,8 +24,14 @@ const Form = () => {
   // keep track of errors in form state
   const [state, setState] = useState<State>({ message: null, errors: {} });
 
+  const [chosenSizesStr, setChosenSizesStr] = useState("")
+
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const handleChosenSizesStr = (sizes: string[] ) => {
+    setChosenSizesStr(sizes.join(","))
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // set loading state, prevent default
@@ -50,7 +56,7 @@ const Form = () => {
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
         <Label htmlFor="name">Name</Label>
-        <Input name="name" id="name" type="text" disabled={isLoading} />
+        <Input name="name" id="name" type="text" disabled={isLoading} className="ml-4" />
         <div>
           {state.errors?.name &&
             state.errors.name.map((error: string, index) => (
@@ -68,7 +74,7 @@ const Form = () => {
         <Label htmlFor="cents" className="hidden">
           Price in cents
         </Label>
-        <div className="flex items-baseline gap-1">
+        <div className="flex items-baseline gap-1 ml-4">
           <span className="text-lg">€</span>
           <Input
             name="price"
@@ -114,9 +120,11 @@ const Form = () => {
             ))}
         </div>
       </div>
-      {/* <div className="mb-4">
-        <Label htmlFor="sizes">Sizes</Label>       
-        <Input name="sizes" id="sizes" type="text" disabled={isLoading} />
+      
+      <div className="mb-4">
+        <Label htmlFor="sizes">Sizes</Label>
+        <SizesInput handleChosenSizesStr={handleChosenSizesStr} />
+        <Input className="hidden" type="text" value={chosenSizesStr} name="sizes" readOnly />
         <div>
           {state.errors?.sizes &&
             state.errors.sizes.map((error: string, index) => (
@@ -128,14 +136,10 @@ const Form = () => {
               </p>
             ))}
         </div>
-      </div> */}
-      <div className="mb-4">
-        <Label htmlFor="sizes">Sizes</Label>
-        <SizesInput />
       </div>
       <div className="mb-4">
         <Label htmlFor="description">Description</Label>
-        <Textarea name="description" id="description" disabled={isLoading} />
+        <Textarea name="description" id="description" disabled={isLoading} className="ml-4" />
         <div>
           {state.errors?.description &&
             state.errors.description.map((error: string, index) => (
@@ -152,8 +156,8 @@ const Form = () => {
         <Label htmlFor="category">Category</Label>
 
         <Select defaultValue="" name="category" disabled={isLoading}>
-          <SelectTrigger id="category">
-            <SelectValue placeholder="Category" />
+          <SelectTrigger id="category" className="ml-4">
+            <SelectValue placeholder="Select Category" />
           </SelectTrigger>
           <SelectContent>
             {categories.map((category) => (
@@ -177,7 +181,7 @@ const Form = () => {
       </div>
       <div className="mb-4">
         <Label htmlFor="image">Image</Label>
-        <Input name="image" id="image" type="text" disabled={isLoading} />
+        <Input name="image" id="image" type="text" disabled={isLoading} className="ml-4" />
         <div>
           {state.errors?.image &&
             state.errors.image.map((error: string, index) => (
