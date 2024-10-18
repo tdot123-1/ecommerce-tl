@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchAllProducts } from "@/lib/data";
+import { EditIcon } from "lucide-react";
 import Image from "next/image";
 
 const ProductsTable = async () => {
@@ -44,6 +46,11 @@ const ProductsTable = async () => {
               <TableCell>€{product.price / 100}</TableCell>
               <TableCell>{product.category}</TableCell>
               <TableCell>{product.sizes}</TableCell>
+              <TableCell>
+                <Button variant="ghost" className="p-2">
+                  <EditIcon size={24} />
+                </Button>
+              </TableCell>
             </TableRow>
           ))
         ) : (

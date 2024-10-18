@@ -29,6 +29,7 @@ const Form = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  // get array of chosen sizes from child component, turn into string, add value to form input
   const handleChosenSizesStr = (sizes: string[] ) => {
     setChosenSizesStr(sizes.join(","))
   }

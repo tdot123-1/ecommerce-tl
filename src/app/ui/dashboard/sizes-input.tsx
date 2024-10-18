@@ -23,6 +23,7 @@ const SizesInput = ({ handleChosenSizesStr }: SizesInputProps) => {
   // selected sizes
   const [chosenSizes, setChosenSizes] = useState<string[]>([]);
 
+  // turn chosen sizes into string in parent component to add to form input
   useEffect(() => {
     console.log("selected: ", chosenSizes);
     handleChosenSizesStr(chosenSizes)
