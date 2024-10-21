@@ -8,25 +8,43 @@ import { useEffect, useState } from "react";
 
 interface SizesInputProps {
   handleChosenSizesStr: (sizes: string[]) => void;
+  initialSizes?: string;
 }
 
-const SizesInput = ({ handleChosenSizesStr }: SizesInputProps) => {
-  // standard available sizes
-  const [availableSizes, setAvailableSizes] = useState<string[]>([
-    "XS",
-    "S",
-    "M",
-    "L",
-    "XL",
-  ]);
+// standard available sizes
+const standardSizes = ["XS", "S", "M", "L", "XL"];
+
+const SizesInput = ({
+  handleChosenSizesStr,
+  initialSizes,
+}: SizesInputProps) => {
+
+  // available sizes
+  const [availableSizes, setAvailableSizes] = useState<string[]>(standardSizes);
 
   // selected sizes
   const [chosenSizes, setChosenSizes] = useState<string[]>([]);
 
+  useEffect(() => {
+    // if initialSizes is defined, this is an edit form
+    if (initialSizes) {
+      // turn initial sizes to array, set values in chosen sizes
+      const selectedSizes = initialSizes.split(",");
+
+      setChosenSizes([...selectedSizes]);
+
+      // check if any sizes were in standardSizes, if so, remove them from available options
+      const updatedAvailableSizes = standardSizes.filter(
+        (size) => !selectedSizes.includes(size)
+      );
+      setAvailableSizes(updatedAvailableSizes);
+    }
+  }, [initialSizes]);
+
   // turn chosen sizes into string in parent component to add to form input
   useEffect(() => {
     console.log("selected: ", chosenSizes);
-    handleChosenSizesStr(chosenSizes)
+    handleChosenSizesStr(chosenSizes);
   }, [chosenSizes, handleChosenSizesStr]);
 
   // user inputted additional sizes

@@ -35,7 +35,7 @@ export const syncProductWithStripe = async (product: Product) => {
     const stripePrice = await stripe.prices.create({
       product: stripeProductId,
       unit_amount: product.price,
-      currency: product.currency || "eur",
+      currency: (product.currency || "eur").toLowerCase(),
     });
     stripePriceId = stripePrice.id;
   } else {
@@ -45,12 +45,12 @@ export const syncProductWithStripe = async (product: Product) => {
     // if something was editted in the current price, create new price on Stripe
     if (
       currentPrice.unit_amount !== product.price ||
-      currentPrice.currency !== (product.currency || "eur")
+      currentPrice.currency !== (product.currency || "eur").toLowerCase()
     ) {
       const newPrice = await stripe.prices.create({
         product: stripeProductId,
         unit_amount: product.price,
-        currency: product.currency || "eur",
+        currency: (product.currency || "eur").toLowerCase(),
       });
 
       // set new price id

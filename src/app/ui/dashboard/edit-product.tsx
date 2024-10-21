@@ -11,22 +11,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { State } from "@/lib/actions";
+import { editProduct, State } from "@/lib/actions";
 import { categories } from "@/lib/categories";
 import { EditableProduct } from "@/lib/types";
 import { capitalize } from "@/lib/utils";
 import { LoaderPinwheelIcon, SaveIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import SizesInput from "./sizes-input";
+import { useRouter } from "next/navigation";
 
 interface EditFormProps {
   product: EditableProduct;
 }
 
 const Form = ({ product }: EditFormProps) => {
+
+  // track error state, loading state
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
 
+  // split price to show full euros and cents in seperate input fields
   const splitPrice = (price: number) => {
     const euros = Math.floor(price / 100);
     const cents = price % 100;
@@ -36,8 +41,31 @@ const Form = ({ product }: EditFormProps) => {
 
   const { euros, cents } = splitPrice(product.price);
 
+  const [chosenSizesStr, setChosenSizesStr] = useState(product.sizes);
+
+  const router = useRouter();
+
+  // get array of chosen sizes from child component, turn into string, add value to form input
+  const handleChosenSizesStr = (sizes: string[]) => {
+    setChosenSizesStr(sizes.join(","));
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     event.preventDefault();
+
+    // create form object, call server action
+    const formData = new FormData(event.currentTarget);
+
+    const result = await editProduct(product.id, formData);
+    setState(result);
+
+    setIsLoading(false);
+
+    // returns empty string in case of success -> redirect to products display
+    if (!result.message) {
+      router.push("/dashboard/products");
+    }
   };
 
   return (
@@ -117,8 +145,11 @@ const Form = ({ product }: EditFormProps) => {
       </div>
 
       <div className="mb-4">
-        {/* <Label htmlFor="sizes">Sizes</Label>
-        <SizesInput handleChosenSizesStr={handleChosenSizesStr} />
+        <Label htmlFor="sizes">Sizes</Label>
+        <SizesInput
+          handleChosenSizesStr={handleChosenSizesStr}
+          initialSizes={product.sizes}
+        />
         <Input
           className="hidden"
           type="text"
@@ -136,7 +167,7 @@ const Form = ({ product }: EditFormProps) => {
                 {error}
               </p>
             ))}
-        </div> */}
+        </div>
       </div>
 
       <div className="mb-4">
@@ -163,7 +194,11 @@ const Form = ({ product }: EditFormProps) => {
       <div className="mb-4">
         <Label htmlFor="category">Category</Label>
 
-        <Select defaultValue={product.category} name="category" disabled={isLoading}>
+        <Select
+          defaultValue={product.category}
+          name="category"
+          disabled={isLoading}
+        >
           <SelectTrigger id="category" className="ml-4">
             <SelectValue defaultValue={product.category} />
           </SelectTrigger>

@@ -149,6 +149,7 @@ export async function editProduct(id: string, formData: FormData) {
   const rawFormData = Object.fromEntries(formData.entries());
 
   console.log("FORM: ", rawFormData);
+  console.log("ID: ", id);
 
   // validate form fields
   const validatedFields = EditProduct.safeParse(rawFormData);
@@ -185,8 +186,11 @@ export async function editProduct(id: string, formData: FormData) {
       UPDATE products
       SET name = ${name}, price = ${formattedPrice}, sizes = ${sizes}, description = ${description}, 
       category = ${category}, image_url = ${image}
-      WHERE id = ${id};
+      WHERE id = ${id}
+      RETURNING id, name, price, description, currency, stripe_product_id, stripe_price_id;
     `;
+
+    console.log("RESULT: ", result.rows[0]);
 
     const updatedProduct: Product | undefined = result.rows[0];
 
