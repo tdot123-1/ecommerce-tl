@@ -11,6 +11,7 @@ import {
 import { fetchAllProducts } from "@/lib/data";
 import { EditIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const ProductsTable = async () => {
   const allProducts = await fetchAllProducts();
@@ -47,9 +48,11 @@ const ProductsTable = async () => {
               <TableCell>{product.category}</TableCell>
               <TableCell>{product.sizes}</TableCell>
               <TableCell>
-                <Button variant="ghost" className="p-2">
-                  <EditIcon size={24} />
-                </Button>
+                <Link href={`products/edit/${product.id}`}>
+                  <Button variant="ghost" className="p-2">
+                    <EditIcon size={24} />
+                  </Button>
+                </Link>
               </TableCell>
             </TableRow>
           ))

@@ -11,6 +11,8 @@ export interface Product {
     stripe_price_id: string | undefined;
   }
 
+export type EditableProduct = Omit<Product, "stripe_price_id" | "stripe_product_id">
+
 export interface CartItem {
   id: string;
   name: string;

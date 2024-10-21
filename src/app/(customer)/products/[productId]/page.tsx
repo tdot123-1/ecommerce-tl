@@ -4,7 +4,7 @@ import ProductDetails from "@/app/ui/customer/products/product-details";
 import DetailsSkeleton from "@/app/ui/skeletons/product-details-skeleton";
 import { Suspense } from "react";
 
-const Page = async ({ params }: { params: { productId: string } }) => {
+const Page = ({ params }: { params: { productId: string } }) => {
   console.log(params);
   const { productId } = params;
 

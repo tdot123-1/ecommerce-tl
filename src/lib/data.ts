@@ -1,6 +1,7 @@
 "use server";
 
 import { sql } from "@vercel/postgres";
+import { EditableProduct } from "./types";
 
 // fetch all products
 export const fetchAllProducts = async () => {
@@ -37,7 +38,18 @@ export const fetchOneProduct = async (productId: string) => {
       return null;
     }
 
-    return data.rows[0];
+    const product: EditableProduct = {
+      id: productId, 
+      name: data.rows[0].name,
+      price: data.rows[0].price,
+      sizes: data.rows[0].sizes,
+      category: data.rows[0].category,
+      description: data.rows[0].description,
+      image_url: data.rows[0].image_url,
+      currency: data.rows[0].currency,
+    };
+
+    return product;
   } catch (error) {
     console.error("Database Error:", error);
     //throw new Error("Failed to fetch product.");
