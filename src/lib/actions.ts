@@ -47,6 +47,8 @@ export type State = {
   message?: string | null;
 };
 
+// CREATE
+
 export async function createProduct(formData: FormData) {
   // get raw form data
   const rawFormData = Object.fromEntries(formData.entries());
@@ -94,9 +96,13 @@ export async function createProduct(formData: FormData) {
     RETURNING id, name, price, description, currency, stripe_product_id, stripe_price_id;
     `;
 
-    // get price_id and product_id from stripe api
+    const createdProduct: Product | undefined = product.rows[0];
 
-    const createdProduct = product.rows[0];
+    if (!createdProduct) {
+      throw new Error("Failed to create product");
+    }
+
+    // get price_id and product_id from stripe api
 
     const { stripeProductId, stripePriceId } = await syncProductWithStripe(
       createdProduct
@@ -130,6 +136,95 @@ export async function createProduct(formData: FormData) {
     };
   } finally {
     // release db connection
+    client.release();
+  }
+}
+
+// EDIT
+
+const EditProduct = FormSchema.omit({ id: true });
+
+export async function editProduct(id: string, formData: FormData) {
+  // get raw form data
+  const rawFormData = Object.fromEntries(formData.entries());
+
+  console.log("FORM: ", rawFormData);
+
+  // validate form fields
+  const validatedFields = EditProduct.safeParse(rawFormData);
+
+  // return message early in case of field errors
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing data. Error creating new product.",
+    };
+  }
+
+  // get data from validated fields
+  const { name, price, cents, sizes, description, category, image } =
+    validatedFields.data;
+
+  // combine submitted price and cents data to get full price in cents
+  const formattedPrice = price * 100 + cents;
+  console.log("formatted price: ", formattedPrice);
+
+  let client;
+
+  try {
+    client = await db.connect();
+  } catch (error) {
+    console.error("DB CONNECTION ERROR: ", error);
+    return { message: "Failed to connect to db. Please try again later" };
+  }
+
+  try {
+    await client.sql`BEGIN`;
+
+    const result: QueryResult<Product> = await client.sql`
+      UPDATE products
+      SET name = ${name}, price = ${formattedPrice}, sizes = ${sizes}, description = ${description}, 
+      category = ${category}, image_url = ${image}
+      WHERE id = ${id};
+    `;
+
+    const updatedProduct: Product | undefined = result.rows[0];
+
+    if (!updatedProduct) {
+      throw new Error("Product not found");
+    }
+
+    const { stripeProductId, stripePriceId } = await syncProductWithStripe(
+      updatedProduct
+    );
+
+    // insert stripe id's into created product (for payment integration)
+
+    await client.sql`
+    UPDATE products
+    SET stripe_product_id = ${stripeProductId}, stripe_price_id = ${stripePriceId}
+    WHERE id = ${updatedProduct.id};`;
+
+    await client.sql`COMMIT`;
+
+    // revalidate path to display newly added product
+
+    revalidatePath("/dashboard/products");
+
+    // return empty string to indicate success
+    return {
+      message: "",
+    };
+  } catch (error) {
+    // rollback transaction in case of error
+    console.error("ERROR UPDATING PRODUCT: ", error);
+
+    await client.sql`ROLLBACK`;
+
+    return {
+      message: "Database Error: Failed to update product.",
+    };
+  } finally {
     client.release();
   }
 }

@@ -1,5 +1,3 @@
-
-
 import Stripe from "stripe";
 import { Product } from "./types";
 
@@ -26,7 +24,7 @@ export const syncProductWithStripe = async (product: Product) => {
     });
     stripeProductId = stripeProduct.id;
   } else {
-    stripeProduct = await stripe.products.update(stripeProductId!, {
+    stripeProduct = await stripe.products.update(stripeProductId, {
       name: product.name,
       description: product.description,
     });
@@ -40,6 +38,24 @@ export const syncProductWithStripe = async (product: Product) => {
       currency: product.currency || "eur",
     });
     stripePriceId = stripePrice.id;
+  } else {
+    // fetch current price
+    const currentPrice = await stripe.prices.retrieve(stripePriceId);
+
+    // if something was editted in the current price, create new price on Stripe
+    if (
+      currentPrice.unit_amount !== product.price ||
+      currentPrice.currency !== (product.currency || "eur")
+    ) {
+      const newPrice = await stripe.prices.create({
+        product: stripeProductId,
+        unit_amount: product.price,
+        currency: product.currency || "eur",
+      });
+
+      // set new price id
+      stripePriceId = newPrice.id;
+    }
   }
 
   // return stripe id's
