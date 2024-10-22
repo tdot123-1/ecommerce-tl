@@ -1,13 +1,7 @@
-import Stripe from "stripe";
+"use server";
+
 import { Product } from "./types";
-
-// check for key
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error("missing stripe key");
-}
-
-// create stripe instance
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import { stripe } from "./stripe-object";
 
 export const syncProductWithStripe = async (product: Product) => {
   // check if product already has stripe id's

@@ -3,7 +3,7 @@
 import { db, QueryResult } from "@vercel/postgres";
 import { z } from "zod";
 import { Product } from "./types";
-import { syncProductWithStripe } from "./stripe";
+import { archiveStripeProduct, syncProductWithStripe } from "./stripe";
 import { revalidatePath } from "next/cache";
 
 // validate form using zod, specify error messages
@@ -238,10 +238,13 @@ export async function editProduct(id: string, formData: FormData) {
   }
 }
 
-
 // DEACTIVATE
 
-export async function deactivateProduct(id: string, activate: boolean) {
+export async function deactivateProduct(
+  id: string,
+  activate: boolean,
+  category: string
+) {
   let client;
 
   try {
@@ -254,17 +257,44 @@ export async function deactivateProduct(id: string, activate: boolean) {
   try {
     await client.sql`BEGIN`;
 
+    // throw new Error("TEST")
+
     const result = await client.sql`
     UPDATE products
     SET is_active = ${activate}
     WHERE id = ${id}
     RETURNING stripe_product_id
-    `
+    `;
 
-    const stipe_product_id: string | undefined = result.rows[0]
+    const stripe_product_id: string | undefined =
+      result.rows[0]?.stripe_product_id;
 
+    if (!stripe_product_id) {
+      throw new Error("Error updating product active status");
+    }
 
+    await archiveStripeProduct(stripe_product_id, activate);
+
+    await client.sql`COMMIT`;
+
+    // revalidate paths to display newly updated product
+
+    revalidatePath("/dashboard/products");
+    revalidatePath("/products");
+    revalidatePath(`/products/${id}`);
+    revalidatePath(`/categories/${category}`);
+
+    return { message: "" };
   } catch (error) {
-    
+    // rollback transaction in case of error
+    console.error("ERROR UPDATING PRODUCT: ", error);
+
+    await client.sql`ROLLBACK`;
+
+    return {
+      message: "Database Error: Failed to update product.",
+    };
+  } finally {
+    client.release();
   }
 }

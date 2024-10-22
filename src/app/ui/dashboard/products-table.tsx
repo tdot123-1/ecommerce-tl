@@ -51,7 +51,11 @@ const ProductsTable = async () => {
               <TableCell>{product.category}</TableCell>
               <TableCell>{product.sizes}</TableCell>
               <TableCell>
-                <ActivateSwitch defaultValue={product.is_active} productId={product.id} />
+                <ActivateSwitch
+                  defaultValue={product.is_active}
+                  productId={product.id}
+                  category={product.category}
+                />
               </TableCell>
               <TableCell>
                 <Link href={`products/edit/${product.id}`}>
@@ -61,7 +65,11 @@ const ProductsTable = async () => {
                 </Link>
               </TableCell>
               <TableCell>
-                <Button variant="destructive" className="p-2" disabled={product.is_active}>
+                <Button
+                  variant="destructive"
+                  className="p-2"
+                  disabled={product.is_active}
+                >
                   <Trash2Icon size={24} />
                 </Button>
               </TableCell>
