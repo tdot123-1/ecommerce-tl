@@ -1,6 +1,6 @@
 "use server";
 
-import { db, QueryResult } from "@vercel/postgres";
+import { db, QueryResult, sql } from "@vercel/postgres";
 import { z } from "zod";
 import { Product } from "./types";
 import { archiveStripeProduct, syncProductWithStripe } from "./stripe";
@@ -184,6 +184,7 @@ export async function editProduct(id: string, formData: FormData) {
   try {
     await client.sql`BEGIN`;
 
+    // update specified product data
     const result: QueryResult<Product> = await client.sql`
       UPDATE products
       SET name = ${name}, price = ${formattedPrice}, sizes = ${sizes}, description = ${description}, 
@@ -192,7 +193,7 @@ export async function editProduct(id: string, formData: FormData) {
       RETURNING id, name, price, description, currency, stripe_product_id, stripe_price_id;
     `;
 
-    console.log("RESULT: ", result.rows[0]);
+    // console.log("RESULT: ", result.rows[0]);
 
     const updatedProduct: Product | undefined = result.rows[0];
 
@@ -200,12 +201,12 @@ export async function editProduct(id: string, formData: FormData) {
       throw new Error("Product not found");
     }
 
+    // sync data with Stripe dashboard
     const { stripeProductId, stripePriceId } = await syncProductWithStripe(
       updatedProduct
     );
 
     // insert stripe id's into created product (for payment integration)
-
     await client.sql`
     UPDATE products
     SET stripe_product_id = ${stripeProductId}, stripe_price_id = ${stripePriceId}
@@ -266,6 +267,7 @@ export async function deactivateProduct(
     RETURNING stripe_product_id
     `;
 
+    // retrieve stripe product id to archive/de-archive in Stripe dashboard
     const stripe_product_id: string | undefined =
       result.rows[0]?.stripe_product_id;
 
@@ -273,6 +275,7 @@ export async function deactivateProduct(
       throw new Error("Error updating product active status");
     }
 
+    // update stripe dashboard
     await archiveStripeProduct(stripe_product_id, activate);
 
     await client.sql`COMMIT`;
@@ -284,6 +287,7 @@ export async function deactivateProduct(
     revalidatePath(`/products/${id}`);
     revalidatePath(`/categories/${category}`);
 
+    // return empty string to indicate success
     return { message: "" };
   } catch (error) {
     // rollback transaction in case of error
@@ -296,5 +300,30 @@ export async function deactivateProduct(
     };
   } finally {
     client.release();
+  }
+}
+
+// DELETE
+
+export async function deleteProduct(id: string) {
+  try {
+
+    // throw new Error("TEST")
+
+    await sql`
+    DELETE FROM products
+    WHERE id = ${id}
+    `;
+
+    revalidatePath("/dashboard/products");
+
+    return {
+      message: "",
+    };
+  } catch (error) {
+    console.error("ERROR DELETING PRODUCT: ", error);
+    return {
+      message: "Database Error: Failed to delete product.",
+    };
   }
 }

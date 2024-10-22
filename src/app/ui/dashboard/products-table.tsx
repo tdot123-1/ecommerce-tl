@@ -14,6 +14,7 @@ import { EditIcon, Trash2Icon, TrashIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ActivateSwitch from "./activate-product";
+import DeleteButton from "./delete-product";
 
 const ProductsTable = async () => {
   const allProducts = await fetchAllProducts();
@@ -65,13 +66,7 @@ const ProductsTable = async () => {
                 </Link>
               </TableCell>
               <TableCell>
-                <Button
-                  variant="destructive"
-                  className="p-2"
-                  disabled={product.is_active}
-                >
-                  <Trash2Icon size={24} />
-                </Button>
+                <DeleteButton isActive={product.is_active} productId={product.id}/>
               </TableCell>
             </TableRow>
           ))

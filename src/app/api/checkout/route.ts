@@ -1,4 +1,4 @@
-import { stripe } from "@/lib/stripe";
+import { stripe } from "@/lib/stripe-object";
 import { CartItem } from "@/lib/types";
 import { NextResponse } from "next/server";
 
