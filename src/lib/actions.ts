@@ -117,9 +117,11 @@ export async function createProduct(formData: FormData) {
 
     await client.sql`COMMIT`;
 
-    // revalidate path to display newly added product
+    // revalidate paths to display newly added product
 
     revalidatePath("/dashboard/products");
+    revalidatePath("/products");
+    revalidatePath(`/categories/${category}`);
 
     // return empty string to indicate success
     return {
@@ -211,9 +213,12 @@ export async function editProduct(id: string, formData: FormData) {
 
     await client.sql`COMMIT`;
 
-    // revalidate path to display newly added product
+    // revalidate paths to display newly updated product
 
     revalidatePath("/dashboard/products");
+    revalidatePath("/products");
+    revalidatePath(`/products/${updatedProduct.id}`);
+    revalidatePath(`/categories/${category}`);
 
     // return empty string to indicate success
     return {
@@ -230,5 +235,36 @@ export async function editProduct(id: string, formData: FormData) {
     };
   } finally {
     client.release();
+  }
+}
+
+
+// DEACTIVATE
+
+export async function deactivateProduct(id: string, activate: boolean) {
+  let client;
+
+  try {
+    client = await db.connect();
+  } catch (error) {
+    console.error("DB CONNECTION ERROR: ", error);
+    return { message: "Failed to connect to db. Please try again later" };
+  }
+
+  try {
+    await client.sql`BEGIN`;
+
+    const result = await client.sql`
+    UPDATE products
+    SET is_active = ${activate}
+    WHERE id = ${id}
+    RETURNING stripe_product_id
+    `
+
+    const stipe_product_id: string | undefined = result.rows[0]
+
+
+  } catch (error) {
+    
   }
 }

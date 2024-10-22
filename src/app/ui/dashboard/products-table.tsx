@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import {
   Table,
   TableBody,
@@ -9,9 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchAllProducts } from "@/lib/data";
-import { EditIcon } from "lucide-react";
+import { EditIcon, Trash2Icon, TrashIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import ActivateSwitch from "./activate-product";
 
 const ProductsTable = async () => {
   const allProducts = await fetchAllProducts();
@@ -26,6 +28,7 @@ const ProductsTable = async () => {
           <TableHead>Price</TableHead>
           <TableHead>Category</TableHead>
           <TableHead>Sizes</TableHead>
+          <TableHead>Active</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -48,11 +51,19 @@ const ProductsTable = async () => {
               <TableCell>{product.category}</TableCell>
               <TableCell>{product.sizes}</TableCell>
               <TableCell>
+                <ActivateSwitch defaultValue={product.is_active} productId={product.id} />
+              </TableCell>
+              <TableCell>
                 <Link href={`products/edit/${product.id}`}>
                   <Button variant="ghost" className="p-2">
                     <EditIcon size={24} />
                   </Button>
                 </Link>
+              </TableCell>
+              <TableCell>
+                <Button variant="destructive" className="p-2" disabled={product.is_active}>
+                  <Trash2Icon size={24} />
+                </Button>
               </TableCell>
             </TableRow>
           ))

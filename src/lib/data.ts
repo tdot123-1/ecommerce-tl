@@ -13,7 +13,7 @@ export const fetchAllProducts = async () => {
     // throw new Error("test error")
 
     const data = await sql`
-      SELECT id, name, price, sizes, category, image_url 
+      SELECT id, name, price, sizes, category, image_url, is_active 
       FROM products 
       ORDER BY updated_at DESC
       `;
@@ -24,6 +24,28 @@ export const fetchAllProducts = async () => {
     throw new Error("Failed to fetch product data.");
   }
 };
+
+export const fetchActiveProducts = async () => {
+  try {
+    // test for skeleton/suspense
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
+
+    // test for error page
+    // throw new Error("test error")
+
+    const data = await sql`
+      SELECT id, name, price, sizes, category, image_url 
+      FROM products 
+      WHERE is_active = true
+      ORDER BY updated_at DESC
+      `;
+
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch product data.");
+  }
+}
 
 export const fetchOneProduct = async (productId: string) => {
   try {
