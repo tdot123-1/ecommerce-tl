@@ -6,32 +6,32 @@
 export async function GET() {
   return Response.json({ message: "Products already seeded" });
 
-  // const client = await db.connect();
+//   const client = await db.connect();
 
-  // try {
-  //   await client.sql`BEGIN`;
+//   try {
+//     await client.sql`BEGIN`;
 
-  //   const insertedProducts = await Promise.all(
-  //     products.map((product) => {
-  //       const sizesString = product.sizes.join(",");
-  //       return client.sql`
-  //                     INSERT INTO products (name, price, sizes, description, category, image_url)
-  //                     VALUES (${product.name}, ${product.price}, ${sizesString}, ${product.description}, ${product.category}, ${product.image_url})
-  //                     ON CONFLICT (id) DO NOTHING;
-  //                     `;
-  //     })
-  //   );
-  //   await client.sql`COMMIT`;
+//     const insertedProducts = await Promise.all(
+//       products.map((product) => {
+//         const sizesString = product.sizes.join(",");
+//         return client.sql`
+//                       INSERT INTO products (name, price, sizes, description, category, image_url)
+//                       VALUES (${product.name}, ${product.price}, ${sizesString}, ${product.description}, ${product.category}, ${product.image_url})
+//                       ON CONFLICT (id) DO NOTHING;
+//                       `;
+//       })
+//     );
+//     await client.sql`COMMIT`;
 
-  //   return Response.json({
-  //     message: "DB SEED SUCCESFUL",
-  //     inserted: insertedProducts.length,
-  //   });
-  // } catch (error) {
-  //   await client.sql`ROLLBACK`;
-  //   console.error("ERROR SEEDING: ", error);
-  //   return Response.json({ message: "ERROR SEEDING" }, { status: 500 });
-  // } finally {
-  //   await client.release();
-  // }
+//     return Response.json({
+//       message: "DB SEED SUCCESFUL",
+//       inserted: insertedProducts.length,
+//     });
+//   } catch (error) {
+//     await client.sql`ROLLBACK`;
+//     console.error("ERROR SEEDING: ", error);
+//     return Response.json({ message: "ERROR SEEDING" }, { status: 500 });
+//   } finally {
+//     await client.release();
+//   }
 }

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import {
   Table,
   TableBody,
@@ -10,11 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchAllProducts } from "@/lib/data";
-import { EditIcon, Trash2Icon, TrashIcon } from "lucide-react";
+import { EditIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import ActivateSwitch from "./activate-product";
-import DeleteButton from "./delete-product";
+import ActivateSwitch from "./components/activate-product";
+import DeleteButton from "./components/delete-product";
 
 const ProductsTable = async () => {
   const allProducts = await fetchAllProducts();
@@ -66,7 +65,10 @@ const ProductsTable = async () => {
                 </Link>
               </TableCell>
               <TableCell>
-                <DeleteButton isActive={product.is_active} productId={product.id}/>
+                <DeleteButton
+                  isActive={product.is_active}
+                  productId={product.id}
+                />
               </TableCell>
             </TableRow>
           ))

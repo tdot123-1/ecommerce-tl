@@ -1,4 +1,4 @@
-import Form from "@/app/ui/dashboard/create-product";
+import Form from "@/app/ui/dashboard/forms/create-product";
 
 const Page = () => {
   return (

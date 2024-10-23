@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           disableTransitionOnChange
         >
           <Header />
-          <main className="h-screen justify-center mx-5">{children}</main>
+          <main className="min-h-screen mx-5">{children}</main>
         </ThemeProvider>
       </body>
     </html>

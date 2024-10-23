@@ -1,4 +1,4 @@
-import ProductsTable from "@/app/ui/dashboard/products-table";
+import ProductsTable from "@/app/ui/dashboard/table/products-table";
 import ProductTableSkeleton from "@/app/ui/skeletons/product-table-skeleton";
 import { Suspense } from "react";
 

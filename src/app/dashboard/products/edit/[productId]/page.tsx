@@ -1,4 +1,4 @@
-import EditFormSection from "@/app/ui/dashboard/edit-form-section";
+import EditFormSection from "@/app/ui/dashboard/forms/components/edit-form-section";
 import FormSkeleton from "@/app/ui/skeletons/product-form-skeleton";
 import { Suspense } from "react";
 

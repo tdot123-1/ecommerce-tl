@@ -22,6 +22,7 @@ export interface CartItem {
 }
 
 export interface User {
-  email: string;
+  name: string;
+  email: string; 
   password: string;
 }

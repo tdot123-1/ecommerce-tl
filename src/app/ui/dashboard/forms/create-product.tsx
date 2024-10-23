@@ -11,55 +11,40 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { editProduct, State } from "@/lib/actions";
+import { createProduct, State } from "@/lib/actions";
 import { categories } from "@/lib/categories";
-import { EditableProduct } from "@/lib/types";
 import { capitalize } from "@/lib/utils";
-import { LoaderPinwheelIcon, SaveIcon } from "lucide-react";
+import { LoaderPinwheelIcon, PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-import SizesInput from "./sizes-input";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import SizesInput from "./components/sizes-input";
 
-interface EditFormProps {
-  product: EditableProduct;
-}
-
-const Form = ({ product }: EditFormProps) => {
-
-  // track error state, loading state
+const Form = () => {
+  // keep track of errors in form state
   const [state, setState] = useState<State>({ message: null, errors: {} });
+
+  const [chosenSizesStr, setChosenSizesStr] = useState("")
+
   const [isLoading, setIsLoading] = useState(false);
-
-  // split price to show full euros and cents in seperate input fields
-  const splitPrice = (price: number) => {
-    const euros = Math.floor(price / 100);
-    const cents = price % 100;
-
-    return { euros, cents };
-  };
-
-  const { euros, cents } = splitPrice(product.price);
-
-  const [chosenSizesStr, setChosenSizesStr] = useState(product.sizes);
-
   const router = useRouter();
 
   // get array of chosen sizes from child component, turn into string, add value to form input
-  const handleChosenSizesStr = (sizes: string[]) => {
-    setChosenSizesStr(sizes.join(","));
-  };
+  const handleChosenSizesStr = (sizes: string[] ) => {
+    setChosenSizesStr(sizes.join(","))
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    // set loading state, prevent default
     setIsLoading(true);
     event.preventDefault();
 
-    // create form object, call server action
+    // create form data object, call server action
     const formData = new FormData(event.currentTarget);
+    const result = await createProduct(formData);
 
-    const result = await editProduct(product.id, formData);
+    // returns errors if there were any
     setState(result);
-
     setIsLoading(false);
 
     // returns empty string in case of success -> redirect to products display
@@ -72,14 +57,7 @@ const Form = ({ product }: EditFormProps) => {
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
         <Label htmlFor="name">Name</Label>
-        <Input
-          name="name"
-          id="name"
-          type="text"
-          disabled={isLoading}
-          className="ml-4"
-          defaultValue={product.name}
-        />
+        <Input name="name" id="name" type="text" disabled={isLoading} className="ml-4" />
         <div>
           {state.errors?.name &&
             state.errors.name.map((error: string, index) => (
@@ -104,7 +82,7 @@ const Form = ({ product }: EditFormProps) => {
             id="price"
             type="number"
             className="w-16"
-            defaultValue={euros}
+            defaultValue={0}
             min={0}
             disabled={isLoading}
           />
@@ -114,7 +92,7 @@ const Form = ({ product }: EditFormProps) => {
             id="cents"
             type="number"
             className="w-16"
-            defaultValue={cents}
+            defaultValue={0}
             max={99}
             min={0}
             disabled={isLoading}
@@ -143,20 +121,11 @@ const Form = ({ product }: EditFormProps) => {
             ))}
         </div>
       </div>
-
+      
       <div className="mb-4">
         <Label htmlFor="sizes">Sizes</Label>
-        <SizesInput
-          handleChosenSizesStr={handleChosenSizesStr}
-          initialSizes={product.sizes}
-        />
-        <Input
-          className="hidden"
-          type="text"
-          value={chosenSizesStr}
-          name="sizes"
-          readOnly
-        />
+        <SizesInput handleChosenSizesStr={handleChosenSizesStr} />
+        <Input className="hidden" type="text" value={chosenSizesStr} name="sizes" readOnly />
         <div>
           {state.errors?.sizes &&
             state.errors.sizes.map((error: string, index) => (
@@ -169,16 +138,9 @@ const Form = ({ product }: EditFormProps) => {
             ))}
         </div>
       </div>
-
       <div className="mb-4">
         <Label htmlFor="description">Description</Label>
-        <Textarea
-          name="description"
-          id="description"
-          disabled={isLoading}
-          className="ml-4"
-          defaultValue={product.description}
-        />
+        <Textarea name="description" id="description" disabled={isLoading} className="ml-4" />
         <div>
           {state.errors?.description &&
             state.errors.description.map((error: string, index) => (
@@ -194,13 +156,9 @@ const Form = ({ product }: EditFormProps) => {
       <div className="mb-4">
         <Label htmlFor="category">Category</Label>
 
-        <Select
-          defaultValue={product.category}
-          name="category"
-          disabled={isLoading}
-        >
+        <Select defaultValue="" name="category" disabled={isLoading}>
           <SelectTrigger id="category" className="ml-4">
-            <SelectValue defaultValue={product.category} />
+            <SelectValue placeholder="Select Category" />
           </SelectTrigger>
           <SelectContent>
             {categories.map((category) => (
@@ -224,14 +182,7 @@ const Form = ({ product }: EditFormProps) => {
       </div>
       <div className="mb-4">
         <Label htmlFor="image">Image</Label>
-        <Input
-          name="image"
-          id="image"
-          type="text"
-          disabled={isLoading}
-          className="ml-4"
-          defaultValue={product.image_url}
-        />
+        <Input name="image" id="image" type="text" disabled={isLoading} className="ml-4" />
         <div>
           {state.errors?.image &&
             state.errors.image.map((error: string, index) => (
@@ -256,9 +207,9 @@ const Form = ({ product }: EditFormProps) => {
               {isLoading ? (
                 <LoaderPinwheelIcon size={20} className="animate-spin" />
               ) : (
-                <SaveIcon size={20} />
+                <PlusCircleIcon size={20} />
               )}
-              <span>Save Changes</span>
+              <span>Create Product</span>
             </div>
           </Button>
         </div>
