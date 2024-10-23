@@ -20,3 +20,8 @@ export interface CartItem {
   quantity: number;
   size: string;
 }
+
+export interface User {
+  email: string;
+  password: string;
+}
