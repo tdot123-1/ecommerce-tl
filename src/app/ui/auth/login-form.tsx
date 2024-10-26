@@ -14,6 +14,7 @@ const Form = () => {
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    // clear errors, set loading state, prevent default
     setError("");
     setIsLoading(true);
     event.preventDefault();
@@ -21,16 +22,24 @@ const Form = () => {
     // create form data object, call server action
     const formData = new FormData(event.currentTarget);
 
-    const result = await authenticate(formData);
-    console.log(result);
+    try {
+        // attempt authentication
+      const result = await authenticate(formData);
 
-    if (result) {
-      setError(result);
-    } else {
-      router.push("/dashboard");
+      // if a string is returned, set error
+      if (result) {
+        setError(result);
+      } 
+      else {
+        // redirect to dashboard on success
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Login error: ", error);
+      setError("Something went wrong.");
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (

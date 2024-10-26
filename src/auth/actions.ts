@@ -3,7 +3,7 @@
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import { sql } from "@vercel/postgres";
-import { signIn } from "../auth";
+import { signIn, signOut } from "../auth";
 import { AuthError } from "next-auth";
 
 const FormSchema = z
@@ -86,10 +86,17 @@ export async function registerUser(formData: FormData) {
   }
 }
 
+// login
 export async function authenticate(formData: FormData) {
+  // attempt sign in
+  // handle redirect on client
   try {
-    await signIn("credentials", formData);
+    await signIn("credentials", {
+      redirect: false,
+      ...Object.fromEntries(formData),
+    });
   } catch (error) {
+    console.error("ERROR LOGIN: ", error);
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
@@ -97,7 +104,17 @@ export async function authenticate(formData: FormData) {
         default:
           return "Something went wrong.";
       }
+    } else {
+      return "Something went wrong.";
     }
-    throw error;
+  }
+}
+
+export async function logOut() {
+  try {
+    await signOut({ redirect: false });
+  } catch (error) {
+    console.error("ERROR LOGOUT: ", error);
+    return "Something went wrong.";
   }
 }
