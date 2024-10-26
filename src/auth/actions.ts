@@ -3,6 +3,8 @@
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import { sql } from "@vercel/postgres";
+import { signIn } from "../auth";
+import { AuthError } from "next-auth";
 
 const FormSchema = z
   .object({
@@ -77,9 +79,25 @@ export async function registerUser(formData: FormData) {
         },
       };
     }
-    
+
     return {
       message: "Registration error. Please try again later.",
     };
+  }
+}
+
+export async function authenticate(formData: FormData) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid credentials.";
+        default:
+          return "Something went wrong.";
+      }
+    }
+    throw error;
   }
 }

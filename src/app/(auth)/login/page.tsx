@@ -1,5 +1,11 @@
+import Form from "@/app/ui/auth/login-form";
+
 const Page = () => {
-    return ( <></> );
-}
- 
+  return (
+    <>
+      <Form />
+    </>
+  );
+};
+
 export default Page;

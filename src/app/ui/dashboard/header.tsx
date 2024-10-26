@@ -3,6 +3,7 @@ import ThemeButton from "../theme-button";
 import Image from "next/image";
 import { montserrat } from "../fonts";
 import { LogOutIcon } from "lucide-react";
+import { signOut } from "../../../auth";
 
 const Header = () => {
   return (
@@ -20,9 +21,17 @@ const Header = () => {
         </div>
         <div className="flex justify-center items-center gap-1">
           <ThemeButton />
-          <Button className="p-2" variant="outline">
-            <LogOutIcon size={24} />
-          </Button>
+          <form
+            action={async () => {
+              "use server";
+              await signOut();
+            }}
+          >
+            <Button className="p-2" variant="outline">
+              <LogOutIcon size={24} />
+              <div className="hidden">Logout</div>
+            </Button>
+          </form>
         </div>
       </div>
     </header>
