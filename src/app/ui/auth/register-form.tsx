@@ -4,13 +4,16 @@ import { registerUser } from "@/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
 import { State } from "@/lib/actions";
 import { LoaderPinwheelIcon, LogInIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Form = () => {
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
@@ -18,11 +21,26 @@ const Form = () => {
 
     // create form data object, call server action
     const formData = new FormData(event.currentTarget);
-    const result = await registerUser(formData);
 
-    // returns errors if there were any
-    setState(result);
-    setIsLoading(false);
+    try {
+      const result = await registerUser(formData);
+
+      // returns errors if there were any
+      if (result.message) {
+        console.log(result);
+        setState(result);
+      } else {
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Registration error: ", error);
+      setState({
+        message: "Something went wrong. Please try again",
+        errors: {},
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

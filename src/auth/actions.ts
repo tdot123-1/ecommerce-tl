@@ -58,7 +58,7 @@ export async function registerUser(formData: FormData) {
     `;
 
     return {
-      message: "Registration succes!",
+      message: "",
     };
   } catch (error) {
     console.error("ERROR CREATING USER: ", error);
