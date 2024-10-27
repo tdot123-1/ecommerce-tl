@@ -52,6 +52,12 @@ export type State = {
 // CREATE
 
 export async function createProduct(formData: FormData) {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
   // get raw form data
   const rawFormData = Object.fromEntries(formData.entries());
 
@@ -149,6 +155,12 @@ export async function createProduct(formData: FormData) {
 const EditProduct = FormSchema.omit({ id: true });
 
 export async function editProduct(id: string, formData: FormData) {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
   // get raw form data
   const rawFormData = Object.fromEntries(formData.entries());
 
@@ -248,6 +260,12 @@ export async function deactivateProduct(
   activate: boolean,
   category: string
 ) {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
   let client;
 
   try {
@@ -308,10 +326,9 @@ export async function deactivateProduct(
 // DELETE
 
 export async function deleteProduct(id: string) {
-
   const session = await auth();
 
-  if (!session?.user?.id) {
+  if (!session?.user) {
     throw new Error("Unauthorized");
   }
 
