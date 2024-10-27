@@ -5,6 +5,8 @@ import { z } from "zod";
 import { Product } from "./types";
 import { archiveStripeProduct, syncProductWithStripe } from "./stripe";
 import { revalidatePath } from "next/cache";
+import { del } from "@vercel/blob";
+import { auth } from "@/auth";
 
 // validate form using zod, specify error messages
 const FormSchema = z.object({
@@ -306,8 +308,14 @@ export async function deactivateProduct(
 // DELETE
 
 export async function deleteProduct(id: string) {
-  try {
 
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
     // throw new Error("TEST")
 
     await sql`
@@ -325,5 +333,20 @@ export async function deleteProduct(id: string) {
     return {
       message: "Database Error: Failed to delete product.",
     };
+  }
+}
+
+export async function DeleteImageFromStore(blobUrl: string) {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    await del(blobUrl);
+    console.log("IMAGE DELETED SUCCESSFULLY");
+  } catch (error) {
+    console.error("FAILED TO DELETE IMAGE: ", error);
   }
 }
