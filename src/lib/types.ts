@@ -1,17 +1,17 @@
 export interface Product {
-    id: string;
-    name: string;
-    price: number;
-    description: string;
-    currency: string;
-    sizes: string;
-    category: string;
-    image_url: string;
-    stripe_product_id: string | undefined ;
-    stripe_price_id: string | undefined;
-  }
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  currency: string;
+  sizes: string;
+  category: string;
+  image_url: string;
+  stripe_product_id: string | undefined;
+  stripe_price_id: string | undefined;
+}
 
-export type EditableProduct = Omit<Product, "stripe_price_id" | "stripe_product_id">
+export type EditableProduct = Omit<Product, "stripe_product_id">;
 
 export interface CartItem {
   id: string;
@@ -23,6 +23,6 @@ export interface CartItem {
 
 export interface User {
   name: string;
-  email: string; 
+  email: string;
   password: string;
 }

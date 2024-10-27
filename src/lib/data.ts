@@ -45,7 +45,7 @@ export const fetchActiveProducts = async () => {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch product data.");
   }
-}
+};
 
 export const fetchOneProduct = async (productId: string) => {
   try {
@@ -61,7 +61,7 @@ export const fetchOneProduct = async (productId: string) => {
     }
 
     const product: EditableProduct = {
-      id: productId, 
+      id: productId,
       name: data.rows[0].name,
       price: data.rows[0].price,
       sizes: data.rows[0].sizes,
@@ -69,6 +69,7 @@ export const fetchOneProduct = async (productId: string) => {
       description: data.rows[0].description,
       image_url: data.rows[0].image_url,
       currency: data.rows[0].currency,
+      stripe_price_id: data.rows[0].stripe_price_id,
     };
 
     return product;

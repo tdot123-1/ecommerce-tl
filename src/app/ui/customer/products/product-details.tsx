@@ -9,10 +9,9 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails = async ({ productId }: ProductDetailsProps) => {
-
   const product = await fetchOneProduct(productId);
 
-  if (!product) {
+  if (!product || !product.stripe_price_id) {
     notFound();
   }
 

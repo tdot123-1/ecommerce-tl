@@ -26,7 +26,6 @@ interface EditFormProps {
 }
 
 const Form = ({ product }: EditFormProps) => {
-
   // track error state, loading state
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
