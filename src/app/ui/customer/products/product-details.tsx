@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { capitalize } from "@/lib/utils";
-import { Product } from "@/lib/types";
 
 interface ProductDetailsProps {
   productId: string;

@@ -1,14 +1,15 @@
 "use server";
 
-import { Product } from "./types";
+import { CreatedProduct } from "./types";
 import { stripe } from "./stripe-object";
 
-export const syncProductWithStripe = async (product: Product) => {
+export const syncProductWithStripe = async (product: CreatedProduct) => {
   // check if product already has stripe id's
   let stripeProductId = product.stripe_product_id;
   let stripePriceId = product.stripe_price_id;
 
   let stripeProduct;
+  console.log("IMAGE FOR STRIPE: ", product.image_url)
 
   try {
     // create product only if product does not yet have stripe id
@@ -16,12 +17,14 @@ export const syncProductWithStripe = async (product: Product) => {
       stripeProduct = await stripe.products.create({
         name: product.name,
         description: product.description,
+        images: [product.image_url],
       });
       stripeProductId = stripeProduct.id;
     } else {
       stripeProduct = await stripe.products.update(stripeProductId, {
         name: product.name,
         description: product.description,
+        images: [product.image_url],
       });
     }
 

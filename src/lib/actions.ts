@@ -2,7 +2,7 @@
 
 import { db, QueryResult, sql } from "@vercel/postgres";
 import { z } from "zod";
-import { Product } from "./types";
+import { CreatedProduct, Product } from "./types";
 import { archiveStripeProduct, syncProductWithStripe } from "./stripe";
 import { revalidatePath } from "next/cache";
 import { del } from "@vercel/blob";
@@ -98,13 +98,13 @@ export async function createProduct(formData: FormData) {
 
     // create product in db without stripe id's
 
-    const product: QueryResult<Product> = await client.sql`
+    const product: QueryResult<CreatedProduct> = await client.sql`
     INSERT INTO products (name, price, sizes, description, category, image_url)
     VALUES (${name}, ${formattedPrice}, ${sizes}, ${description}, ${category}, ${image})
-    RETURNING id, name, price, description, currency, stripe_product_id, stripe_price_id;
+    RETURNING id, name, price, description, currency, stripe_product_id, stripe_price_id, image_url;
     `;
 
-    const createdProduct: Product | undefined = product.rows[0];
+    const createdProduct: CreatedProduct | undefined = product.rows[0];
 
     if (!createdProduct) {
       throw new Error("Failed to create product");
