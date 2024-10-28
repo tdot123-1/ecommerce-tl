@@ -1,4 +1,4 @@
-import { fetchAllProducts, fetchProductsByCategory } from "@/lib/data";
+import { fetchActiveProducts, fetchProductsByCategory } from "@/lib/data";
 import ProductCard from "./product-card";
 import { notFound } from "next/navigation";
 
@@ -19,7 +19,7 @@ const ProductList = async ({
 }: ProductListProps) => {
   const allProducts = category
     ? await fetchProductsByCategory(category)
-    : await fetchAllProducts();
+    : await fetchActiveProducts();
 
   if (!allProducts) {
     notFound();

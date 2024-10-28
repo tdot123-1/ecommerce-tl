@@ -80,11 +80,46 @@ export const fetchOneProduct = async (productId: string) => {
   }
 };
 
+export const fetchOneActiveProduct = async (productId: string) => {
+  try {
+    // test for skeleton/suspense
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
+
+    const data = await sql`
+      SELECT name, price, sizes, category, description, image_url, currency, stripe_price_id FROM products 
+      WHERE id = ${productId}
+      AND is_active = true`;
+
+    if (!data.rowCount) {
+      return null;
+    }
+
+    const product: EditableProduct = {
+      id: productId,
+      name: data.rows[0].name,
+      price: data.rows[0].price,
+      sizes: data.rows[0].sizes,
+      category: data.rows[0].category,
+      description: data.rows[0].description,
+      image_url: data.rows[0].image_url,
+      currency: data.rows[0].currency,
+      stripe_price_id: data.rows[0].stripe_price_id,
+    };
+
+    return product;
+  } catch (error) {
+    console.error("Database Error:", error);
+    //throw new Error("Failed to fetch product.");
+    return null;
+  }
+};
+
 export const fetchProductsByCategory = async (category: string) => {
   try {
     const data = await sql`
       SELECT id, name, price, sizes, category, description, image_url, currency, stripe_price_id FROM products 
-      WHERE category = ${category}`;
+      WHERE category = ${category}
+      AND is_active = true`;
 
     if (!data.rowCount) {
       return null;

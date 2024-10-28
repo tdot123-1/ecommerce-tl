@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ActivateSwitch from "./components/activate-product";
 import DeleteButton from "./components/delete-product";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const ProductsTable = async () => {
   const allProducts = await fetchAllProducts();
@@ -37,13 +38,18 @@ const ProductsTable = async () => {
             <TableRow key={product.id}>
               <TableCell>
                 <div className="w-20 h-20 relative">
-                  <Image
-                    src={product.image_url}
-                    alt={product.name}
-                    fill
-                    sizes="10vw"
-                    className="rounded-md"
-                  />
+                  <AspectRatio ratio={4 / 3}>
+                    <Image
+                      src={product.image_url}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 640px) 33vw, 
+                            (max-width: 1024px) 10vw, 
+                            (max-width: 1280px) 5vw, 
+                            4vw"
+                      className="rounded-md"
+                    />
+                  </AspectRatio>
                 </div>
               </TableCell>
               <TableCell>{product.name}</TableCell>

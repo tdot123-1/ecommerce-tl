@@ -2,6 +2,7 @@ import Image from "next/image";
 import { montserrat } from "../../fonts";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface ProductCardProps {
   id: string;
@@ -25,7 +26,6 @@ const ProductCard = ({
   url_base,
   url_path,
 }: ProductCardProps) => {
-
   // optionally include base && path search params to dynamically change breadcrumbs
   // based on where user navigated from
   return (
@@ -37,17 +37,22 @@ const ProductCard = ({
           name
         )}`}
       >
-        <div className="w-fit self-center pt-1 px-1">
-          <Image
-            src={image_url}
-            alt={name}
-            width={2400}
-            height={2400}
-            className="rounded-lg"
-          />
+        <div className="w-full relative rounded-lg overflow-hidden">
+          <AspectRatio className="mx-1 mt-1" ratio={4 / 3}>
+            <Image
+              src={image_url}
+              alt={name}
+              fill
+              sizes="(max-width: 640px) 50vw, 
+                   (max-width: 1024px) 33vw, 
+                   (max-width: 1280px) 25vw, 
+                   20vw"
+              className="rounded-lg"
+            />
+          </AspectRatio>
         </div>
         <div className="px-5 py-3 text-center">
-          <h2 className={`text-xl font-semibold ${montserrat.className}`}>
+          <h2 className={`text-md md:text-xl font-semibold text-nowrap ${montserrat.className}`}>
             {name}
           </h2>
           <p className="text-sm italic">

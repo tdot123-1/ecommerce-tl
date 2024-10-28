@@ -3,26 +3,32 @@ import { montserrat } from "../ui/fonts";
 import { Button } from "@/components/ui/button";
 import { LucideBriefcase, ShirtIcon, SmileIcon } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+import HomeSection1Skeleton from "../ui/skeletons/home-section1-skeleton";
 
 export default function Home() {
   return (
     <>
       <section className="flex justify-center items-center gap-6 h-[calc(100vh-80px)]">
-        <div className="w-60 dark:hidden">
-          <Image src="/logo4.png" alt="Logo" width={298} height={390} />
-        </div>
-        <div className="w-60 hidden dark:block">
-          <Image src="/logo4-w.png" alt="Logo" width={298} height={390} />
-        </div>
-        <div className="hidden md:block w-1/2">
-          <Image
-            src="/hero-placeholder.jpg"
-            alt="Hero"
-            width={1920}
-            height={1280}
-            className="rounded-lg"
-          />
-        </div>
+        
+        <Suspense fallback={<HomeSection1Skeleton />}>
+          <div className="w-60 dark:hidden">
+            <Image src="/logo4.png" alt="Logo" width={298} height={390} />
+          </div>
+          <div className="w-60 hidden dark:block">
+            <Image src="/logo4-w.png" alt="Logo" width={298} height={390} />
+          </div>
+          <div className="hidden md:block w-1/2">
+            <Image
+              src="/hero-placeholder.jpg"
+              alt="Hero"
+              width={1920}
+              height={1280}
+              priority
+              className="rounded-lg"
+            />
+          </div>
+        </Suspense>
       </section>
 
       <section className="h-screen flex items-center justify-center">

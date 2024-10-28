@@ -1,5 +1,6 @@
 "use client";
 
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TrashIcon } from "lucide-react";
@@ -28,13 +29,19 @@ const BasketContent = () => {
               key={id}
               className=" flex justify-between items-center py-2 border-b border-zinc-400"
             >
-              <div className="w-16 h-16 sm:w-20 sm:h-20 relative">
-                <Image
-                  className="rounded-lg"
-                  src={product.image!}
-                  alt={product.name}
-                  fill
-                />
+              <div className="w-16  sm:w-20  relative">
+                <AspectRatio ratio={8 / 7}>
+                  <Image
+                    className="rounded-lg"
+                    src={product.image!}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 640px) 33vw, 
+                            (max-width: 1024px) 10vw, 
+                            (max-width: 1280px) 5vw, 
+                            4vw"
+                  />
+                </AspectRatio>
               </div>
               <div className="flex flex-col justify-center items-center">
                 <p className="font-bold text-sm">{product.name}</p>

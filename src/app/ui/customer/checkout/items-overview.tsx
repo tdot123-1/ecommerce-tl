@@ -7,6 +7,7 @@ import CheckoutButton from "./checkout-button";
 import Image from "next/image";
 import { montserrat } from "../../fonts";
 import Link from "next/link";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const ItemsOverview = () => {
   const { cartDetails, removeItem, clearCart, cartCount, totalPrice } =
@@ -43,13 +44,19 @@ const ItemsOverview = () => {
               key={id}
               className="w-full flex justify-between gap-4 items-center py-2 sm:px-4 border-b border-zinc-400"
             >
-              <div className="w-20 h-20 relative">
-                <Image
-                  className="rounded-lg"
-                  src={product.image!}
-                  alt={product.name}
-                  fill
-                />
+              <div className="w-20 relative">
+                <AspectRatio ratio={6 / 5}>
+                  <Image
+                    className="rounded-lg"
+                    src={product.image!}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 640px) 33vw, 
+                            (max-width: 1024px) 10vw, 
+                            (max-width: 1280px) 5vw, 
+                            4vw"
+                  />
+                </AspectRatio>
               </div>
               <p className="font-bold">{product.name}</p>
               <p>{product.size}</p>
