@@ -202,7 +202,7 @@ const Form = () => {
           </div>
         </div>
         <div className="mb-4">
-          <Label htmlFor="image">Image</Label>
+          <Label htmlFor="image">Image (read only)</Label>
           <Input
             name="image"
             id="image"

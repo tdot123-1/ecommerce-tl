@@ -11,8 +11,7 @@ import Link from "next/link";
 export default function Page() {
   return (
     <>
-      <h1>Dashboard</h1>
-      <div className="flex flex-col md:flex-row items-center justify-center gap-5 mt-10">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-5 mt-10 md:mt-20">
         <Card className="min-w-full md:min-w-fit">
           <CardHeader>
             <CardTitle>Products Overview</CardTitle>

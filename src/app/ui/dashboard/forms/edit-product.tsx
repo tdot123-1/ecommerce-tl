@@ -32,6 +32,8 @@ const Form = ({ product }: EditFormProps) => {
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(product.image_url);
+
+  // flag to keep track if the image has been changed or not
   const [imageChange, setImageChange] = useState(false);
 
   // split price to show full euros and cents in seperate input fields
@@ -63,6 +65,8 @@ const Form = ({ product }: EditFormProps) => {
     try {
       const result = await editProduct(product.id, formData);
       setState(result);
+
+      // if the image has been changed, delete old image from blob store
       if (imageChange) {
         await DeleteImageFromStore(product.image_url);
       }
@@ -80,6 +84,7 @@ const Form = ({ product }: EditFormProps) => {
 
   return (
     <>
+    {/* only allow image upload if previous image has been deleted first */}
       {imageChange ? (
         <ImageUpload setImageUrl={setImageUrl} />
       ) : (
@@ -244,7 +249,7 @@ const Form = ({ product }: EditFormProps) => {
           </div>
         </div>
         <div className="mb-4">
-          <Label htmlFor="image">Image</Label>
+          <Label htmlFor="image">Image (read only)</Label>
           <Input
             name="image"
             id="image"

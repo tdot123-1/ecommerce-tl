@@ -78,7 +78,7 @@ const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
         </div>
       </form>
       <div className="mb-4">
-        <p className="text-sm">Review uploaded image: </p>
+        <p className="text-sm">Review uploaded image</p>
         {blob ? (
           <a
             className="text-xs italic ml-4 text-blue-600 mt-1"
@@ -86,7 +86,7 @@ const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
             href={blob.url}
           >
             <div className="flex justify-start items-start gap-1">
-              <span>{blob.url}</span>
+              <span>View image</span>
               <ExternalLinkIcon size={12} />
             </div>
           </a>

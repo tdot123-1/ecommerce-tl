@@ -17,22 +17,25 @@ interface DeleteImageProps {
   setImageUrl: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const DeleteImage = ({ imageUrl, setImageChange, setImageUrl }: DeleteImageProps) => {
+const DeleteImage = ({
+  imageUrl,
+  setImageChange,
+  setImageUrl,
+}: DeleteImageProps) => {
   const handleDelete = () => {
-    // delete blob
-    setImageUrl("")
-    setImageChange(true)
-    // update form field
-    // update product in db
+    // on delete -> set flag to true in parent component
+    // set url to empty string in parent component
+    setImageUrl("");
+    setImageChange(true);
   };
 
   return (
     <div className="mb-4">
       <div className="mb-2">
-        <p className="text-sm">Review current image:</p>
+        <p className="text-sm">Review current image</p>
         <div className="flex justify-start items-start gap-1 text-xs ml-4 mt-1 italic text-blue-600">
           <a target="_blank" href={imageUrl}>
-            View Image
+            View image
           </a>
           <ExternalLinkIcon size={10} />
         </div>

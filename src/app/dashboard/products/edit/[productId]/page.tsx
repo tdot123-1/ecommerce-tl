@@ -1,4 +1,5 @@
 import EditFormSection from "@/app/ui/dashboard/forms/components/edit-form-section";
+import { montserrat } from "@/app/ui/fonts";
 import FormSkeleton from "@/app/ui/skeletons/product-form-skeleton";
 import { Suspense } from "react";
 
@@ -7,12 +8,14 @@ const Page = ({ params }: { params: { productId: string } }) => {
 
   return (
     <>
-      <h1>Edit Product</h1>
-      <div>
+      <h1 className={`${montserrat.className} text-xl font-semibold mt-4`}>
+        Edit Product
+      </h1>
+      <section className="my-10 sm:w-1/2 sm:mx-auto">
         <Suspense fallback={<FormSkeleton />}>
-            <EditFormSection productId={productId} />
+          <EditFormSection productId={productId} />
         </Suspense>
-      </div>
+      </section>
     </>
   );
 };

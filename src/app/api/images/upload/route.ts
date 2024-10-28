@@ -6,7 +6,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
 
   const session = await auth();
-  console.log("SESSION: ", session);
+  // console.log("SESSION: ", session);
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
