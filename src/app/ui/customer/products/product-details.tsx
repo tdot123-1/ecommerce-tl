@@ -5,6 +5,8 @@ import AddToBasket from "../basket/add-to-basket";
 import { notFound } from "next/navigation";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
+import { capitalize } from "@/lib/utils";
+import { Product } from "@/lib/types";
 
 interface ProductDetailsProps {
   productId: string;
@@ -13,7 +15,7 @@ interface ProductDetailsProps {
 const ProductDetails = async ({ productId }: ProductDetailsProps) => {
   const product = await fetchOneActiveProduct(productId);
 
-  if (!product || !product.stripe_price_id) {
+  if (!product || !product.stripe_price_id || !product.stripe_product_id) {
     notFound();
   }
 
@@ -35,20 +37,13 @@ const ProductDetails = async ({ productId }: ProductDetailsProps) => {
       </div>
       <article className="w-48 flex flex-col gap-5 mb-8">
         <h2 className={`text-2xl ${montserrat.className} font-semibold`}>
-          {product.name}
+          {capitalize(product.name)}
         </h2>
         <p className="text-sm">{product.description}</p>
-        <p className="italic">{product.category}</p>
+        <p className="italic">{capitalize(product.category)}</p>
         <Badge className="w-fit text-md">€ {product.price / 100}</Badge>
         <AddToBasket
-          id={productId}
-          name={product.name}
-          price={product.price}
-          currency={product.currency}
-          description={product.description}
-          image={product.image_url}
-          stripe_price_id={product.stripe_price_id}
-          sizes={product.sizes}
+          product={product}
         />
       </article>
     </>

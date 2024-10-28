@@ -1,37 +1,33 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Product } from "@/lib/types";
 import { LoaderPinwheelIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useShoppingCart } from "use-shopping-cart";
 
 interface BuyButtonProps {
-  id: string;
-  name: string;
-  price: number;
-  currency: string;
-  description: string;
-  image: string;
-  stripe_price_id: string;
+  product: Product;
   size: string;
   handleSizeError: (arg0: string) => void;
 }
 
-const BuyButton = ({
-  id,
-  name,
-  price,
-  currency,
-  description,
-  image,
-  stripe_price_id,
-  size,
-  handleSizeError,
-}: BuyButtonProps) => {
+const BuyButton = ({ product, size, handleSizeError }: BuyButtonProps) => {
   const { addItem } = useShoppingCart();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const {
+    id,
+    name,
+    price,
+    currency,
+    description,
+    image_url,
+    stripe_price_id,
+    stripe_product_id,
+  } = product;
 
   const handleBuyItem = async () => {
     // check if size is selected
@@ -51,8 +47,9 @@ const BuyButton = ({
       price,
       currency,
       description,
-      image,
+      image_url,
       stripe_price_id,
+      stripe_product_id,
       size,
     });
 

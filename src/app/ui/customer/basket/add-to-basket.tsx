@@ -6,27 +6,14 @@ import SizeSelect from "./size-select";
 import AddButton from "./add-button";
 import { useState } from "react";
 import BuyButton from "./buy-button";
+import { Product } from "@/lib/types";
 
 interface AddToBasketProps {
-  id: string;
-  name: string;
-  price: number;
-  currency: string;
-  description: string;
-  image: string;
-  stripe_price_id: string;
-  sizes: string;
+  product: Product;
 }
 
 const AddToBasket = ({
-  id,
-  name,
-  price,
-  currency,
-  description,
-  image,
-  stripe_price_id,
-  sizes,
+  product
 }: AddToBasketProps) => {
   // save selected size in this component, so that 'add-button' child component can use it
   const [selectedSize, setSelectedSize] = useState("");
@@ -46,28 +33,16 @@ const AddToBasket = ({
 
   return (
     <>
-      <SizeSelect sizes={sizes} handleSizeSelect={handleSizeSelect} />
+      <SizeSelect sizes={product.sizes} handleSizeSelect={handleSizeSelect} />
       <div className="flex flex-col justify-center items-center">
         <div className="flex justify-center items-center gap-4">
           <BuyButton
-            id={id}
-            name={name}
-            price={price}
-            currency={currency}
-            description={description}
-            image={image}
-            stripe_price_id={stripe_price_id}
+            product={product}
             size={selectedSize}
             handleSizeError={handleSizeError}
           />
           <AddButton
-            id={id}
-            name={name}
-            price={price}
-            currency={currency}
-            description={description}
-            image={image}
-            stripe_price_id={stripe_price_id}
+            product={product}
             size={selectedSize}
             handleSizeError={handleSizeError}
           />

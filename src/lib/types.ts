@@ -17,8 +17,15 @@ export interface CartItem {
   id: string;
   name: string;
   stripe_price_id: string;
+  stripe_product_id: string;
   quantity: number;
   size: string;
+}
+
+export interface ValidationProduct {
+  id: string;
+  stripe_price_id: string;
+  stripe_product_id: string;
 }
 
 export interface User {

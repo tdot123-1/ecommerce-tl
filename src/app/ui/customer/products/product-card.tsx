@@ -3,6 +3,7 @@ import { montserrat } from "../../fonts";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { capitalize } from "@/lib/utils";
 
 interface ProductCardProps {
   id: string;
@@ -52,12 +53,12 @@ const ProductCard = ({
           </AspectRatio>
         </div>
         <div className="px-5 py-3 text-center">
-          <h2 className={`text-md md:text-xl font-semibold text-nowrap ${montserrat.className}`}>
-            {name}
+          <h2
+            className={`text-md md:text-xl font-semibold text-nowrap ${montserrat.className}`}
+          >
+            {capitalize(name)}
           </h2>
-          <p className="text-sm italic">
-            <span>{category}</span>
-          </p>
+          <p className="text-sm italic">{capitalize(category)}</p>
           <Badge className="text-md mt-4">€ {price / 100}</Badge>
         </div>
       </Link>

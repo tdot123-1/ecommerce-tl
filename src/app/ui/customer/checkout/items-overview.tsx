@@ -8,6 +8,7 @@ import Image from "next/image";
 import { montserrat } from "../../fonts";
 import Link from "next/link";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { capitalize } from "@/lib/utils";
 
 const ItemsOverview = () => {
   const { cartDetails, removeItem, clearCart, cartCount, totalPrice } =
@@ -48,7 +49,7 @@ const ItemsOverview = () => {
                 <AspectRatio ratio={6 / 5}>
                   <Image
                     className="rounded-lg"
-                    src={product.image!}
+                    src={product.image_url!}
                     alt={product.name}
                     fill
                     sizes="(max-width: 640px) 33vw, 
@@ -58,7 +59,7 @@ const ItemsOverview = () => {
                   />
                 </AspectRatio>
               </div>
-              <p className="font-bold">{product.name}</p>
+              <p className="font-bold">{capitalize(product.name)}</p>
               <p>{product.size}</p>
               <p>€{product.price / 100}</p>
               <p>x {product.quantity}</p>

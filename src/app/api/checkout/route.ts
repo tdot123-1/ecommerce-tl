@@ -1,5 +1,8 @@
+
+import { fetchPriceValidationProducts } from "@/lib/data";
 import { stripe } from "@/lib/stripe-object";
 import { CartItem } from "@/lib/types";
+import { validateCart } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
@@ -8,15 +11,22 @@ export const POST = async (req: Request) => {
 
     // get cart items in request
     const { cartItems }: { cartItems: CartItem[] } = await req.json();
+    console.log("CART ITEMS: ", cartItems)
+
+    const inventory = await fetchPriceValidationProducts()
+    console.log("INVENTORY: ", inventory)
+
+    const validatedItems = validateCart(inventory, cartItems)
+    console.log("VALIDATED ITEMS: ", validatedItems)
 
     // create array of line items with price id to send to Stripe checkout
-    const line_items = cartItems.map((item) => ({
+    const line_items = validatedItems.map((item) => ({
       price: item.stripe_price_id,
       quantity: item.quantity,
     }));
 
     // add metadata to display size for selected items in Stripe dashboard
-    const metadata = cartItems.reduce((acc, item, index) => {
+    const metadata = validatedItems.reduce((acc, item, index) => {
       acc[`item_${index}_quantity`] = item.quantity.toString();
       acc[`item_${index}_size`] = item.size; 
       acc[`item_${index}_name`] = item.name; 

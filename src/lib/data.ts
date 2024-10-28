@@ -1,7 +1,7 @@
 "use server";
 
 import { sql } from "@vercel/postgres";
-import { EditableProduct } from "./types";
+import { EditableProduct, Product, ValidationProduct } from "./types";
 
 // fetch all products
 export const fetchAllProducts = async () => {
@@ -86,7 +86,7 @@ export const fetchOneActiveProduct = async (productId: string) => {
     // await new Promise((resolve) => setTimeout(resolve, 5000));
 
     const data = await sql`
-      SELECT name, price, sizes, category, description, image_url, currency, stripe_price_id FROM products 
+      SELECT name, price, sizes, category, description, image_url, currency, stripe_price_id, stripe_product_id FROM products 
       WHERE id = ${productId}
       AND is_active = true`;
 
@@ -94,7 +94,7 @@ export const fetchOneActiveProduct = async (productId: string) => {
       return null;
     }
 
-    const product: EditableProduct = {
+    const product: Product = {
       id: productId,
       name: data.rows[0].name,
       price: data.rows[0].price,
@@ -104,6 +104,7 @@ export const fetchOneActiveProduct = async (productId: string) => {
       image_url: data.rows[0].image_url,
       currency: data.rows[0].currency,
       stripe_price_id: data.rows[0].stripe_price_id,
+      stripe_product_id: data.rows[0].stripe_product_id
     };
 
     return product;
@@ -135,15 +136,15 @@ export const fetchProductsByCategory = async (category: string) => {
 
 // need to get items in cart from db to validate prices
 // needs testing
-export const fetchPriceValidationProducts = async (productIds: string[]) => {
+export const fetchPriceValidationProducts = async (): Promise<ValidationProduct[]> => {
   try {
     const data = await sql`
-    SELECT id, name, price, stripe_price_id
+    SELECT id, stripe_price_id, stripe_product_id
     FROM products
-    WHERE id IN (${productIds.join(", ")});
+    WHERE is_active = TRUE;
     `;
 
-    return data.rows;
+    return data.rows as ValidationProduct[];
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch product.");

@@ -3,6 +3,7 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { capitalize } from "@/lib/utils";
 import { TrashIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,7 +34,7 @@ const BasketContent = () => {
                 <AspectRatio ratio={8 / 7}>
                   <Image
                     className="rounded-lg"
-                    src={product.image!}
+                    src={product.image_url!}
                     alt={product.name}
                     fill
                     sizes="(max-width: 640px) 33vw, 
@@ -44,7 +45,7 @@ const BasketContent = () => {
                 </AspectRatio>
               </div>
               <div className="flex flex-col justify-center items-center">
-                <p className="font-bold text-sm">{product.name}</p>
+                <p className="font-bold text-sm">{capitalize(product.name)}</p>
                 <p className="text-sm">{product.size}</p>
               </div>
               <p>-</p>
