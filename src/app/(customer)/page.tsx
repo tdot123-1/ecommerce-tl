@@ -8,8 +8,11 @@ export default function Home() {
   return (
     <>
       <section className="flex justify-center items-center gap-6 h-[calc(100vh-80px)]">
-        <div className="w-60">
+        <div className="w-60 dark:hidden">
           <Image src="/logo4.png" alt="Logo" width={298} height={390} />
+        </div>
+        <div className="w-60 hidden dark:block">
+          <Image src="/logo4-w.png" alt="Logo" width={298} height={390} />
         </div>
         <div className="hidden md:block w-1/2">
           <Image
