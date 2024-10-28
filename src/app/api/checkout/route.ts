@@ -13,9 +13,11 @@ export const POST = async (req: Request) => {
     const { cartItems }: { cartItems: CartItem[] } = await req.json();
     console.log("CART ITEMS: ", cartItems)
 
+    // get list of price id's and product id's from db
     const inventory = await fetchPriceValidationProducts()
     console.log("INVENTORY: ", inventory)
 
+    // return array of only validated cart items (matching price and product id's)
     const validatedItems = validateCart(inventory, cartItems)
     console.log("VALIDATED ITEMS: ", validatedItems)
 

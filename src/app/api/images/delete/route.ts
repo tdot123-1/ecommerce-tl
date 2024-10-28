@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+// (!!) currently not used
 export async function DELETE(request: Request) {
   console.log(request);
 

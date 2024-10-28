@@ -9,7 +9,7 @@ export const syncProductWithStripe = async (product: CreatedProduct) => {
   let stripePriceId = product.stripe_price_id;
 
   let stripeProduct;
-  console.log("IMAGE FOR STRIPE: ", product.image_url)
+  // console.log("IMAGE FOR STRIPE: ", product.image_url)
 
   try {
     // create product only if product does not yet have stripe id
@@ -77,3 +77,6 @@ export const archiveStripeProduct = async (
     throw new Error("Error archiving stripe product");
   }
 };
+
+
+// (!) add function to update stripe image

@@ -16,10 +16,13 @@ export const validateCart = (
   cartItems: CartItem[]
 ) => {
   console.log("VALIDATING CART")
+  // filter through cart items to keep only validated items
   return cartItems.filter((cartItem) => {
+    // find if price id exists in inventory
     const matchingProduct = inventory.find(
       (product) => product.stripe_price_id === cartItem.stripe_price_id
     );
+    // check if found price id corresponds to correct product id
     return matchingProduct
       ? matchingProduct.stripe_product_id === cartItem.stripe_product_id
       : false;

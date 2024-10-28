@@ -6,11 +6,11 @@ export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
 
   const session = await auth();
-  // console.log("SESSION: ", session);
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // upload image to blob store, return url on success
   try {
     const jsonResponse = await handleUpload({
       body,
@@ -31,7 +31,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 400 } // The webhook will retry 5 times waiting for a 200
+      { status: 400 } 
     );
   }
 }

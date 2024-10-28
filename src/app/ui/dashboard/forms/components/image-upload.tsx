@@ -23,6 +23,7 @@ const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
     setIsLoading(true);
     setError("");
 
+    // check if file has been selected
     if (!inputFileRef.current?.files) {
       setError("No file selected.");
       setIsLoading(false);
@@ -31,6 +32,7 @@ const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
 
     const file = inputFileRef.current.files[0];
 
+    // attempt to upload file to blob store
     try {
       const newBlob = await upload(file.name, file, {
         access: "public",
