@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { montserrat } from "../ui/fonts";
 import { Button } from "@/components/ui/button";
-import { LucideBriefcase, ShirtIcon, SmileIcon } from "lucide-react";
+import { HeartIcon, LucideBriefcase, ShirtIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import HomeSection1Skeleton from "../ui/skeletons/home-section1-skeleton";
@@ -38,28 +38,31 @@ export default function Home() {
             {/* large image */}
             <div className="w-40 sm:w-60 md:w-80 lg:w-96">
               <Image
-                src="/placeholder.png"
+                src="/homepage1.jpg"
                 alt="placeholder"
-                width={2400}
-                height={2400}
+                width={1920}
+                height={2880}
+                className="rounded-lg"
               />
             </div>
             {/* stacked images */}
-            <div className="flex flex-col justify-between">
+            <div className="flex flex-col justify-evenly">
               <div className="w-20 sm:w-28 md:w-36 lg:w-44">
                 <Image
-                  src="/placeholder.png"
+                  src="/homepage2.jpg"
                   alt="placeholder"
-                  width={2400}
-                  height={2400}
+                  width={640}
+                  height={960}
+                  className="rounded-lg"
                 />
               </div>
               <div className="w-20 sm:w-28 md:w-36 lg:w-44">
                 <Image
-                  src="/placeholder.png"
+                  src="/homepage3.jpg"
                   alt="placeholder"
-                  width={2400}
-                  height={2400}
+                  width={640}
+                  height={427}
+                  className="rounded-lg"
                 />
               </div>
             </div>
@@ -96,19 +99,19 @@ export default function Home() {
           <div>
             {/* category links */}
             <div className="flex justify-evenly items-center gap-3 sm:gap-10 my-16">
-              <Link href="/categories/1">
+              <Link href="/categories/men?base=categories&path=men">
                 <div className="p-7 border border-zinc-500 rounded-lg shadow-lg">
                   <ShirtIcon size={32} />
                 </div>
               </Link>
-              <Link href="/categories/2">
+              <Link href="/categories/other?base=categories&path=other">
                 <div className="p-7 border border-zinc-500 rounded-lg shadow-lg">
                   <LucideBriefcase size={32} />
                 </div>
               </Link>
-              <Link href="/categories/3">
+              <Link href="/categories/women?base=categories&path=women">
                 <div className="p-7 border border-zinc-500 rounded-lg shadow-lg">
-                  <SmileIcon size={32} />
+                  <HeartIcon size={32} />
                 </div>
               </Link>
             </div>
@@ -123,9 +126,9 @@ export default function Home() {
       </section>
 
       <section className="h-screen flex items-center justify-center">
-        <div className="flex justify-evenly items-center gap-2 md:gap-0">
-          <div className="w-40 sm:w-52 md:w-2/5 flex flex-col gap-7 items-end">
-            <article className=" text-right">
+        <div className="flex flex-col-reverse md:flex-row justify-evenly items-center gap-2 md:gap-0">
+          <div className="w-full sm:w-1/2 md:w-2/5 flex flex-col gap-7 items-end">
+            <article className="text-right">
               <h1
                 className={`${montserrat.className} text-3xl font-semibold mb-3`}
               >
@@ -142,12 +145,13 @@ export default function Home() {
               <Button>Link</Button>
             </Link>
           </div>
-          <div className="w-32 sm:w-44 md:w-80 lg:w-96">
+          <div className="w-full sm:w-1/2 md:w-80 lg:w-96">
             <Image
-              src="/placeholder.png"
+              src="/homepage4.jpg"
               alt="placeholder"
-              width={2400}
-              height={2400}
+              width={1920}
+              height={834}
+              className="rounded-lg"
             />
           </div>
         </div>
