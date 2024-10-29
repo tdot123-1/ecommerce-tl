@@ -1,4 +1,4 @@
-import PaginationComponent from "@/app/ui/customer/pagination";
+
 import PaginationWrapper from "@/app/ui/customer/pagination-wrapper";
 import ProductList from "@/app/ui/customer/products/products-list";
 import { montserrat } from "@/app/ui/fonts";
@@ -9,7 +9,7 @@ import { Suspense } from "react";
 const Page = async (props: { searchParams?: Promise<{ page?: string }> }) => {
   const searchParams = await props.searchParams;
 
-  const currentPage = Number(searchParams?.page) || 1;
+  const currentPage = Math.max(1, Number(searchParams?.page) || 1);
 
   return (
     <>

@@ -2,11 +2,19 @@
 
 import { sql } from "@vercel/postgres";
 import { EditableProduct, Product, ValidationProduct } from "./types";
+import { auth } from "@/auth";
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 8;
 
 // fetch all products
-export const fetchAllProducts = async () => {
+export const fetchAllProducts = async (currentPage: number) => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
     // test for skeleton/suspense
     // await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -18,6 +26,7 @@ export const fetchAllProducts = async () => {
       SELECT id, name, price, sizes, category, image_url, is_active 
       FROM products 
       ORDER BY updated_at DESC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
       `;
 
     return data.rows;
@@ -28,8 +37,7 @@ export const fetchAllProducts = async () => {
 };
 
 export const fetchActiveProducts = async (currentPage: number) => {
-
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
     // test for skeleton/suspense
     // await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -53,6 +61,12 @@ export const fetchActiveProducts = async (currentPage: number) => {
 };
 
 export const fetchOneProduct = async (productId: string) => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
   try {
     // test for skeleton/suspense
     // await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -120,12 +134,20 @@ export const fetchOneActiveProduct = async (productId: string) => {
   }
 };
 
-export const fetchProductsByCategory = async (category: string) => {
+export const fetchProductsByCategory = async (
+  category: string,
+  currentPage: number
+) => {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
   try {
     const data = await sql`
       SELECT id, name, price, sizes, category, description, image_url, currency, stripe_price_id FROM products 
       WHERE category = ${category}
-      AND is_active = true`;
+      AND is_active = true
+      ORDER BY updated_at DESC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+      `;
 
     if (!data.rowCount) {
       return null;
@@ -158,17 +180,53 @@ export const fetchPriceValidationProducts = async (): Promise<
   }
 };
 
-
-
-export const fetchActiveProductsPages = async (): Promise<number> => {
+export const fetchActiveProductsPages = async (
+  category?: string | undefined
+): Promise<number> => {
   if (ITEMS_PER_PAGE <= 0) {
     throw new Error("itemsPerPage must be a positive number");
   }
 
+  let count;
+
+  try {
+    if (category) {
+      count = await sql`
+      SELECT COUNT(*) FROM products 
+      WHERE is_active = true
+      AND category = ${category}`;
+    } else {
+      count = await sql`
+      SELECT COUNT(*) FROM products 
+      WHERE is_active = true`;
+    }
+
+    // check if count is retrieved successfully
+    if (!count.rows.length || count.rows[0].count === null) {
+      throw new Error("No product count returned from the database");
+    }
+
+    return Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+  } catch (error) {
+    console.error("Database ERROR: ", error);
+    throw new Error("Failed to fetch total number of products");
+  }
+};
+
+export const fetchAllProductsPages = async (): Promise<number> => {
+  if (ITEMS_PER_PAGE <= 0) {
+    throw new Error("itemsPerPage must be a positive number");
+  }
+
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
   try {
     const count = await sql`
-    SELECT COUNT(*) FROM products 
-    WHERE is_active = true`;
+    SELECT COUNT(*) FROM products`;
 
     // check if count is retrieved successfully
     if (!count.rows.length || count.rows[0].count === null) {

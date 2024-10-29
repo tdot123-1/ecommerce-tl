@@ -50,23 +50,29 @@ export const generatePagination = (
   }
 
   if (currentPage <= 2) {
-    mobile
-      ? pages.push(1, 2, "ellipsis")
-      : pages.push(1, 2, 3, "ellipsis", totalPages);
+    if (mobile) {
+      pages.push(1, 2, "ellipsis");
+    } else {
+      pages.push(1, 2, 3, "ellipsis", totalPages);
+    }
   } else if (currentPage >= totalPages - 1) {
-    mobile
-      ? pages.push("ellipsis", totalPages - 1, totalPages)
-      : pages.push(1, "ellipsis", totalPages - 2, totalPages - 1, totalPages);
+    if (mobile) {
+      pages.push("ellipsis", totalPages - 1, totalPages);
+    } else {
+      pages.push(1, "ellipsis", totalPages - 2, totalPages - 1, totalPages);
+    }
   } else {
-    mobile
-      ? pages.push("ellipsis", currentPage, "ellipsis")
-      : pages.push(
-          "ellipsis",
-          currentPage - 1,
-          currentPage,
-          currentPage + 1,
-          "ellipsis"
-        );
+    if (mobile) {
+      pages.push("ellipsis", currentPage, "ellipsis");
+    } else {
+      pages.push(
+        "ellipsis",
+        currentPage - 1,
+        currentPage,
+        currentPage + 1,
+        "ellipsis"
+      );
+    }
   }
 
   return pages;

@@ -365,5 +365,6 @@ export async function DeleteImageFromStore(blobUrl: string) {
     console.log("IMAGE DELETED SUCCESSFULLY");
   } catch (error) {
     console.error("FAILED TO DELETE IMAGE: ", error);
+    throw new Error("Failed to delete image")
   }
 }

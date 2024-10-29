@@ -17,8 +17,12 @@ import DeleteButton from "./components/delete-product";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { formatPrice } from "@/lib/utils";
 
-const ProductsTable = async () => {
-  const allProducts = await fetchAllProducts();
+interface ProductsTableProps {
+  currentPage: number;
+}
+
+const ProductsTable = async ({ currentPage }: ProductsTableProps) => {
+  const allProducts = await fetchAllProducts(currentPage);
 
   return (
     <Table>

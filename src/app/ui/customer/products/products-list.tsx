@@ -20,7 +20,7 @@ const ProductList = async ({
   currentPage,
 }: ProductListProps) => {
   const allProducts = category
-    ? await fetchProductsByCategory(category)
+    ? await fetchProductsByCategory(category, currentPage)
     : await fetchActiveProducts(currentPage);
 
   if (!allProducts) {

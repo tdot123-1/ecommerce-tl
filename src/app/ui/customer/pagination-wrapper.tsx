@@ -1,11 +1,24 @@
-import { Suspense } from "react";
 import PaginationComponent from "./pagination";
-import { fetchActiveProductsPages } from "@/lib/data";
+import { fetchActiveProductsPages, fetchAllProductsPages } from "@/lib/data";
 
+interface PaginationWrapperProps {
+  category?: string | undefined;
+  dashboard?: boolean | undefined;
+}
 
+const PaginationWrapper = async ({
+  category,
+  dashboard,
+}: PaginationWrapperProps) => {
+  let totalPages;
 
-const PaginationWrapper = async () => {
-  const totalPages = await fetchActiveProductsPages();
+  if (category) {
+    totalPages = await fetchActiveProductsPages(category);
+  } else if (dashboard) {
+    totalPages = await fetchAllProductsPages();
+  } else {
+    totalPages = await fetchActiveProductsPages();
+  }
 
   return (
     <>
