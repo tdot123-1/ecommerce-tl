@@ -17,7 +17,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       request,
       onBeforeGenerateToken: async () => {
         return {
-          allowedContentTypes: ["image/jpeg", "image/png"],
+          allowedContentTypes: ["image/jpeg", "image/png", "image/webp"],
           tokenPayload: JSON.stringify({
             userId: session.user?.id,
           }),

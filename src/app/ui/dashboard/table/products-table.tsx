@@ -42,16 +42,16 @@ const ProductsTable = async ({ currentPage }: ProductsTableProps) => {
           allProducts.map((product) => (
             <TableRow key={product.id}>
               <TableCell>
-                <div className="w-20 h-20 relative">
-                  <AspectRatio ratio={4 / 3}>
+                <div className="w-20 relative">
+                  <AspectRatio ratio={8 / 9}>
                     <Image
                       src={product.image_url}
                       alt={product.name}
                       fill
-                      sizes="(max-width: 640px) 33vw, 
-                            (max-width: 1024px) 10vw, 
-                            (max-width: 1280px) 5vw, 
-                            4vw"
+                      sizes="(max-width: 640px) 40vw, 
+                            (max-width: 1024px) 20vw, 
+                            (max-width: 1280px) 10vw, 
+                            8vw"
                       className="rounded-md"
                     />
                   </AspectRatio>
