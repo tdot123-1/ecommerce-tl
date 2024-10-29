@@ -8,7 +8,7 @@ import Image from "next/image";
 import { montserrat } from "../../fonts";
 import Link from "next/link";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { capitalize } from "@/lib/utils";
+import { capitalize, formatPrice } from "@/lib/utils";
 
 const ItemsOverview = () => {
   const { cartDetails, removeItem, clearCart, cartCount, totalPrice } =
@@ -46,7 +46,7 @@ const ItemsOverview = () => {
               className="w-full flex justify-between gap-4 items-center py-2 sm:px-4 border-b border-zinc-400"
             >
               <div className="w-20 relative">
-                <AspectRatio ratio={6 / 5}>
+                <AspectRatio ratio={7 / 8}>
                   <Image
                     className="rounded-lg"
                     src={product.image_url!}
@@ -61,7 +61,7 @@ const ItemsOverview = () => {
               </div>
               <p className="font-bold">{capitalize(product.name)}</p>
               <p>{product.size}</p>
-              <p>€{product.price / 100}</p>
+              <p>{formatPrice(product.price)}</p>
               <p>x {product.quantity}</p>
               <Button
                 onClick={() => removeItem(id)}
@@ -74,7 +74,8 @@ const ItemsOverview = () => {
           ))}
         </ul>
         <p className="text-right mt-4 sm:w-11/12 md:w-3/4 lg:w-1/2 mx-auto underline">
-          <span className="font-bold">Total:</span> €{totalPrice! / 100}
+          <span className="font-bold">Total: </span>
+          {formatPrice(totalPrice!)}
         </p>
       </div>
       <p className="text-sm text-zinc-600 dark:text-zinc-400 text-center w-full md:w-10/12 mx-auto mt-4">

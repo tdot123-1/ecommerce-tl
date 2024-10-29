@@ -3,7 +3,7 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { capitalize } from "@/lib/utils";
+import { capitalize, formatPrice } from "@/lib/utils";
 import { TrashIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,7 +31,7 @@ const BasketContent = () => {
               className=" flex justify-between items-center py-2 border-b border-zinc-400"
             >
               <div className="w-16  sm:w-20  relative">
-                <AspectRatio ratio={8 / 7}>
+                <AspectRatio ratio={7 / 8}>
                   <Image
                     className="rounded-lg"
                     src={product.image_url!}
@@ -44,14 +44,16 @@ const BasketContent = () => {
                   />
                 </AspectRatio>
               </div>
-              <div className="flex flex-col justify-center items-center">
-                <p className="font-bold text-sm">{capitalize(product.name)}</p>
-                <p className="text-sm">{product.size}</p>
+              <div className="flex flex-col max-w-12 md:max-w-36 justify-center items-center text-sm">
+                <p className="font-bold text-center">
+                  {capitalize(product.name)}
+                </p>
+                <p>{product.size}</p>
               </div>
               <p>-</p>
-              <div className="flex flex-col justify-center items-center">
-                <p>€{product.price / 100}</p>
-                <p className="text-sm">x {product.quantity}</p>
+              <div className="flex flex-col justify-center items-center text-sm">
+                <p>{formatPrice(product.price)}</p>
+                <p>x {product.quantity}</p>
               </div>
               <Button
                 onClick={() => removeItem(id)}
@@ -65,7 +67,8 @@ const BasketContent = () => {
         </ul>
       </ScrollArea>
       <p className="text-right underline my-2">
-        <span className="font-bold">Total:</span> €{totalPrice! / 100}
+        <span className="font-bold">Total: </span>
+        {formatPrice(totalPrice!)}
       </p>
       <div className="flex flex-col sm:flex-row items-center sm:justify-evenly gap-3 sm:gap-0 mt-4">
         <Link href="/checkout">

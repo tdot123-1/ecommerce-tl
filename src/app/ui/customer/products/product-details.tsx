@@ -5,7 +5,7 @@ import AddToBasket from "../basket/add-to-basket";
 import { notFound } from "next/navigation";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
-import { capitalize } from "@/lib/utils";
+import { capitalize, formatPrice } from "@/lib/utils";
 
 interface ProductDetailsProps {
   productId: string;
@@ -21,7 +21,7 @@ const ProductDetails = async ({ productId }: ProductDetailsProps) => {
   return (
     <>
       <div className="w-72 sm:w-80 relative overflow-hidden">
-        <AspectRatio ratio={4 / 3}>
+        <AspectRatio ratio={5 / 6}>
           <Image
             src={product.image_url}
             alt={product.name}
@@ -40,7 +40,7 @@ const ProductDetails = async ({ productId }: ProductDetailsProps) => {
         </h2>
         <p className="text-sm">{product.description}</p>
         <p className="italic">{capitalize(product.category)}</p>
-        <Badge className="w-fit text-md">€ {product.price / 100}</Badge>
+        <Badge className="w-fit text-md">{formatPrice(product.price)}</Badge>
         <AddToBasket
           product={product}
         />

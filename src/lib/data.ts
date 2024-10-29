@@ -147,6 +147,6 @@ export const fetchPriceValidationProducts = async (): Promise<ValidationProduct[
     return data.rows as ValidationProduct[];
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch product.");
+    throw new Error("Failed to fetch products");
   }
 };

@@ -15,6 +15,7 @@ import Link from "next/link";
 import ActivateSwitch from "./components/activate-product";
 import DeleteButton from "./components/delete-product";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { formatPrice } from "@/lib/utils";
 
 const ProductsTable = async () => {
   const allProducts = await fetchAllProducts();
@@ -53,7 +54,7 @@ const ProductsTable = async () => {
                 </div>
               </TableCell>
               <TableCell>{product.name}</TableCell>
-              <TableCell>€{product.price / 100}</TableCell>
+              <TableCell>{formatPrice(product.price)}</TableCell>
               <TableCell>{product.category}</TableCell>
               <TableCell>{product.sizes}</TableCell>
               <TableCell>

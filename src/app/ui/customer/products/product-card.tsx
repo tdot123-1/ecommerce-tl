@@ -3,7 +3,7 @@ import { montserrat } from "../../fonts";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { capitalize } from "@/lib/utils";
+import { capitalize, formatPrice } from "@/lib/utils";
 
 interface ProductCardProps {
   id: string;
@@ -39,7 +39,7 @@ const ProductCard = ({
         )}`}
       >
         <div className="w-full relative rounded-lg overflow-hidden">
-          <AspectRatio className="mx-1 mt-1" ratio={4 / 3}>
+          <AspectRatio className="mx-1 mt-1" ratio={5 / 6}>
             <Image
               src={image_url}
               alt={name}
@@ -59,7 +59,7 @@ const ProductCard = ({
             {capitalize(name)}
           </h2>
           <p className="text-sm italic">{capitalize(category)}</p>
-          <Badge className="text-md mt-4">€ {price / 100}</Badge>
+          <Badge className="text-md mt-4">{formatPrice(price)}</Badge>
         </div>
       </Link>
     </div>

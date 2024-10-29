@@ -15,7 +15,7 @@ export const validateCart = (
   inventory: ValidationProduct[],
   cartItems: CartItem[]
 ) => {
-  console.log("VALIDATING CART")
+  console.log("VALIDATING CART");
   // filter through cart items to keep only validated items
   return cartItems.filter((cartItem) => {
     // find if price id exists in inventory
@@ -27,6 +27,10 @@ export const validateCart = (
       ? matchingProduct.stripe_product_id === cartItem.stripe_product_id
       : false;
   });
+};
+
+export const formatPrice = (priceInCents: number) => {
+  return `€${(priceInCents / 100).toFixed(2)}`
 };
 
 // export const getSession = async (sessionId: string) => {
