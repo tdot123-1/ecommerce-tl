@@ -39,7 +39,7 @@ const ProductCard = ({
         )}`}
       >
         <div className="w-full relative rounded-lg overflow-hidden">
-          <AspectRatio className="mx-1 mt-1" ratio={5 / 6}>
+          <AspectRatio className="mx-1 mt-1" ratio={7 / 8}>
             <Image
               src={image_url}
               alt={name}

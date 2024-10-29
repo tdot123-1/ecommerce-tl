@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 // navigated from
 
 interface ProductListProps {
+  currentPage: number;
   category?: string | undefined;
   url_base?: string | undefined;
   url_path?: string | undefined;
@@ -16,10 +17,11 @@ const ProductList = async ({
   category,
   url_base,
   url_path,
+  currentPage,
 }: ProductListProps) => {
   const allProducts = category
     ? await fetchProductsByCategory(category)
-    : await fetchActiveProducts();
+    : await fetchActiveProducts(currentPage);
 
   if (!allProducts) {
     notFound();
