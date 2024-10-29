@@ -30,7 +30,46 @@ export const validateCart = (
 };
 
 export const formatPrice = (priceInCents: number) => {
-  return `€${(priceInCents / 100).toFixed(2)}`
+  return `€${(priceInCents / 100).toFixed(2)}`;
+};
+
+export const generatePagination = (
+  totalPages: number,
+  currentPage: number,
+  mobile: boolean
+) => {
+  const pages: (number | "ellipsis")[] = [];
+
+  // if 3 or fewer pages, display all numbers, return pages
+  if (totalPages <= 3) {
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  }
+
+  if (currentPage <= 2) {
+    mobile
+      ? pages.push(1, 2, "ellipsis")
+      : pages.push(1, 2, 3, "ellipsis", totalPages);
+  } else if (currentPage >= totalPages - 1) {
+    mobile
+      ? pages.push("ellipsis", totalPages - 1, totalPages)
+      : pages.push(1, "ellipsis", totalPages - 2, totalPages - 1, totalPages);
+  } else {
+    mobile
+      ? pages.push("ellipsis", currentPage, "ellipsis")
+      : pages.push(
+          "ellipsis",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "ellipsis"
+        );
+  }
+
+  return pages;
 };
 
 // export const getSession = async (sessionId: string) => {
