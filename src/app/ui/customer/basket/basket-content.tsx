@@ -37,10 +37,10 @@ const BasketContent = () => {
                     src={product.image_url!}
                     alt={product.name}
                     fill
-                    sizes="(max-width: 640px) 33vw, 
-                            (max-width: 1024px) 10vw, 
-                            (max-width: 1280px) 5vw, 
-                            4vw"
+                    sizes="(max-width: 640px) 40vw, 
+                            (max-width: 1024px) 20vw, 
+                            (max-width: 1280px) 10vw, 
+                            8vw"
                   />
                 </AspectRatio>
               </div>
@@ -71,12 +71,12 @@ const BasketContent = () => {
         {formatPrice(totalPrice!)}
       </p>
       <div className="flex flex-col sm:flex-row items-center sm:justify-evenly gap-3 sm:gap-0 mt-4">
-        <Link href="/checkout">
-          <Button>To Checkout</Button>
-        </Link>
         <Button className="w-fit" onClick={clearCart}>
           Clear Basket
         </Button>
+        <Link href="/checkout">
+          <Button>To Checkout</Button>
+        </Link>
       </div>
     </div>
   );

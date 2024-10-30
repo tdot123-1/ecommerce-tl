@@ -82,7 +82,7 @@ export default function Home() {
               </p>
             </article>
             <Link href="/products">
-              <Button>Link</Button>
+              <Button>Start Browsing</Button>
             </Link>
           </div>
         </div>
@@ -141,7 +141,7 @@ export default function Home() {
               </p>
             </article>
             <Link href="/products">
-              <Button>Link</Button>
+              <Button>Check It Out</Button>
             </Link>
           </div>
           <div className="w-full sm:w-1/2 md:w-80 lg:w-96">

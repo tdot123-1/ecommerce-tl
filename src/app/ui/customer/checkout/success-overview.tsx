@@ -4,6 +4,9 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+// (!!) currently not used
+
+// retrieve session to get an overview of purchased items
 const SuccessOverview = () => {
   const searchParams = useSearchParams();
   const [session, setSession] = useState();

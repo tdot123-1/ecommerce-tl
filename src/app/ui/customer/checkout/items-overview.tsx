@@ -52,10 +52,10 @@ const ItemsOverview = () => {
                     src={product.image_url!}
                     alt={product.name}
                     fill
-                    sizes="(max-width: 640px) 33vw, 
-                            (max-width: 1024px) 10vw, 
-                            (max-width: 1280px) 5vw, 
-                            4vw"
+                    sizes="(max-width: 640px) 40vw, 
+                            (max-width: 1024px) 20vw, 
+                            (max-width: 1280px) 10vw, 
+                            8vw"
                   />
                 </AspectRatio>
               </div>
@@ -93,6 +93,10 @@ const ItemsOverview = () => {
         <Button onClick={clearCart}>Clear Cart</Button>
         <CheckoutButton />
       </div>
+      <p className="text-center mt-10 border-t border-red-400 text-xs text-red-600 italic">
+        *The payment portal is still in development, do not provide any real
+        credit card or other payment info.
+      </p>
     </section>
   );
 };
