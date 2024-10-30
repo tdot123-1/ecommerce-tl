@@ -1,5 +1,10 @@
 import Form from "@/app/ui/dashboard/forms/create-product";
 import { montserrat } from "@/app/ui/fonts";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Create Product",
+};
 
 const Page = () => {
   return (

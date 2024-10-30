@@ -27,7 +27,7 @@ const Form = () => {
 
       // returns errors if there were any
       if (result.message) {
-        console.log(result);
+        // console.log(result);
         setState(result);
       } else {
         router.push("/login");

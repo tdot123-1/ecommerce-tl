@@ -4,7 +4,12 @@ import ProductList from "@/app/ui/customer/products/products-list";
 import { montserrat } from "@/app/ui/fonts";
 import ProductListSkeleton from "@/app/ui/skeletons/products-list-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Catalogue",
+};
 
 const Page = async (props: { searchParams?: Promise<{ page?: string }> }) => {
   const searchParams = await props.searchParams;

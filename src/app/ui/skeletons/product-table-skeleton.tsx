@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 const ProductTableSkeleton = () => {
-  const rows = Array.from({ length: 10 });
+  const rows = Array.from({ length: 8 });
   return (
     <>
       {rows.map((row, i) => (

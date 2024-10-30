@@ -3,7 +3,12 @@ import ProductsTable from "@/app/ui/dashboard/table/products-table";
 import { montserrat } from "@/app/ui/fonts";
 import ProductTableSkeleton from "@/app/ui/skeletons/product-table-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Products",
+};
 
 const Page = async (props: { searchParams?: Promise<{ page?: string }> }) => {
   const searchParams = await props.searchParams;

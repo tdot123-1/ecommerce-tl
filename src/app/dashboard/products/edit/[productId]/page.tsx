@@ -1,7 +1,12 @@
 import EditFormSection from "@/app/ui/dashboard/forms/components/edit-form-section";
 import { montserrat } from "@/app/ui/fonts";
 import FormSkeleton from "@/app/ui/skeletons/product-form-skeleton";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Edit Product",
+};
 
 const Page = ({ params }: { params: { productId: string } }) => {
   const { productId } = params;

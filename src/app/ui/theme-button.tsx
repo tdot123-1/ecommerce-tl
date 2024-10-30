@@ -10,7 +10,7 @@ const ThemeButton = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    console.log("MOUNT");
+    // console.log("MOUNT");
     setMounted(true);
   }, []);
 

@@ -15,7 +15,7 @@ export const validateCart = (
   inventory: ValidationProduct[],
   cartItems: CartItem[]
 ) => {
-  console.log("VALIDATING CART");
+  // console.log("VALIDATING CART");
   // filter through cart items to keep only validated items
   return cartItems.filter((cartItem) => {
     // find if price id exists in inventory

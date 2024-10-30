@@ -10,7 +10,6 @@ export default function Home() {
   return (
     <>
       <section className="flex justify-center items-center gap-6 h-[calc(100vh-80px)]">
-        
         <Suspense fallback={<HomeSection1Skeleton />}>
           <div className="w-60 dark:hidden">
             <Image src="/logo4.png" alt="Logo" width={298} height={390} />

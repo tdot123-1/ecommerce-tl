@@ -6,7 +6,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ArrowBigRight, PlusSquareIcon } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 export default function Page() {
   return (
@@ -22,7 +27,8 @@ export default function Page() {
           <CardContent>
             <Link href="/dashboard/products">
               <div className="flex justify-center items-center gap-1">
-                <span className="italic underline">To products overview</span> <ArrowBigRight size={24} />
+                <span className="italic underline">To products overview</span>{" "}
+                <ArrowBigRight size={24} />
               </div>
             </Link>
           </CardContent>
@@ -37,7 +43,8 @@ export default function Page() {
           <CardContent>
             <Link href="/dashboard/products/create">
               <div className="flex justify-center items-center gap-1">
-                <span className="italic underline">Add new product</span> <PlusSquareIcon size={24} />
+                <span className="italic underline">Add new product</span>{" "}
+                <PlusSquareIcon size={24} />
               </div>
             </Link>
           </CardContent>

@@ -2,8 +2,12 @@ import ClearCart from "@/app/ui/customer/checkout/clear-cart";
 import { montserrat } from "@/app/ui/fonts";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftCircleIcon } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 
+export const metadata: Metadata = {
+  title: "Checkout Success",
+};
 
 const Page = () => {
   return (

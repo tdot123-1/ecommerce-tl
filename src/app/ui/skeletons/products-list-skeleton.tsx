@@ -1,7 +1,7 @@
 import ProductCardSkeleton from "./product-card-skeleton";
 
 const ProductListSkeleton = () => {
-  const cards = Array.from({ length: 10 });
+  const cards = Array.from({ length: 8 });
   return (
     <>
       {cards.map((card, index) => (
