@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { InstagramLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
 import {
   ArrowLeftCircleIcon,
-  FacebookIcon,
   MailIcon,
   PhoneIcon,
 } from "lucide-react";

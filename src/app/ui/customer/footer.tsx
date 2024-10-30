@@ -10,7 +10,9 @@ const Footer = () => {
         <li>
           <Link href="/docs/privacy">Privacy</Link>
         </li>
-        <li>FAQ</li>
+        <li>
+          <Link href="/docs/faq">FAQ</Link>
+        </li>
         <li>
           <Link href="/docs/return-policy">Return policy</Link>
         </li>
