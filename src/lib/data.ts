@@ -239,3 +239,20 @@ export const fetchAllProductsPages = async (): Promise<number> => {
     throw new Error("Failed to fetch total number of products");
   }
 };
+
+export const fetchFeaturedProducts = async () => {
+  try {
+    const data = await sql`
+      SELECT id, name, price, image_url 
+      FROM products 
+      WHERE is_active = true
+      ORDER BY updated_at DESC
+      LIMIT 5
+      `;
+
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch product data.");
+  }
+};

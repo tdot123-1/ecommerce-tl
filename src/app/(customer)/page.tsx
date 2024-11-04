@@ -5,11 +5,12 @@ import { HeartIcon, LucideBriefcase, ShirtIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import HomeSection1Skeleton from "../ui/skeletons/home-section1-skeleton";
+import FeaturedProducts from "../ui/customer/products/featured-products";
 
 export default function Home() {
   return (
     <>
-      <section className="flex justify-center items-center gap-6 h-[calc(100vh-80px)]">
+      <section className="flex justify-center items-center gap-6 h-[calc(100vh-130px)]">
         <Suspense fallback={<HomeSection1Skeleton />}>
           <div className="w-60 dark:hidden">
             <Image src="/logo4.png" alt="Logo" width={298} height={390} />
@@ -30,6 +31,10 @@ export default function Home() {
         </Suspense>
       </section>
 
+      {/* featured items */}
+      <section className="w-full mb-8">
+        <FeaturedProducts />
+      </section>
       <section className="h-screen flex items-center justify-center">
         <div className="flex flex-col md:flex-row justify-evenly items-center h-fit w-full">
           {/* image container */}
