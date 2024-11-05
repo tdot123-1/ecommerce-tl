@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchAllProducts } from "@/lib/data";
-import { EditIcon } from "lucide-react";
+import { EditIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ActivateSwitch from "./components/activate-product";
@@ -35,6 +35,9 @@ const ProductsTable = async ({ currentPage }: ProductsTableProps) => {
           <TableHead>Category</TableHead>
           <TableHead>Sizes</TableHead>
           <TableHead>Active</TableHead>
+          <TableHead>Featured</TableHead>
+          <TableHead>Edit</TableHead>
+          <TableHead>Delete</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -69,8 +72,15 @@ const ProductsTable = async ({ currentPage }: ProductsTableProps) => {
                 />
               </TableCell>
               <TableCell>
+                <Button variant="ghost" className="p-2">
+                  <p className="hidden">Featured</p>
+                  <StarIcon size={24} />
+                </Button>
+              </TableCell>
+              <TableCell>
                 <Link href={`products/edit/${product.id}`}>
                   <Button variant="ghost" className="p-2">
+                    <p className="hidden">Edit</p>
                     <EditIcon size={24} />
                   </Button>
                 </Link>

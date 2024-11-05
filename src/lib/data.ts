@@ -256,3 +256,23 @@ export const fetchFeaturedProducts = async () => {
     throw new Error("Failed to fetch product data.");
   }
 };
+
+export const fetchFeaturedProductsDashboard = async () => {
+  try {
+    const data = await sql`
+    SELECT fp.id AS featured_id,
+    fp.start_date,
+    fp.end_date,
+    fp.product_id,
+    p.name,
+    p.image_url
+    FROM featured_products fp
+    JOIN products p ON fp.product_id = p.id
+    ORDER BY fp.start_date DESC;
+    `;
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch featured product data.");
+  }
+};

@@ -59,6 +59,7 @@ const DeleteButton = ({ isActive, productId }: DeleteButtonProps) => {
               disabled={isActive || isLoading}
             >
               <Trash2Icon size={24} />
+              <p className="hidden">Delete</p>
             </Button>
           </DialogTrigger>
           {error && <p className="text-red-600 text-xs italic mt-1">{error}</p>}
