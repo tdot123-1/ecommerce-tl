@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <div className="flex flex-col md:flex-row items-center justify-center gap-5 mt-10 md:mt-20">
+      <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-5 mt-10 md:mt-20">
         <Card className="min-w-full md:min-w-fit">
           <CardHeader>
             <CardTitle>Products Overview</CardTitle>
@@ -45,6 +45,22 @@ export default function Page() {
               <div className="flex justify-center items-center gap-1">
                 <span className="italic underline">Add new product</span>{" "}
                 <PlusSquareIcon size={24} />
+              </div>
+            </Link>
+          </CardContent>
+        </Card>
+        <Card className="min-w-full md:min-w-fit">
+          <CardHeader>
+            <CardTitle>Featured Products</CardTitle>
+            <CardDescription>
+              Review and update your list of featured products
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/dashboard/products/featured">
+              <div className="flex justify-center items-center gap-1">
+                <span className="italic underline">To featured products</span>{" "}
+                <ArrowBigRight size={24} />
               </div>
             </Link>
           </CardContent>
