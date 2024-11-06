@@ -373,12 +373,18 @@ export async function deleteImageFromStore(blobUrl: string) {
 
 export async function toggleFeaturedProduct(
   productId: string,
-  isFeatured: boolean
+  isFeatured: boolean,
+  isActive: boolean,
 ) {
   const session = await auth();
 
   if (!session?.user) {
     throw new Error("Unauthorized");
+  }
+
+  // make sure only active products can be added to featured list
+  if (!isActive) {
+    throw new Error("Product must be active to toggle feature")
   }
 
   try {

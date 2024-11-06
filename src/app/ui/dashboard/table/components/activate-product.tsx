@@ -8,12 +8,14 @@ interface ActivateSwitchProps {
   defaultValue: boolean;
   productId: string;
   category: string;
+  isFeatured: boolean;
 }
 
 const ActivateSwitch = ({
   defaultValue,
   productId,
   category,
+  isFeatured
 }: ActivateSwitchProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -55,7 +57,7 @@ const ActivateSwitch = ({
       <Switch
         checked={checked}
         onCheckedChange={handleSwitch}
-        disabled={isLoading}
+        disabled={isLoading || isFeatured}
       />
       {error && <p className="text-red-600 text-xs italic mt-1">{error}</p>}
     </>

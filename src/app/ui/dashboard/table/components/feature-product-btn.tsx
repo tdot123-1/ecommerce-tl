@@ -17,14 +17,19 @@ import { useState } from "react";
 
 interface FeatureButtonProps {
   isFeatured: boolean;
+  isActive: boolean;
   productId: string;
 }
 
-const FeatureButton = ({ isFeatured, productId }: FeatureButtonProps) => {
+const FeatureButton = ({
+  isFeatured,
+  isActive,
+  productId,
+}: FeatureButtonProps) => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleToggle = async (id: string, featured: boolean) => {
+  const handleToggle = async (id: string, featured: boolean, active: boolean) => {
     // set error state, loading state
     setIsLoading(true);
     setError("");
@@ -33,7 +38,7 @@ const FeatureButton = ({ isFeatured, productId }: FeatureButtonProps) => {
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     try {
-      await toggleFeaturedProduct(id, featured);
+      await toggleFeaturedProduct(id, featured, active);
     } catch (error) {
       console.error("Error toggling product: ", error);
       setError("Something went wrong. Please try again later.");
@@ -46,7 +51,11 @@ const FeatureButton = ({ isFeatured, productId }: FeatureButtonProps) => {
       <Dialog>
         <div>
           <DialogTrigger asChild>
-            <Button variant="ghost" className="p-2" disabled={isLoading}>
+            <Button
+              variant="ghost"
+              className="p-2"
+              disabled={isLoading || !isActive}
+            >
               <p className="hidden">Toggle Featured</p>
               {isFeatured ? (
                 <LucideStarOff size={24} />
@@ -84,7 +93,7 @@ const FeatureButton = ({ isFeatured, productId }: FeatureButtonProps) => {
             <DialogClose asChild>
               <Button
                 variant="default"
-                onClick={() => handleToggle(productId, isFeatured)}
+                onClick={() => handleToggle(productId, isFeatured, isActive)}
               >
                 Proceed
               </Button>

@@ -10,8 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchFeaturedProductsDashboard } from "@/lib/data";
-import { Calendar, Trash2Icon } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import Image from "next/image";
+import FeatureButton from "../table/components/feature-product-btn";
+import DatePicker from "./featured-date-picker";
 
 const FeaturedTable = async () => {
   const featuredProducts = await fetchFeaturedProductsDashboard();
@@ -59,16 +61,14 @@ const FeaturedTable = async () => {
                   : "N/A"}
               </TableCell>
               <TableCell>
-                <Button variant="ghost" className="p-2">
-                  <p className="hidden">Edit dates</p>
-                  <Calendar size={24} />
-                </Button>
+                <DatePicker initialStartDate={new Date(product.start_date)} />
               </TableCell>
               <TableCell>
-                <Button variant="ghost" className="p-2">
-                  <p className="hidden">Remove from featured</p>
-                  <Trash2Icon size={24} />
-                </Button>
+                <FeatureButton
+                  isFeatured
+                  isActive
+                  productId={product.product_id}
+                />
               </TableCell>
             </TableRow>
           ))

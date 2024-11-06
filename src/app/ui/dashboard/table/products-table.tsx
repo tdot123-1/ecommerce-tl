@@ -70,12 +70,14 @@ const ProductsTable = async ({ currentPage }: ProductsTableProps) => {
                   defaultValue={product.is_active}
                   productId={product.id}
                   category={product.category}
+                  isFeatured={product.is_featured}
                 />
               </TableCell>
               <TableCell>
                 <FeatureButton
                   isFeatured={product.is_featured}
                   productId={product.id}
+                  isActive={product.is_active}
                 />
               </TableCell>
               <TableCell>
