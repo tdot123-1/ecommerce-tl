@@ -22,12 +22,28 @@ export const fetchAllProducts = async (currentPage: number) => {
     // test for error page
     // throw new Error("test error")
 
+    // const data = await sql`
+    //   SELECT id, name, price, sizes, category, image_url, is_active 
+    //   FROM products 
+    //   ORDER BY updated_at DESC
+    //   LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    //   `;
+
     const data = await sql`
-      SELECT id, name, price, sizes, category, image_url, is_active 
-      FROM products 
-      ORDER BY updated_at DESC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-      `;
+    SELECT 
+    p.id,
+    p.name,
+    p.price,
+    p.sizes,
+    p.category,
+    p.image_url,
+    p.is_active,
+    CASE WHEN fp.product_id IS NOT NULL THEN true ELSE false END AS is_featured
+    FROM products p
+    LEFT JOIN featured_products fp ON p.id = fp.product_id
+    ORDER BY p.updated_at DESC
+    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `
 
     return data.rows;
   } catch (error) {

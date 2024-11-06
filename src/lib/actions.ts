@@ -353,7 +353,7 @@ export async function deleteProduct(id: string) {
   }
 }
 
-export async function DeleteImageFromStore(blobUrl: string) {
+export async function deleteImageFromStore(blobUrl: string) {
   const session = await auth();
 
   if (!session?.user) {
@@ -365,6 +365,44 @@ export async function DeleteImageFromStore(blobUrl: string) {
     console.log("IMAGE DELETED SUCCESSFULLY");
   } catch (error) {
     console.error("FAILED TO DELETE IMAGE: ", error);
-    throw new Error("Failed to delete image")
+    throw new Error("Failed to delete image");
+  }
+}
+
+// toggle featured
+
+export async function toggleFeaturedProduct(
+  productId: string,
+  isFeatured: boolean
+) {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    // if 'isFeatured' is true, product is currently featured -> action should remove product from featured
+    if (isFeatured) {
+      // remove item from featured_products by product_id
+      await sql`
+        DELETE FROM featured_products 
+        WHERE product_id = ${productId};
+      `;
+    } else {
+      // add item to featured_products by product_id
+      await sql`
+        INSERT INTO featured_products (product_id)
+        VALUES (${productId})
+        ON CONFLICT (product_id) DO NOTHING;
+      `;
+    }
+
+    revalidatePath("/dashboard/products");
+    revalidatePath("/dashboard/products/featured");
+    revalidatePath("/");
+  } catch (error) {
+    console.error("FAILED TOGGLE FEATURED PRODUCT: ", error);
+    throw new Error("Failed to toggle featured product");
   }
 }

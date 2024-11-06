@@ -9,13 +9,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchAllProducts } from "@/lib/data";
-import { EditIcon, StarIcon } from "lucide-react";
+import { EditIcon, LucideStar, LucideStarOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ActivateSwitch from "./components/activate-product";
 import DeleteButton from "./components/delete-product";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { formatPrice } from "@/lib/utils";
+import FeatureButton from "./components/feature-product-btn";
 
 interface ProductsTableProps {
   currentPage: number;
@@ -72,10 +73,10 @@ const ProductsTable = async ({ currentPage }: ProductsTableProps) => {
                 />
               </TableCell>
               <TableCell>
-                <Button variant="ghost" className="p-2">
-                  <p className="hidden">Featured</p>
-                  <StarIcon size={24} />
-                </Button>
+                <FeatureButton
+                  isFeatured={product.is_featured}
+                  productId={product.id}
+                />
               </TableCell>
               <TableCell>
                 <Link href={`products/edit/${product.id}`}>

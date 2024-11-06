@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { DeleteImageFromStore, editProduct, State } from "@/lib/actions";
+import { deleteImageFromStore, editProduct, State } from "@/lib/actions";
 import { categories } from "@/lib/categories";
 import { EditableProduct } from "@/lib/types";
 import { capitalize } from "@/lib/utils";
@@ -68,7 +68,7 @@ const Form = ({ product }: EditFormProps) => {
 
       // if the image has been changed, delete old image from blob store
       if (imageChange) {
-        await DeleteImageFromStore(product.image_url);
+        await deleteImageFromStore(product.image_url);
       }
       // returns empty string in case of success -> redirect to products display
       if (!result.message) {
