@@ -61,7 +61,10 @@ const FeaturedTable = async () => {
                   : "N/A"}
               </TableCell>
               <TableCell>
-                <DatePicker initialStartDate={new Date(product.start_date)} />
+                <DatePicker
+                  productId={product.product_id}
+                  initialStartDate={new Date(product.start_date)}
+                />
               </TableCell>
               <TableCell>
                 <FeatureButton

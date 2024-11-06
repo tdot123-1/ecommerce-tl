@@ -374,7 +374,7 @@ export async function deleteImageFromStore(blobUrl: string) {
 export async function toggleFeaturedProduct(
   productId: string,
   isFeatured: boolean,
-  isActive: boolean,
+  isActive: boolean
 ) {
   const session = await auth();
 
@@ -384,7 +384,7 @@ export async function toggleFeaturedProduct(
 
   // make sure only active products can be added to featured list
   if (!isActive) {
-    throw new Error("Product must be active to toggle feature")
+    throw new Error("Product must be active to toggle feature");
   }
 
   try {
@@ -410,5 +410,35 @@ export async function toggleFeaturedProduct(
   } catch (error) {
     console.error("FAILED TOGGLE FEATURED PRODUCT: ", error);
     throw new Error("Failed to toggle featured product");
+  }
+}
+
+export async function setFeaturedDates(
+  product_id: string,
+  startDate: Date,
+  endDate: Date | undefined
+) {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    // normalize startDate and endDate to correct SQL date format (YYYY-MM-DD)
+    const startDateStr = startDate.toISOString().split("T")[0]; // convert to 'YYYY-MM-DD'
+    const endDateStr = endDate ? endDate.toISOString().split("T")[0] : null; // null if endDate is undefined
+    
+    await sql`
+    UPDATE featured_products 
+    SET start_date = ${startDateStr}, end_date = ${endDateStr}
+    WHERE product_id = ${product_id}
+    `;
+
+    console.log("DATES UPDATED");
+    revalidatePath("/dashboard/products/featured");
+  } catch (error) {
+    console.error("FAILED TO UPDATE DATES: ", error);
+    throw new Error("Failed to update dates");
   }
 }
