@@ -34,6 +34,8 @@ interface DatePickerProps {
   productId: string;
 }
 
+//(!!) not selecting correct dates yet on submit
+
 const DatePicker = ({
   initialStartDate,
   initialEndDate,
@@ -55,8 +57,24 @@ const DatePicker = ({
     setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 300));
 
+    // normalize dates before submission to remove time discrepancies
+    const normalizedStartDate = new Date(startDate.setHours(0, 0, 0, 0));
+    const normalizedEndDate = endDate
+      ? new Date(endDate.setHours(0, 0, 0, 0))
+      : undefined;
+
+    // // Normalize the dates to local midnight and format as 'YYYY-MM-DD'
+    // const normalizeDate = (date: Date) => {
+    //   const normalizedDate = new Date(date);
+    //   normalizedDate.setHours(0, 0, 0, 0); // Set to midnight
+    //   return normalizedDate.toLocaleDateString("en-CA"); // Formats as 'YYYY-MM-DD'
+    // };
+
+    // const normalizedStartDate = normalizeDate(startDate);
+    // const normalizedEndDate = endDate ? normalizeDate(endDate) : null;
+
     try {
-      await setFeaturedDates(productId, startDate, endDate);
+      await setFeaturedDates(productId, normalizedStartDate, normalizedEndDate);
       setIsDialogOpen(false);
     } catch (error) {
       setError("Something went wrong, please try again.");
