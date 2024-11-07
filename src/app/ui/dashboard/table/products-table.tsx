@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchAllProducts } from "@/lib/data";
-import { EditIcon } from "lucide-react";
+import { EditIcon, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ActivateSwitch from "./components/activate-product";
@@ -30,11 +30,12 @@ const ProductsTable = async ({ currentPage }: ProductsTableProps) => {
       <TableCaption>All Products</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Image</TableHead>
+          <TableHead>Primary Image</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Price</TableHead>
           <TableHead>Category</TableHead>
           <TableHead>Sizes</TableHead>
+          <TableHead>Images</TableHead>
           <TableHead>Active</TableHead>
           <TableHead>Featured</TableHead>
           <TableHead>Edit</TableHead>
@@ -65,6 +66,14 @@ const ProductsTable = async ({ currentPage }: ProductsTableProps) => {
               <TableCell>{formatPrice(product.price)}</TableCell>
               <TableCell>{product.category}</TableCell>
               <TableCell>{product.sizes}</TableCell>
+              <TableCell>
+                <Link href={`products/images/edit/${product.id}`}>
+                  <Button variant="ghost" className="p-2">
+                    <p className="hidden">Edit Images</p>
+                    <ImageIcon size={24} />
+                  </Button>
+                </Link>
+              </TableCell>
               <TableCell>
                 <ActivateSwitch
                   defaultValue={product.is_active}

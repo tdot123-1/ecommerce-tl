@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowBigRight, PlusSquareIcon } from "lucide-react";
+import { ArrowBigRight, ImageIcon, LucideStar, PlusSquareIcon } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-5 mt-10 md:mt-20">
+      <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-5 my-10 md:mt-20">
         <Card className="min-w-full md:min-w-fit">
           <CardHeader>
             <CardTitle>Products Overview</CardTitle>
@@ -60,7 +60,23 @@ export default function Page() {
             <Link href="/dashboard/products/featured">
               <div className="flex justify-center items-center gap-1">
                 <span className="italic underline">To featured products</span>{" "}
-                <ArrowBigRight size={24} />
+                <LucideStar size={24} />
+              </div>
+            </Link>
+          </CardContent>
+        </Card>
+        <Card className="min-w-full md:min-w-fit">
+          <CardHeader>
+            <CardTitle>Product Images</CardTitle>
+            <CardDescription>
+              Add and remove additional product images.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/dashboard/products/images">
+              <div className="flex justify-center items-center gap-1">
+                <span className="italic underline">To product images</span>{" "}
+                <ImageIcon size={24}/>
               </div>
             </Link>
           </CardContent>

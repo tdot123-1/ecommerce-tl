@@ -17,6 +17,7 @@ const ThemeButton = () => {
   if (!mounted) {
     return (
       <Button className="p-2" variant="ghost">
+        <p className="hidden">Toggle theme</p>
         <SunMoonIcon size={24} />
       </Button>
     );
@@ -25,6 +26,7 @@ const ThemeButton = () => {
   if (resolvedTheme === "light") {
     return (
       <Button className="p-2" variant="ghost" onClick={() => setTheme("dark")}>
+        <p className="hidden">Toggle theme</p>
         <MoonIcon size={24} />
       </Button>
     );
@@ -33,6 +35,7 @@ const ThemeButton = () => {
   if (resolvedTheme === "dark") {
     return (
       <Button className="p-2" variant="ghost" onClick={() => setTheme("light")}>
+        <p className="hidden">Toggle theme</p>
         <SunIcon size={24} />
       </Button>
     );

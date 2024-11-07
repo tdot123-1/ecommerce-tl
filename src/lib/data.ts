@@ -22,13 +22,6 @@ export const fetchAllProducts = async (currentPage: number) => {
     // test for error page
     // throw new Error("test error")
 
-    // const data = await sql`
-    //   SELECT id, name, price, sizes, category, image_url, is_active 
-    //   FROM products 
-    //   ORDER BY updated_at DESC
-    //   LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    //   `;
-
     const data = await sql`
     SELECT 
     p.id,
@@ -43,7 +36,7 @@ export const fetchAllProducts = async (currentPage: number) => {
     LEFT JOIN featured_products fp ON p.id = fp.product_id
     ORDER BY p.updated_at DESC
     LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    `
+    `;
 
     return data.rows;
   } catch (error) {
@@ -299,5 +292,41 @@ export const fetchFeaturedProductsDashboard = async () => {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch featured product data.");
+  }
+};
+
+export const fetchAllProductsImages = async (currentPage: number) => {
+
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const data = await sql`
+      SELECT
+        p.id AS product_id,
+        p.name AS product_name,
+        p.image_url AS product_image_url,
+        ARRAY_AGG(pi.image_url) AS additional_image_urls
+      FROM 
+        products p
+      LEFT JOIN 
+        product_images pi ON p.id = pi.product_id
+      GROUP BY
+        p.id, p.name, p.image_url
+      ORDER BY 
+        p.updated_at DESC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    return data.rows
+    
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch product data.");
   }
 };
