@@ -259,11 +259,20 @@ export const fetchAllProductsPages = async (): Promise<number> => {
 export const fetchFeaturedProducts = async () => {
   try {
     const data = await sql`
-      SELECT id, name, price, image_url 
-      FROM products 
-      WHERE is_active = true
-      ORDER BY updated_at DESC
-      LIMIT 5
+      SELECT
+        p.id, 
+        p.name,
+        p.price,
+        p.image_url
+      FROM 
+        products p
+      JOIN 
+        featured_products f ON p.id = f.product_id
+      WHERE 
+        p.is_active = true
+      ORDER BY 
+        f.start_date DESC
+      LIMIT 6
       `;
 
     return data.rows;

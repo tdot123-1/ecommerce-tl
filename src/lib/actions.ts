@@ -436,6 +436,7 @@ export async function setFeaturedDates(
 
     console.log("DATES UPDATED");
     revalidatePath("/dashboard/products/featured");
+    revalidatePath("/");
   } catch (error) {
     console.error("FAILED TO UPDATE DATES: ", error);
     throw new Error("Failed to update dates");
