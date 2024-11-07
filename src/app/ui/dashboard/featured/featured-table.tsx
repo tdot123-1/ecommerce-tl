@@ -1,5 +1,4 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -10,10 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchFeaturedProductsDashboard } from "@/lib/data";
-import { CalendarIcon } from "lucide-react";
 import Image from "next/image";
 import FeatureButton from "../table/components/feature-product-btn";
 import DatePicker from "./featured-date-picker";
+import clsx from "clsx";
+import { checkDeadline } from "@/lib/utils";
 
 const FeaturedTable = async () => {
   const featuredProducts = await fetchFeaturedProductsDashboard();
@@ -51,11 +51,19 @@ const FeaturedTable = async () => {
                   </AspectRatio>
                 </div>
               </TableCell>
-              <TableCell>{product.name}</TableCell>
+              <TableCell className={clsx({ "text-red-600 line-through": index > 5 })}>
+                {product.name}
+              </TableCell>
               <TableCell>
                 {new Date(product.start_date).toLocaleDateString()}
               </TableCell>
-              <TableCell>
+              <TableCell
+                className={clsx({
+                  "text-red-600": product.end_date
+                    ? checkDeadline(new Date(product.end_date))
+                    : false,
+                })}
+              >
                 {product.end_date
                   ? new Date(product.end_date).toLocaleDateString()
                   : "N/A"}
@@ -64,6 +72,9 @@ const FeaturedTable = async () => {
                 <DatePicker
                   productId={product.product_id}
                   initialStartDate={new Date(product.start_date)}
+                  initialEndDate={
+                    product.end_date ? new Date(product.end_date) : null
+                  }
                 />
               </TableCell>
               <TableCell>

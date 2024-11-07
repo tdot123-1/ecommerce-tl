@@ -78,6 +78,25 @@ export const generatePagination = (
   return pages;
 };
 
+// format date to string format acceptable for db
+export const formatDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+// compare end date to today's date to reflect deadline in ui
+export const checkDeadline = (endDate: Date) => {
+  const normalizedEndDate = new Date(endDate.setHours(0, 0, 0, 0));
+  const today = new Date().setHours(0, 0, 0, 0);
+  if (normalizedEndDate.getTime() <= today) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 // export const getSession = async (sessionId: string) => {
 //   const sessionData = await stripe.checkout.sessions.retrieve(sessionId);
 //   console.log("session: ", sessionData);

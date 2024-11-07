@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { fetchAllProducts } from "@/lib/data";
-import { EditIcon, LucideStar, LucideStarOff } from "lucide-react";
+import { EditIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ActivateSwitch from "./components/activate-product";

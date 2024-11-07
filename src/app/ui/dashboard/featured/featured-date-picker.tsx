@@ -19,22 +19,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { setFeaturedDates } from "@/lib/actions";
+import { formatDate } from "@/lib/utils";
 import {
   CalendarCheck,
   CalendarIcon,
   LoaderPinwheelIcon,
-  SaveAllIcon,
   SaveIcon,
 } from "lucide-react";
 import { useState } from "react";
 
 interface DatePickerProps {
   initialStartDate: Date;
-  initialEndDate?: Date;
+  initialEndDate: Date | null;
   productId: string;
 }
-
-//(!!) not selecting correct dates yet on submit
 
 const DatePicker = ({
   initialStartDate,
@@ -42,7 +40,7 @@ const DatePicker = ({
   productId,
 }: DatePickerProps) => {
   const [startDate, setStartDate] = useState<Date>(initialStartDate);
-  const [endDate, setEndDate] = useState<Date | undefined>(initialEndDate);
+  const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [startDateError, setStartDateError] = useState("");
   const [endDateError, setEndDateError] = useState("");
@@ -57,26 +55,19 @@ const DatePicker = ({
     setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 300));
 
-    // normalize dates before submission to remove time discrepancies
-    const normalizedStartDate = new Date(startDate.setHours(0, 0, 0, 0));
-    const normalizedEndDate = endDate
-      ? new Date(endDate.setHours(0, 0, 0, 0))
-      : undefined;
+    const startDateStr = formatDate(startDate);
+    const endDateStr = endDate ? formatDate(endDate) : null;
 
-    // // Normalize the dates to local midnight and format as 'YYYY-MM-DD'
-    // const normalizeDate = (date: Date) => {
-    //   const normalizedDate = new Date(date);
-    //   normalizedDate.setHours(0, 0, 0, 0); // Set to midnight
-    //   return normalizedDate.toLocaleDateString("en-CA"); // Formats as 'YYYY-MM-DD'
-    // };
+    console.log(`START: ${startDateStr}, END: ${endDateStr}`);
 
-    // const normalizedStartDate = normalizeDate(startDate);
-    // const normalizedEndDate = endDate ? normalizeDate(endDate) : null;
+    // setIsLoading(false);
+    // return;
 
     try {
-      await setFeaturedDates(productId, normalizedStartDate, normalizedEndDate);
+      await setFeaturedDates(productId, startDateStr, endDateStr);
       setIsDialogOpen(false);
     } catch (error) {
+      console.error("Error submitting dates: ", error);
       setError("Something went wrong, please try again.");
     } finally {
       setIsLoading(false);
@@ -97,6 +88,7 @@ const DatePicker = ({
     const normalizedInitialStartDate = new Date(
       initialStartDate.setHours(0, 0, 0, 0)
     );
+
     // get timestamp for todays date
     const today = new Date().setHours(0, 0, 0, 0);
 
@@ -106,7 +98,7 @@ const DatePicker = ({
       (normalizedDay.getTime() >= today ||
         normalizedDay.getTime() === normalizedInitialStartDate.getTime())
     ) {
-      setStartDate(day);
+      setStartDate(normalizedDay);
     } else {
       setStartDateError("Please select a future date");
     }
@@ -212,7 +204,7 @@ const DatePicker = ({
               <PopoverContent>
                 <Calendar
                   mode="single"
-                  selected={endDate}
+                  selected={endDate ? endDate : undefined}
                   onSelect={(day) => handleEndDate(day)}
                 />
               </PopoverContent>

@@ -27,7 +27,7 @@ const Page = () => {
           </Link>
         </div>
       </div>
-      <div className="mt-5">
+      <div className="my-5">
         <Suspense fallback={<ProductTableSkeleton />}>
           <FeaturedTable />
         </Suspense>

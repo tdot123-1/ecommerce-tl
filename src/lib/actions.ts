@@ -413,10 +413,11 @@ export async function toggleFeaturedProduct(
   }
 }
 
+// update dates on featured products
 export async function setFeaturedDates(
   product_id: string,
-  startDate: Date,
-  endDate: Date | undefined
+  startDate: string,
+  endDate: string | null
 ) {
   const session = await auth();
 
@@ -424,14 +425,12 @@ export async function setFeaturedDates(
     throw new Error("Unauthorized");
   }
 
+  console.log(`START: ${startDate}, END: ${endDate}`);
+
   try {
-    // normalize startDate and endDate to correct SQL date format (YYYY-MM-DD)
-    const startDateStr = startDate.toISOString().split("T")[0]; // convert to 'YYYY-MM-DD'
-    const endDateStr = endDate ? endDate.toISOString().split("T")[0] : null; // null if endDate is undefined
-    
     await sql`
     UPDATE featured_products 
-    SET start_date = ${startDateStr}, end_date = ${endDateStr}
+    SET start_date = ${startDate}, end_date = ${endDate ?? null}
     WHERE product_id = ${product_id}
     `;
 
