@@ -442,3 +442,27 @@ export async function setFeaturedDates(
     throw new Error("Failed to update dates");
   }
 }
+
+export const AddProductImage = async (productId: string, url: string) => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    await sql`
+    INSERT INTO product_images (product_id, image_url)
+    VALUES (${productId}, ${url})
+    `;
+
+    console.log("IMAGE ADDED");
+
+    revalidatePath(`/dashboard/products/images/edit/${productId}`);
+    revalidatePath(`/products/${productId}`);
+    revalidatePath(`/dashboard/products/images`);
+  } catch (error) {
+    console.error("FAILED TO add image: ", error);
+    throw new Error("Failed to add image");
+  }
+};

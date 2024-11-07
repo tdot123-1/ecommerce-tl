@@ -296,7 +296,6 @@ export const fetchFeaturedProductsDashboard = async () => {
 };
 
 export const fetchAllProductsImages = async (currentPage: number) => {
-
   const session = await auth();
 
   if (!session?.user) {
@@ -323,10 +322,74 @@ export const fetchAllProductsImages = async (currentPage: number) => {
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
-    return data.rows
-    
+    return data.rows;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch product data.");
+  }
+};
+
+export const fetchOneProductImages = async (productId: string) => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    // const data = await sql`
+    // SELECT 
+    //   p.name AS product_name,
+    //   p.image_url AS product_image_url,
+    //   ARRAY_AGG(pi.image_url) AS additional_image_urls
+    // FROM 
+    //   products p
+    // LEFT JOIN 
+    //   product_images pi ON p.id = pi.product_id
+    // WHERE 
+    //   p.id = ${productId}
+    // GROUP BY 
+    //   p.id;
+    // LIMIT 1
+    // `;
+
+    // const data = await sql`
+    //   SELECT * FROM product_images WHERE product_id = ${productId}
+    // `
+
+    const data = await sql`
+    SELECT 
+      p.name AS product_name,
+      p.image_url AS product_image_url,
+      JSON_AGG(
+          JSON_BUILD_OBJECT(
+              'image_url', pi.image_url,
+              'display_order', pi.display_order,
+              'created_at', pi.created_at
+          )
+          ORDER BY pi.display_order 
+      ) AS additional_images
+    FROM 
+      products p
+    LEFT JOIN 
+      product_images pi ON p.id = pi.product_id
+    WHERE 
+      p.id = ${productId}
+    GROUP BY 
+      p.id
+    LIMIT 1
+    `
+
+    if (!data.rowCount) {
+      return null;
+    }
+
+    console.log("IMAGES: ", data.rows[0].additional_images)
+
+    return data.rows[0]
+  } catch (error) {
+    console.error("Database Error:", error);
+    //throw new Error("Failed to fetch product.");
+    return null;
   }
 };

@@ -1,3 +1,4 @@
+import EditImagesSection from "@/app/ui/dashboard/images/edit-images-section";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,6 +10,7 @@ const Page = ({ params }: { params: { productId: string } }) => {
   return (
     <div>
       <h1>Edit images for {productId}</h1>
+      <EditImagesSection productId={productId} />
     </div>
   );
 };
