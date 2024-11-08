@@ -1,9 +1,9 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { EditIcon, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
 
 interface ProductImagesCardProps {
   productId: string;
@@ -48,24 +48,26 @@ const ProductImagesCard = ({
         </div>
       </div>
       <div>
-        <ul>
-          {validImages.length > 0 ? (
-            validImages.map((url, i) => (
-              <li className="text-blue-600 text-sm" key={url}>
-                <Link target="_blank" href={url}>
-                  <div className="flex justify-start items-start gap-1">
-                    {`Image ${i + 1}`}
-                    <SearchIcon size={12} />
-                  </div>
-                </Link>
+        <ScrollArea className="h-24">
+          <ul>
+            {validImages.length > 0 ? (
+              validImages.map((url, i) => (
+                <li className="text-blue-600 text-sm mt-1 w-fit" key={url}>
+                  <Link target="_blank" href={url}>
+                    <div className="flex justify-start items-start gap-1">
+                      {`Image ${i + 1}`}
+                      <SearchIcon size={12} />
+                    </div>
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <li className="text-sm text-zinc-600 dark:text-zinc-400 italic">
+                No secondary images
               </li>
-            ))
-          ) : (
-            <li className="text-sm text-zinc-600 dark:text-zinc-400 italic">
-              No additional images
-            </li>
-          )}
-        </ul>
+            )}
+          </ul>
+        </ScrollArea>
       </div>
     </div>
   );

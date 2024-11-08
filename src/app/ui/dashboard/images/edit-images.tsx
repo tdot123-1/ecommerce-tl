@@ -1,11 +1,11 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import ImageUpload from "../forms/components/image-upload";
 import UploadSection from "./upload-section";
 import Link from "next/link";
 import { SearchIcon } from "lucide-react";
 import { montserrat } from "../../fonts";
+import ScrollToUploadButton from "./scroll-to-upload-btn";
 
 interface ImageObject {
   image_url: string;
@@ -27,8 +27,8 @@ const EditImages = ({
   images,
 }: EditImagesProps) => {
   return (
-    <section>
-      <div className="flex justify-center items-center p-4 gap-10 border-b border-zinc-300">
+    <>
+      <div className="flex justify-center items-center p-4 gap-10">
         <div className="w-40 relative">
           <AspectRatio ratio={8 / 9}>
             <Image
@@ -43,10 +43,18 @@ const EditImages = ({
             />
           </AspectRatio>
         </div>
-        <h2 className={`${montserrat.className} text-xl font-semibold mt-4`}>{name}</h2>
+        <h2 className={`${montserrat.className} text-xl font-semibold mt-4`}>
+          {name}
+        </h2>
       </div>
-      <div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-10">
+      <div className="border-b border-zinc-300 text-sm italic text-zinc-400 dark:border-zinc-600">
+        Secondary images
+      </div>
+      <div className="flex justify-end my-4">
+        <ScrollToUploadButton />
+      </div>
+      <div className="mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10 border-b border-zinc-300 dark:border-zinc-600 pb-10">
           {images && images[0].image_url ? (
             images.map((image) => (
               <div
@@ -69,7 +77,11 @@ const EditImages = ({
                     </AspectRatio>
                   </div>
                   <div className="text-sm">
-                    <Link target="_blank" href={image.image_url} className="text-blue-600 font-semibold">
+                    <Link
+                      target="_blank"
+                      href={image.image_url}
+                      className="text-blue-600 font-semibold"
+                    >
                       <div className="flex justify-start items-start gap-1">
                         Zoom in <SearchIcon size={12} />
                       </div>
@@ -95,9 +107,12 @@ const EditImages = ({
             <p>No additional images yet</p>
           )}
         </div>
-        <UploadSection productId={productId} />
+        <div className="md:w-fit mx-auto">
+          <h3 className="text-lg mb-4 underline">Add Secondary Images</h3>
+          <UploadSection productId={productId} />
+        </div>
       </div>
-    </section>
+    </>
   );
 };
 

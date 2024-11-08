@@ -60,20 +60,20 @@ const UploadSection = ({ productId }: UploadSectionProps) => {
 
   return (
     <>
-      <form className="mb-4" onSubmit={handleSubmit}>
-        <div className="flex items-end justify-start gap-2">
-          <div>
+      <form className="mb-5" onSubmit={handleSubmit}>
+        <div className="flex flex-col items-center md:flex-row md:items-end justify-start gap-2">
+          <div className="w-full md:w-fit">
             <Label htmlFor="image-upload">Upload Image</Label>
             <Input
               name="image-upload"
               id="image-upload"
               ref={inputFileRef}
-              className="ml-4 cursor-pointer disabled:cursor-wait"
+              className="md:ml-4 cursor-pointer disabled:cursor-wait"
               type="file"
               disabled={isLoading}
             />
           </div>
-          <Button type="submit" className="ml-4" disabled={isLoading}>
+          <Button type="submit" className="md:ml-4" disabled={isLoading}>
             <div className="flex justify-center items-center gap-2">
               {isLoading ? (
                 <LoaderPinwheelIcon size={20} className="animate-spin" />

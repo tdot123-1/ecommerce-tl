@@ -304,6 +304,9 @@ export const fetchAllProductsImages = async (currentPage: number) => {
 
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
+  // test for skeleton/suspense
+  // await new Promise((resolve) => setTimeout(resolve, 5000));
+
   try {
     const data = await sql`
       SELECT
@@ -338,17 +341,17 @@ export const fetchOneProductImages = async (productId: string) => {
 
   try {
     // const data = await sql`
-    // SELECT 
+    // SELECT
     //   p.name AS product_name,
     //   p.image_url AS product_image_url,
     //   ARRAY_AGG(pi.image_url) AS additional_image_urls
-    // FROM 
+    // FROM
     //   products p
-    // LEFT JOIN 
+    // LEFT JOIN
     //   product_images pi ON p.id = pi.product_id
-    // WHERE 
+    // WHERE
     //   p.id = ${productId}
-    // GROUP BY 
+    // GROUP BY
     //   p.id;
     // LIMIT 1
     // `;
@@ -378,15 +381,15 @@ export const fetchOneProductImages = async (productId: string) => {
     GROUP BY 
       p.id
     LIMIT 1
-    `
+    `;
 
     if (!data.rowCount) {
       return null;
     }
 
-    console.log("IMAGES: ", data.rows[0].additional_images)
+    console.log("IMAGES: ", data.rows[0].additional_images);
 
-    return data.rows[0]
+    return data.rows[0];
   } catch (error) {
     console.error("Database Error:", error);
     //throw new Error("Failed to fetch product.");

@@ -12,14 +12,14 @@ const EditImagesSection = async ({ productId }: EditImagesSectionProps) => {
   if (!product) notFound();
 
   return (
-    <div>
+    <section className="my-5">
       <EditImages
         name={product.product_name}
         image_url={product.product_image_url}
         productId={productId}
         images={product.additional_images}
       />
-    </div>
+    </section>
   );
 };
 

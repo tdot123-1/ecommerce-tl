@@ -1,6 +1,6 @@
 import PaginationWrapper from "@/app/ui/customer/pagination-wrapper";
 import ProductsGrid from "@/app/ui/dashboard/images/products-grid";
-import ProductListSkeleton from "@/app/ui/skeletons/products-list-skeleton";
+import ProductGridSkeleton from "@/app/ui/skeletons/product-grid-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Metadata } from "next";
 import { Suspense } from "react";
@@ -18,7 +18,7 @@ const Page = async (props: { searchParams?: Promise<{ page?: string }> }) => {
     <div>
       <h1>Product Images</h1>
       <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-10">
-        <Suspense fallback={<ProductListSkeleton />}>
+        <Suspense fallback={<ProductGridSkeleton />}>
           <ProductsGrid currentPage={currentPage} />
         </Suspense>
       </section>
