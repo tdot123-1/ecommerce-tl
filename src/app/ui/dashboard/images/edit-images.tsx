@@ -6,8 +6,11 @@ import Link from "next/link";
 import { SearchIcon } from "lucide-react";
 import { montserrat } from "../../fonts";
 import ScrollToUploadButton from "./scroll-to-upload-btn";
+import ChangeDisplayOrderButton from "./change-display-btn";
+import SetPrimaryImage from "./set-primary-image";
 
 interface ImageObject {
+  image_id: string;
   image_url: string;
   display_order: number;
   created_at: string;
@@ -97,8 +100,16 @@ const EditImages = ({
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 mt-2 md:mt-0">
-                  <Button variant={`default`}>Change Display Order</Button>
-                  <Button variant={`default`}>Set as Primary</Button>
+                  <ChangeDisplayOrderButton
+                    productId={productId}
+                    imageId={image.image_id}
+                  />
+                  <SetPrimaryImage
+                    primaryUrl={image_url}
+                    secondaryUrl={image.image_url}
+                    productId={productId}
+                    imageId={image.image_id}
+                  />
                   <Button variant={`destructive`}>Delete</Button>
                 </div>
               </div>

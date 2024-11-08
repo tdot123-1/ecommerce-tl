@@ -366,6 +366,7 @@ export const fetchOneProductImages = async (productId: string) => {
       p.image_url AS product_image_url,
       JSON_AGG(
           JSON_BUILD_OBJECT(
+              'image_id', pi.id,
               'image_url', pi.image_url,
               'display_order', pi.display_order,
               'created_at', pi.created_at
@@ -386,8 +387,6 @@ export const fetchOneProductImages = async (productId: string) => {
     if (!data.rowCount) {
       return null;
     }
-
-    console.log("IMAGES: ", data.rows[0].additional_images);
 
     return data.rows[0];
   } catch (error) {

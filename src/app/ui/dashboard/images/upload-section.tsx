@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { upload } from "@vercel/blob/client";
 import { PutBlobResult } from "@vercel/blob";
-import { AddProductImage } from "@/lib/actions";
+import { addProductImage } from "@/lib/actions";
 
 interface UploadSectionProps {
   productId: string;
@@ -43,7 +43,7 @@ const UploadSection = ({ productId }: UploadSectionProps) => {
       setBlob(newBlob);
       console.log(blob);
 
-      AddProductImage(productId, newBlob.url);
+      addProductImage(productId, newBlob.url);
 
       //   setImageUrl(newBlob.url);
     } catch (error) {

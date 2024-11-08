@@ -26,7 +26,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         >
           <Header />
           <Navbar />
-          <main className="min-h-screen mx-5">{children}</main>
+          <main className="min-h-[calc(100vh-80px)] mx-5">{children}</main>
         </ThemeProvider>
       </body>
     </html>
