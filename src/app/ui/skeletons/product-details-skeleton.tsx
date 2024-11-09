@@ -6,6 +6,7 @@ const DetailsSkeleton = () => {
       <div>
         <Skeleton className="w-72 sm:w-80 h-80 rounded-lg" />
       </div>
+      <div className="w-32"></div>
       <div className="w-48 flex flex-col gap-5 mb-8">
         <Skeleton className="w-48 h-8" />
         <Skeleton className="w-48 h-5" />

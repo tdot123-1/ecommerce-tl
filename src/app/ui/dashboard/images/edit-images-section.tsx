@@ -1,4 +1,4 @@
-import { fetchOneProductImages } from "@/lib/data";
+import { fetchOneProductImagesDashboard } from "@/lib/data";
 import { notFound } from "next/navigation";
 import EditImages from "./edit-images";
 
@@ -7,7 +7,7 @@ interface EditImagesSectionProps {
 }
 
 const EditImagesSection = async ({ productId }: EditImagesSectionProps) => {
-  const product = await fetchOneProductImages(productId);
+  const product = await fetchOneProductImagesDashboard(productId);
 
   if (!product) notFound();
 

@@ -7,6 +7,8 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { capitalize, formatPrice } from "@/lib/utils";
 import ProductImages from "./product-images";
+import { Suspense } from "react";
+import SecondaryImgSkeleton from "../../skeletons/secondary-img-skeleton";
 
 interface ProductDetailsProps {
   productId: string;
@@ -36,7 +38,9 @@ const ProductDetails = async ({ productId }: ProductDetailsProps) => {
         </AspectRatio>
       </div>
       <div>
-        <ProductImages />
+        <Suspense fallback={<SecondaryImgSkeleton />}>
+          <ProductImages productId={productId} />
+        </Suspense>
       </div>
       <article className="w-48 flex flex-col gap-5 mb-8">
         <h2 className={`text-2xl ${montserrat.className} font-semibold`}>
@@ -45,9 +49,7 @@ const ProductDetails = async ({ productId }: ProductDetailsProps) => {
         <p className="text-sm">{product.description}</p>
         <p className="italic">{capitalize(product.category)}</p>
         <Badge className="w-fit text-md">{formatPrice(product.price)}</Badge>
-        <AddToBasket
-          product={product}
-        />
+        <AddToBasket product={product} />
       </article>
     </>
   );

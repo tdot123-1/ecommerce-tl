@@ -111,7 +111,7 @@ export const fetchOneProduct = async (productId: string) => {
 export const fetchOneActiveProduct = async (productId: string) => {
   try {
     // test for skeleton/suspense
-    // await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     const data = await sql`
       SELECT name, price, sizes, category, description, image_url, currency, stripe_price_id, stripe_product_id FROM products 
@@ -332,7 +332,7 @@ export const fetchAllProductsImages = async (currentPage: number) => {
   }
 };
 
-export const fetchOneProductImages = async (productId: string) => {
+export const fetchOneProductImagesDashboard = async (productId: string) => {
   const session = await auth();
 
   if (!session?.user) {
@@ -373,5 +373,21 @@ export const fetchOneProductImages = async (productId: string) => {
     console.error("Database Error:", error);
     //throw new Error("Failed to fetch product.");
     return null;
+  }
+};
+
+export const fetchOneProductImages = async (productId: string) => {
+  try {
+    const data = await sql`
+    SELECT image_url 
+    FROM product_images
+    WHERE product_id = ${productId}
+    ORDER BY display_order
+    `;
+
+    return data.rows.length ? data.rows : [];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch images.");
   }
 };
