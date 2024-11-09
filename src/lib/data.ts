@@ -111,7 +111,7 @@ export const fetchOneProduct = async (productId: string) => {
 export const fetchOneActiveProduct = async (productId: string) => {
   try {
     // test for skeleton/suspense
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
 
     const data = await sql`
       SELECT name, price, sizes, category, description, image_url, currency, stripe_price_id, stripe_product_id FROM products 

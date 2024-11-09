@@ -41,11 +41,9 @@ const UploadSection = ({ productId }: UploadSectionProps) => {
       });
 
       setBlob(newBlob);
-      // console.log(blob);
+      console.log(blob);
 
       addProductImage(productId, newBlob.url);
-
-      //   setImageUrl(newBlob.url);
     } catch (error) {
       console.error("ERROR UPLOADING FILE: ", error);
       setError("Something went wrong.");

@@ -1,6 +1,4 @@
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import Image from "next/image";
 import SecondaryImg from "./secondary-img";
 import { fetchOneProductImages } from "@/lib/data";
 

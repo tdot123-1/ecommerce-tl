@@ -1,5 +1,6 @@
 import PaginationWrapper from "@/app/ui/customer/pagination-wrapper";
 import ProductsGrid from "@/app/ui/dashboard/images/products-grid";
+import { montserrat } from "@/app/ui/fonts";
 import ProductGridSkeleton from "@/app/ui/skeletons/product-grid-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Metadata } from "next";
@@ -16,7 +17,9 @@ const Page = async (props: { searchParams?: Promise<{ page?: string }> }) => {
 
   return (
     <>
-      <h1>Product Images</h1>
+      <h1 className={`${montserrat.className} text-xl font-semibold mt-4`}>
+        Product Images
+      </h1>
       <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-10">
         <Suspense fallback={<ProductGridSkeleton />}>
           <ProductsGrid currentPage={currentPage} />
