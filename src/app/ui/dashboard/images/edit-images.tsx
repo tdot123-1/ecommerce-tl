@@ -8,6 +8,7 @@ import { montserrat } from "../../fonts";
 import ScrollToUploadButton from "./scroll-to-upload-btn";
 import ChangeDisplayOrderButton from "./change-display-btn";
 import SetPrimaryImage from "./set-primary-image";
+import DeleteImgButton from "./delete-image-btn";
 
 interface ImageObject {
   image_id: string;
@@ -110,7 +111,11 @@ const EditImages = ({
                     productId={productId}
                     imageId={image.image_id}
                   />
-                  <Button variant={`destructive`}>Delete</Button>
+                  <DeleteImgButton
+                    imageId={image.image_id}
+                    productId={productId}
+                    imageUrl={image.image_url}
+                  />
                 </div>
               </div>
             ))

@@ -340,26 +340,6 @@ export const fetchOneProductImages = async (productId: string) => {
   }
 
   try {
-    // const data = await sql`
-    // SELECT
-    //   p.name AS product_name,
-    //   p.image_url AS product_image_url,
-    //   ARRAY_AGG(pi.image_url) AS additional_image_urls
-    // FROM
-    //   products p
-    // LEFT JOIN
-    //   product_images pi ON p.id = pi.product_id
-    // WHERE
-    //   p.id = ${productId}
-    // GROUP BY
-    //   p.id;
-    // LIMIT 1
-    // `;
-
-    // const data = await sql`
-    //   SELECT * FROM product_images WHERE product_id = ${productId}
-    // `
-
     const data = await sql`
     SELECT 
       p.name AS product_name,

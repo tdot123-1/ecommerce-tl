@@ -565,7 +565,7 @@ export const swapPrimaryImage = async (
         "Failed to delete the secondary image. Image not found or mismatch."
       );
     }
-    
+
     await client.sql`COMMIT`;
 
     revalidatePath(`/dashboard/products/images/edit/${product_id}`);
@@ -586,5 +586,40 @@ export const swapPrimaryImage = async (
     };
   } finally {
     client.release();
+  }
+};
+
+export const deleteSecondaryImage = async (
+  blobUrl: string,
+  imageId: string,
+  productId: string
+) => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    await deleteImageFromStore(blobUrl);
+
+    const deleteResult = await sql`
+    DELETE FROM product_images
+    WHERE id = ${imageId}
+    RETURNING id
+    `;
+
+    if (deleteResult.rowCount === 0) {
+      throw new Error(
+        "Failed to delete the secondary image. Image not found or mismatch."
+      );
+    }
+
+    revalidatePath(`/products/${productId}`);
+    revalidatePath(`/dashboard/products/images/edit/${productId}`);
+    revalidatePath(`/dashboard/products/images`);
+  } catch (error) {
+    console.error("FAILED TO delete image: ", error);
+    throw new Error("Failed to delete image");
   }
 };

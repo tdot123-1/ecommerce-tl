@@ -41,7 +41,7 @@ const UploadSection = ({ productId }: UploadSectionProps) => {
       });
 
       setBlob(newBlob);
-      console.log(blob);
+      // console.log(blob);
 
       addProductImage(productId, newBlob.url);
 
