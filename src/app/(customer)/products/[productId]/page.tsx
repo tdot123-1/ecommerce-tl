@@ -5,7 +5,6 @@ import DetailsSkeleton from "@/app/ui/skeletons/product-details-skeleton";
 import { Suspense } from "react";
 
 const Page = ({ params }: { params: { productId: string } }) => {
-  // console.log(params);
   const { productId } = params;
 
   return (

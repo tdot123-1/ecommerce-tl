@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { capitalize, formatPrice } from "@/lib/utils";
+import ProductImages from "./product-images";
 
 interface ProductDetailsProps {
   productId: string;
@@ -33,6 +34,9 @@ const ProductDetails = async ({ productId }: ProductDetailsProps) => {
             className="rounded-lg"
           />
         </AspectRatio>
+      </div>
+      <div>
+        <ProductImages />
       </div>
       <article className="w-48 flex flex-col gap-5 mb-8">
         <h2 className={`text-2xl ${montserrat.className} font-semibold`}>
