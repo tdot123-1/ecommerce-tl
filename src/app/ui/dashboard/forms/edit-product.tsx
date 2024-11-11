@@ -86,7 +86,7 @@ const Form = ({ product }: EditFormProps) => {
     <>
     {/* only allow image upload if previous image has been deleted first */}
       {imageChange ? (
-        <ImageUpload setImageUrl={setImageUrl} />
+        <ImageUpload setImageUrl={setImageUrl} imageUrl={imageUrl} />
       ) : (
         <DeleteImage
           imageUrl={product.image_url}
