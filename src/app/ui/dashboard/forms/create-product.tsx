@@ -15,11 +15,11 @@ import { createProduct, State } from "@/lib/actions";
 import { categories } from "@/lib/categories";
 import { capitalize } from "@/lib/utils";
 import { LoaderPinwheelIcon, PlusCircleIcon } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SizesInput from "./components/sizes-input";
 import ImageUpload from "./components/image-upload";
+import CancelButton from "./components/cancel-create-btn";
 
 const Form = () => {
   // keep track of errors in form state
@@ -226,11 +226,11 @@ const Form = () => {
         </div>
         <div className="flex flex-col justify-center items-center">
           <div className="flex justify-center items-center gap-5">
-            <Link href="/dashboard/products">
-              <Button variant="destructive" disabled={isLoading}>
-                Cancel
-              </Button>
-            </Link>
+            <CancelButton
+              imageUrl={imageUrl}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+            />
             <Button type="submit" disabled={isLoading}>
               <div className="flex justify-center items-center gap-2">
                 {isLoading ? (

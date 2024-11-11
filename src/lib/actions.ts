@@ -61,7 +61,7 @@ export async function createProduct(formData: FormData) {
   // get raw form data
   const rawFormData = Object.fromEntries(formData.entries());
 
-  console.log("FORM: ", rawFormData);
+  // console.log("FORM: ", rawFormData);
 
   // validate form fields
   const validatedFields = CreateProduct.safeParse(rawFormData);
@@ -355,6 +355,8 @@ export async function deleteProduct(id: string) {
 
 export async function deleteImageFromStore(blobUrl: string) {
   const session = await auth();
+
+  // throw new Error("test")
 
   if (!session?.user) {
     throw new Error("Unauthorized");

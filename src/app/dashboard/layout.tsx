@@ -4,6 +4,7 @@ import "../globals.css";
 import Header from "../ui/dashboard/header";
 import Navbar from "../ui/dashboard/navbar/navbar";
 import { Metadata } from "next";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: {
@@ -27,6 +28,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <Header />
           <Navbar />
           <main className="min-h-[calc(100vh-80px)] mx-5">{children}</main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
