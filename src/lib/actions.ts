@@ -625,3 +625,35 @@ export const deleteSecondaryImage = async (
     throw new Error("Failed to delete image");
   }
 };
+
+
+// (!) clean up orphaned blobs
+// (!) could be useful in future, currently not used
+// (!) still need to create table to store urls for orphaned blobs
+// (!) when in use -> create vercel.json for cron job
+
+// export const cleanupOrphanedBlobs = async () => {
+//   try {
+//     const result = await sql`
+//     SELECT id, image_url
+//     FROM orphaned_blobs
+//     `;
+
+//     if (result.rows.length > 0) {
+//       const deletePromises = result.rows.map(async (row) => {
+//         try {
+//           await del(row.image_url);
+//           await sql`DELETE FROM orphaned_blobs WHERE id = ${row.id}`;
+//           console.log(`Successfully deleted blob: ${row.id}`);
+//         } catch (error) {
+//           console.error(`Failed to delete blob: ${row.image_url}`, error);
+//         }
+//       });
+
+//       await Promise.allSettled(deletePromises);
+//     }
+//   } catch (error) {
+//     console.error("FAILED TO delete orphaned blobs: ", error);
+//     throw new Error("Failure to delete orphaned blobs");
+//   }
+// };

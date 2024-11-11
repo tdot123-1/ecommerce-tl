@@ -57,7 +57,7 @@ const Form = () => {
 
   return (
     <>
-      <ImageUpload setImageUrl={setImageUrl} />
+      <ImageUpload setImageUrl={setImageUrl} imageUrl={imageUrl} />
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <Label htmlFor="name">Name</Label>

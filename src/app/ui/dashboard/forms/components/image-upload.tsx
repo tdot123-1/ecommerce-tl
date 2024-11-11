@@ -7,12 +7,14 @@ import { ExternalLinkIcon, LoaderPinwheelIcon, UploadIcon } from "lucide-react";
 import { type PutBlobResult } from "@vercel/blob";
 import { useRef, useState } from "react";
 import { upload } from "@vercel/blob/client";
+import { deleteImageFromStore } from "@/lib/actions";
 
 interface ImageUploadProps {
   setImageUrl: React.Dispatch<React.SetStateAction<string>>;
+  imageUrl: string;
 }
 
-const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
+const ImageUpload = ({ setImageUrl, imageUrl }: ImageUploadProps) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +36,11 @@ const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
 
     // attempt to upload file to blob store
     try {
+      // check if an image had already been uploaded -> delete blob if so
+      if (imageUrl) {
+        await deleteImageFromStore(imageUrl)
+      }
+      
       const newBlob = await upload(file.name, file, {
         access: "public",
         handleUploadUrl: "/api/images/upload",
