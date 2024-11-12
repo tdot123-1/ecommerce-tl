@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { deleteImageFromStore, editProduct, State } from "@/lib/actions";
 import { categories } from "@/lib/categories";
 import { EditableProduct } from "@/lib/types";
 import { capitalize } from "@/lib/utils";
@@ -22,6 +21,8 @@ import SizesInput from "./components/sizes-input";
 import { useRouter } from "next/navigation";
 import ImageUpload from "./components/image-upload";
 import DeleteImage from "./components/image-delete";
+import { editProduct, State } from "@/lib/actions/products/actions";
+import { deleteImageFromStore } from "@/lib/actions/images/actions";
 
 interface EditFormProps {
   product: EditableProduct;

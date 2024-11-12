@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { upload } from "@vercel/blob/client";
 import { PutBlobResult } from "@vercel/blob";
-import { addProductImage } from "@/lib/actions";
+import { addProductImage } from "@/lib/actions/images/actions";
 
 interface UploadSectionProps {
   productId: string;

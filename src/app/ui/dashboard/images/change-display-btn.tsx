@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { changeDisplayOrder } from "@/lib/actions";
+import { changeDisplayOrder } from "@/lib/actions/images/actions";
 import { LoaderPinwheelIcon, SaveIcon } from "lucide-react";
 import { useState } from "react";
 

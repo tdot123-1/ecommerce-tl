@@ -7,7 +7,7 @@ import { ExternalLinkIcon, LoaderPinwheelIcon, UploadIcon } from "lucide-react";
 import { type PutBlobResult } from "@vercel/blob";
 import { useRef, useState } from "react";
 import { upload } from "@vercel/blob/client";
-import { deleteImageFromStore } from "@/lib/actions";
+import { deleteImageFromStore } from "@/lib/actions/images/actions";
 
 interface ImageUploadProps {
   setImageUrl: React.Dispatch<React.SetStateAction<string>>;

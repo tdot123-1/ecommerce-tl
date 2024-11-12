@@ -1,7 +1,7 @@
 "use client";
 
 import { Switch } from "@/components/ui/switch";
-import { deactivateProduct } from "@/lib/actions";
+import { deactivateProduct } from "@/lib/actions/products/actions";
 import { useState } from "react";
 
 interface ActivateSwitchProps {

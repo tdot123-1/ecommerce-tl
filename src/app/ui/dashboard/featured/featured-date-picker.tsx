@@ -18,7 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { setFeaturedDates } from "@/lib/actions";
+import { setFeaturedDates } from "@/lib/actions/featured/actions";
 import { formatDate } from "@/lib/utils";
 import {
   CalendarCheck,

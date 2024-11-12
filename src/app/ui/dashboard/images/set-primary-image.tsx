@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { swapPrimaryImage } from "@/lib/actions";
+import { swapPrimaryImage } from "@/lib/actions/images/actions";
 import { ImagePlusIcon, LoaderPinwheelIcon } from "lucide-react";
 import { useState } from "react";
 

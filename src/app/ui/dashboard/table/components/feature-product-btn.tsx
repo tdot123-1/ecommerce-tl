@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { toggleFeaturedProduct } from "@/lib/actions";
+import { toggleFeaturedProduct } from "@/lib/actions/featured/actions";
 import { LucideStar, LucideStarOff } from "lucide-react";
 import { useState } from "react";
 

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { deleteImageFromStore } from "@/lib/actions";
+import { deleteImageFromStore } from "@/lib/actions/images/actions";
 import { useRouter } from "next/navigation";
 
 interface CancelButtonProps {

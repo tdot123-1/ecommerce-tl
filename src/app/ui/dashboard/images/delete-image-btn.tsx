@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { deleteSecondaryImage } from "@/lib/actions";
+import { deleteSecondaryImage } from "@/lib/actions/images/actions";
 import { LoaderPinwheelIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 

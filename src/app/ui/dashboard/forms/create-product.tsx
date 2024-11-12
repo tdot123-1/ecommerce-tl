@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { createProduct, State } from "@/lib/actions";
+
 import { categories } from "@/lib/categories";
 import { capitalize } from "@/lib/utils";
 import { LoaderPinwheelIcon, PlusCircleIcon } from "lucide-react";
@@ -20,6 +20,7 @@ import { useState } from "react";
 import SizesInput from "./components/sizes-input";
 import ImageUpload from "./components/image-upload";
 import CancelButton from "./components/cancel-create-btn";
+import { createProduct, State } from "@/lib/actions/products/actions";
 
 const Form = () => {
   // keep track of errors in form state

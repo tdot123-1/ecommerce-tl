@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { deleteProduct } from "@/lib/actions";
+import { deleteProduct } from "@/lib/actions/products/actions";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 
