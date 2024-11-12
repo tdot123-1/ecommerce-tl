@@ -6,16 +6,6 @@ import { useShoppingCart } from "use-shopping-cart";
 const ClearCart = () => {
   const { clearCart } = useShoppingCart();
 
-  // const clearCartCallback = useCallback(() => {
-  //   clearCart();
-  //   localStorage.removeItem("persist:root");
-  // }, [clearCart]);
-
-  // // clear cart from local storage on succesful payment.
-  // useEffect(() => {
-  //   clearCartCallback();
-  // }, [clearCartCallback]);
-
   // clear cart from local storage on successful payment
   useEffect(() => {
     // use setTimeout to defer the cart clearing logic and break the update loop

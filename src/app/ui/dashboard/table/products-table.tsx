@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { fetchAllProducts } from "@/lib/data";
 import { EditIcon, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,6 +16,7 @@ import DeleteButton from "./components/delete-product";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { formatPrice } from "@/lib/utils";
 import FeatureButton from "./components/feature-product-btn";
+import { fetchAllProducts } from "@/lib/data/products/dashboard/data";
 
 interface ProductsTableProps {
   currentPage: number;

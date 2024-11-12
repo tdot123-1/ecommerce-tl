@@ -1,4 +1,3 @@
-import { fetchOneActiveProduct } from "@/lib/data";
 import Image from "next/image";
 import { montserrat } from "../../fonts";
 import AddToBasket from "../basket/add-to-basket";
@@ -9,6 +8,7 @@ import { capitalize, formatPrice } from "@/lib/utils";
 import ProductImages from "./product-images";
 import { Suspense } from "react";
 import SecondaryImgSkeleton from "../../skeletons/secondary-img-skeleton";
+import { fetchOneActiveProduct } from "@/lib/data/products/store/data";
 
 interface ProductDetailsProps {
   productId: string;

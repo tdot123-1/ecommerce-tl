@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { fetchFeaturedProducts } from "@/lib/data";
+import { fetchFeaturedProducts } from "@/lib/data/products/store/data";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";

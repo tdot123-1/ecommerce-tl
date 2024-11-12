@@ -3,8 +3,13 @@ import { montserrat } from "@/app/ui/fonts";
 import ProductTableSkeleton from "@/app/ui/skeletons/product-table-skeleton";
 import { Button } from "@/components/ui/button";
 import { LucideStar } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Featured",
+};
 
 const Page = () => {
   return (

@@ -1,4 +1,5 @@
-import { fetchActiveProducts, fetchProductsByCategory } from "@/lib/data";
+
+import { fetchActiveProducts, fetchProductsByCategory } from "@/lib/data/products/store/data";
 import ProductCard from "./product-card";
 import { notFound } from "next/navigation";
 

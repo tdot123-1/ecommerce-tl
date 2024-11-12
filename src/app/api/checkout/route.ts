@@ -1,5 +1,4 @@
-
-import { fetchPriceValidationProducts } from "@/lib/data";
+import { fetchPriceValidationProducts } from "@/lib/data/products/store/data";
 import { stripe } from "@/lib/stripe-object";
 import { CartItem } from "@/lib/types";
 import { validateCart } from "@/lib/utils";

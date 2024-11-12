@@ -1,6 +1,6 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import SecondaryImg from "./secondary-img";
-import { fetchOneProductImages } from "@/lib/data";
+import { fetchOneProductImages } from "@/lib/data/images/store/data";
 
 interface ProductImagesProps {
   productId: string;

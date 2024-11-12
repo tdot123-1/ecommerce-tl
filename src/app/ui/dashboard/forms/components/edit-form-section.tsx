@@ -1,6 +1,6 @@
-import { fetchOneProduct } from "@/lib/data";
 import { notFound } from "next/navigation";
 import Form from "../edit-product";
+import { fetchOneProduct } from "@/lib/data/products/dashboard/data";
 
 interface EditFormSectionProps {
   productId: string;

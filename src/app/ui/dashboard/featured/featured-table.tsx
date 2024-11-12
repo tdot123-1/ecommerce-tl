@@ -8,12 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { fetchFeaturedProductsDashboard } from "@/lib/data";
 import Image from "next/image";
 import FeatureButton from "../table/components/feature-product-btn";
 import DatePicker from "./featured-date-picker";
 import clsx from "clsx";
 import { checkDeadline } from "@/lib/utils";
+import { fetchFeaturedProductsDashboard } from "@/lib/data/products/dashboard/data";
 
 const FeaturedTable = async () => {
   const featuredProducts = await fetchFeaturedProductsDashboard();
@@ -51,7 +51,9 @@ const FeaturedTable = async () => {
                   </AspectRatio>
                 </div>
               </TableCell>
-              <TableCell className={clsx({ "text-red-600 line-through": index > 5 })}>
+              <TableCell
+                className={clsx({ "text-red-600 line-through": index > 5 })}
+              >
                 {product.name}
               </TableCell>
               <TableCell>

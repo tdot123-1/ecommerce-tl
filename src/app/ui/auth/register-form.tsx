@@ -4,8 +4,7 @@ import { registerUser } from "@/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-import { State } from "@/lib/actions";
+import { State } from "@/lib/actions/products/actions";
 import { LoaderPinwheelIcon, LogInIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

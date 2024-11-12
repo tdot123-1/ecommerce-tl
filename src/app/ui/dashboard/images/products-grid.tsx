@@ -1,4 +1,4 @@
-import { fetchAllProductsImages } from "@/lib/data";
+import { fetchAllProductsImages } from "@/lib/data/images/dashboard/data";
 import ProductImagesCard from "./product-card";
 
 interface ProductsGridProps {

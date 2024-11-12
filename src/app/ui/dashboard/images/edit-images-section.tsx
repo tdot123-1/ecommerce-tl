@@ -1,6 +1,6 @@
-import { fetchOneProductImagesDashboard } from "@/lib/data";
 import { notFound } from "next/navigation";
 import EditImages from "./edit-images";
+import { fetchOneProductImagesDashboard } from "@/lib/data/images/dashboard/data";
 
 interface EditImagesSectionProps {
   productId: string;

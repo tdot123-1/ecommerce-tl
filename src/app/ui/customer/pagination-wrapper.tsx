@@ -1,5 +1,6 @@
+import { fetchActiveProductsPages } from "@/lib/data/pages/store/data";
 import PaginationComponent from "./pagination";
-import { fetchActiveProductsPages, fetchAllProductsPages } from "@/lib/data";
+import { fetchAllProductsPages } from "@/lib/data/pages/dashboard/data";
 
 interface PaginationWrapperProps {
   category?: string | undefined;
@@ -12,6 +13,7 @@ const PaginationWrapper = async ({
 }: PaginationWrapperProps) => {
   let totalPages;
 
+  // fetch the number of pages either for a category, all active products, or all products
   if (category) {
     totalPages = await fetchActiveProductsPages(category);
   } else if (dashboard) {
