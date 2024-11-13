@@ -137,3 +137,26 @@ export const fetchFeaturedProducts = async () => {
     throw new Error("Failed to fetch product data.");
   }
 };
+
+export const fetchAllTags = async () => {
+
+  // test for skeleton/suspense
+  // await new Promise((resolve) => setTimeout(resolve, 5000));
+
+  try {
+    // (!) SELECT ONLY ACTIVE PRODUCTS ///////////////////////////////////////////////
+    const data = await sql`
+      SELECT DISTINCT jsonb_array_elements_text(tags) AS tag
+      FROM products
+    `;
+
+    // console.log(data.rows);
+
+    const tags: string[] = data.rows.map((tag) => tag.tag);
+
+    return tags;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch product data.");
+  }
+};
