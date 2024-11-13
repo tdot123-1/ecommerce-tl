@@ -86,6 +86,12 @@ export const fetchOneProduct = async (productId: string) => {
 
 // FETCH FEATURED PRODUCTS FOR DASHBOARD
 export const fetchFeaturedProductsDashboard = async () => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
   try {
     const data = await sql`
       SELECT fp.id AS featured_id,

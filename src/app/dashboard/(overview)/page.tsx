@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowBigRight, ImageIcon, LucideStar, PlusSquareIcon } from "lucide-react";
+import { ArrowBigRight, ImageIcon, LucideStar, PlusSquareIcon, TagsIcon } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -77,6 +77,22 @@ export default function Page() {
               <div className="flex justify-center items-center gap-1">
                 <span className="italic underline">To product images</span>{" "}
                 <ImageIcon size={24}/>
+              </div>
+            </Link>
+          </CardContent>
+        </Card>
+        <Card className="min-w-full md:min-w-fit">
+          <CardHeader>
+            <CardTitle>Tags</CardTitle>
+            <CardDescription>
+              Adding tags will help the customer more easily find products.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/dashboard/products/tags">
+              <div className="flex justify-center items-center gap-1">
+                <span className="italic underline">To tags overview</span>{" "}
+                <TagsIcon size={24} />
               </div>
             </Link>
           </CardContent>
