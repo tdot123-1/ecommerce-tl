@@ -27,7 +27,9 @@ export const fetchActiveProductsPages = async (
       count = await sql`
         SELECT COUNT(*) FROM products 
         WHERE is_active = true
-        AND tags && ${JSON.stringify(normalizedTags)}::jsonb
+        AND tags ?| (SELECT array(SELECT jsonb_array_elements_text(${JSON.stringify(
+          normalizedTags
+        )}::jsonb)))
         AND category = ${category}`;
     } else if (tags && tags.length > 0) {
       // const normalizedTags = tags.map((tag) => tag.toLowerCase());
@@ -35,7 +37,9 @@ export const fetchActiveProductsPages = async (
       count = await sql`
         SELECT COUNT(*) FROM products 
         WHERE is_active = true
-        AND tags && ${JSON.stringify(normalizedTags)}::jsonb`;
+        AND tags ?| (SELECT array(SELECT jsonb_array_elements_text(${JSON.stringify(
+          normalizedTags
+        )}::jsonb)))`;
     } else if (category) {
       count = await sql`
         SELECT COUNT(*) FROM products 

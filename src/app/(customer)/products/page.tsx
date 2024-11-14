@@ -36,7 +36,7 @@ const Page = async (props: { searchParams?: Promise<{ page?: string, tags?: stri
         </Suspense>
       </section>
       <Suspense fallback={<Skeleton className="h-10 w-2/5 mx-auto" />}>
-        <PaginationWrapper />
+        <PaginationWrapper tags={urlTagsArr} />
       </Suspense>
     </>
   );
