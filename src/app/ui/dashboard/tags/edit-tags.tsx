@@ -4,23 +4,44 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import { montserrat } from "../../fonts";
 import { Badge } from "@/components/ui/badge";
-import { LucideX, PlusCircleIcon, SaveIcon, Tag, TagIcon } from "lucide-react";
+import {
+  LoaderPinwheelIcon,
+  LucideX,
+  PlusCircleIcon,
+  SaveIcon,
+  TagIcon,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { updateTags } from "@/lib/actions/tags/actions";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface EditTagsProps {
+  productId: string;
   name: string;
   imageUrl: string;
   productTags: string[];
   allTags: string[];
 }
 
-const EditTags = ({ name, imageUrl, productTags, allTags }: EditTagsProps) => {
+const EditTags = ({
+  productId,
+  name,
+  imageUrl,
+  productTags,
+  allTags,
+}: EditTagsProps) => {
   const [selectedTags, setSelectedTags] = useState<string[]>(productTags);
   const [availableTags, setAvailableTags] = useState<string[]>(allTags);
   const [tagsInput, setTagsInput] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const router = useRouter();
 
   useEffect(() => {
     const updatedAvailableTags = allTags.filter(
@@ -28,7 +49,7 @@ const EditTags = ({ name, imageUrl, productTags, allTags }: EditTagsProps) => {
     );
 
     setAvailableTags(updatedAvailableTags);
-  }, []);
+  }, [allTags, productTags]);
 
   const handleAddBadge = (selectedBadge: string) => {
     // remove from available tags
@@ -81,6 +102,22 @@ const EditTags = ({ name, imageUrl, productTags, allTags }: EditTagsProps) => {
     setAvailableTags((prevState) => prevState.filter((tag) => tag !== newTag));
 
     setTagsInput("");
+  };
+
+  const handleSaveChanges = async () => {
+    setError("");
+    setIsLoading(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    try {
+      await updateTags(productId, selectedTags);
+      router.push("/dashboard/products/tags");
+    } catch (error) {
+      setError("Something went wrong.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -150,24 +187,36 @@ const EditTags = ({ name, imageUrl, productTags, allTags }: EditTagsProps) => {
                 value={tagsInput}
                 onChange={handleInputChange}
               />
-              <Button
-                variant={`outline`}
-                className="p-2"
-                type="submit"
-              >
+              <Button variant={`outline`} className="p-2" type="submit">
                 <p className="hidden">Add tag</p>
                 <PlusCircleIcon size={24} />
               </Button>
             </div>
           </form>
         </div>
-        <div className="flex justify-center items-center my-6 gap-2 ">
-          <Button variant={`secondary`}>Cancel</Button>
-          <Button>
-            <div className="flex justify-center items-center gap-2">
-              Save Changes <SaveIcon size={20} />
-            </div>
-          </Button>
+        <div className="flex flex-col justify-center items-center w-fit mx-auto my-6">
+          <div className="flex justify-center items-center gap-2">
+            <Link href={`/dashboard/products/tags`}>
+              <Button type="button" variant={`secondary`} disabled={isLoading}>
+                Cancel
+              </Button>
+            </Link>
+            <Button
+              type="button"
+              disabled={isLoading}
+              onClick={handleSaveChanges}
+            >
+              <div className="flex justify-center items-center gap-2">
+                {isLoading ? (
+                  <LoaderPinwheelIcon size={20} className="animate-spin" />
+                ) : (
+                  <SaveIcon size={20} />
+                )}
+                <span>Save Changes</span>
+              </div>
+            </Button>
+          </div>
+          {error && <p className="text-red-600 text-sm italic mt-1">{error}</p>}
         </div>
       </div>
     </>

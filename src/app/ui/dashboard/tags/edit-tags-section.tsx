@@ -18,6 +18,7 @@ const EditTagsSection = async ({ productId }: EditTagsSectionProps) => {
   return (
     <section>
       <EditTags
+        productId={productId}
         name={product.name}
         imageUrl={product.image_url}
         productTags={product.tags}
