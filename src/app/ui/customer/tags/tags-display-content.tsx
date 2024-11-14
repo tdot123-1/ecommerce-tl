@@ -4,6 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import TagCheckbox from "./tag-checkbox";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { SearchIcon, Trash2Icon } from "lucide-react";
 
 interface TagsDisplayContentProps {
   tags: string[];
@@ -32,23 +34,39 @@ const TagsDisplayContent = ({ tags }: TagsDisplayContentProps) => {
 
   return (
     <>
-      <div className="grid grid-cols-4 my-1 w-1/3">
-        <div className="flex items-center gap-2">
-          <Checkbox
-            id="items-filter"
-            checked={allItemsChecked}
-            onChange={handleAllItemsChange}
-          />
-          <Label htmlFor="items-filter">All Items</Label>
+      <div className="w-fit mt-2 ml-2">
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="items-filter"
+              checked={allItemsChecked}
+              onChange={handleAllItemsChange}
+            />
+            <Label htmlFor="items-filter">All Items</Label>
+          </div>
+          {tags.map((tag) => (
+            <TagCheckbox
+              key={tag}
+              tagName={tag}
+              isChecked={checkedTags.includes(tag)}
+              onChange={(isChecked) => handleTagChange(tag, isChecked)}
+            />
+          ))}
         </div>
-        {tags.map((tag) => (
-          <TagCheckbox
-            key={tag}
-            tagName={tag}
-            isChecked={checkedTags.includes(tag)}
-            onChange={(isChecked) => handleTagChange(tag, isChecked)}
-          />
-        ))}
+        <div className="w-fit mx-auto mt-2">
+          <Button
+            size={`sm`}
+            variant={`secondary`}
+            className="rounded-2xl mx-1"
+          >
+            <Trash2Icon size={20} />
+            <p className="ml-1">Clear All</p>
+          </Button>
+          <Button size={`sm`} className="rounded-2xl mx-1">
+            <SearchIcon size={20} />
+            <p className="ml-1">Apply Tags</p>
+          </Button>
+        </div>
       </div>
     </>
   );

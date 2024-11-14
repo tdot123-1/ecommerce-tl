@@ -143,7 +143,6 @@ export const fetchAllActiveTags = async () => {
   // await new Promise((resolve) => setTimeout(resolve, 5000));
 
   try {
-    // (!) SELECT ONLY ACTIVE PRODUCTS ///////////////////////////////////////////////
     const data = await sql`
       SELECT DISTINCT jsonb_array_elements_text(tags) AS tag
       FROM products

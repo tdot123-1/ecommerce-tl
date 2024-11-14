@@ -1,6 +1,6 @@
 import PaginationWrapper from "@/app/ui/customer/pagination-wrapper";
 import ProductList from "@/app/ui/customer/products/products-list";
-import TagsDisplay from "@/app/ui/customer/tags/tags-display";
+import TagsDisplayWrapper from "@/app/ui/customer/tags/tags-display-wrapper";
 import { montserrat } from "@/app/ui/fonts";
 import ProductListSkeleton from "@/app/ui/skeletons/products-list-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,7 +22,7 @@ const Page = async (props: { searchParams?: Promise<{ page?: string }> }) => {
         Full Catalogue
       </h1>
       <Suspense fallback={<Skeleton className="h-10 w-20 rounded-md" />}>
-        <TagsDisplay />
+        <TagsDisplayWrapper />
       </Suspense>
       <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 lg:gap-16 my-10">
         <Suspense fallback={<ProductListSkeleton />}>
