@@ -1,8 +1,18 @@
-import { fetchAllActiveTags } from "@/lib/data/tags/store/data";
+import {
+  fetchActiveTagsByCategory,
+  fetchAllActiveTags,
+} from "@/lib/data/tags/store/data";
 import TagsDisplay from "./tags-display";
 
-const TagsDisplayWrapper = async () => {
-  const tags = await fetchAllActiveTags();
+interface TagsDisplayWrapperProps {
+  category?: string;
+}
+
+const TagsDisplayWrapper = async ({ category }: TagsDisplayWrapperProps) => {
+  const tags = category
+    ? await fetchActiveTagsByCategory(category)
+    : await fetchAllActiveTags();
+
   return (
     <>
       <TagsDisplay tags={tags} />

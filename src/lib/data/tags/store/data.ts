@@ -66,7 +66,9 @@ export const fetchProductsByTags = async (
     const data = await sql`
         SELECT id, name, price, sizes, category, image_url 
         FROM products 
-        WHERE tags ?| (SELECT array(SELECT jsonb_array_elements_text(${JSON.stringify(normalizedTags)}::jsonb)))
+        WHERE tags ?| (SELECT array(SELECT jsonb_array_elements_text(${JSON.stringify(
+          normalizedTags
+        )}::jsonb)))
         AND is_active = true
         ORDER BY updated_at DESC
         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
@@ -97,7 +99,9 @@ export const fetchProductsByCategoryAndTags = async (
         SELECT id, name, price, sizes, category, description, image_url, currency, stripe_price_id FROM products 
         WHERE category = ${category}
         AND is_active = true
-        AND tags ?| (SELECT array(SELECT jsonb_array_elements_text(${JSON.stringify(normalizedTags)}::jsonb)))
+        AND tags ?| (SELECT array(SELECT jsonb_array_elements_text(${JSON.stringify(
+          normalizedTags
+        )}::jsonb)))
         ORDER BY updated_at DESC
         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
@@ -113,5 +117,3 @@ export const fetchProductsByCategoryAndTags = async (
     return null;
   }
 };
-
-// get total pages for products by tags
