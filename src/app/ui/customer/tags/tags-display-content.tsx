@@ -6,6 +6,8 @@ import TagCheckbox from "./tag-checkbox";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, Trash2Icon } from "lucide-react";
+import { usePathname, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 interface TagsDisplayContentProps {
   tags: string[];
@@ -14,6 +16,20 @@ interface TagsDisplayContentProps {
 const TagsDisplayContent = ({ tags }: TagsDisplayContentProps) => {
   const [allItemsChecked, setAllItemsChecked] = useState(true);
   const [checkedTags, setCheckedTags] = useState<string[]>([]);
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const createPageURL = (urlTags: string[] = []) => {
+    const params = new URLSearchParams(searchParams);
+    if (checkedTags.length > 0) {
+      params.set("tags", urlTags.join("-"));
+    } else {
+      params.delete("tags");
+    }
+
+    return `${pathname}?${params.toString()}`;
+  };
 
   const handleAllItemsChange = () => {
     if (!allItemsChecked) {
@@ -30,6 +46,11 @@ const TagsDisplayContent = ({ tags }: TagsDisplayContentProps) => {
     setCheckedTags(updatedTags);
 
     setAllItemsChecked(updatedTags.length === 0);
+  };
+
+  const handleRemoveAllTags = () => {
+    setCheckedTags([]);
+    setAllItemsChecked(!allItemsChecked);
   };
 
   return (
@@ -54,18 +75,33 @@ const TagsDisplayContent = ({ tags }: TagsDisplayContentProps) => {
           ))}
         </div>
         <div className="w-fit mx-auto mt-2">
-          <Button
-            size={`sm`}
-            variant={`secondary`}
-            className="rounded-2xl mx-1"
+          <Link href={createPageURL()}>
+            <Button
+              size={`sm`}
+              variant={`secondary`}
+              className="rounded-2xl mx-1"
+              disabled={checkedTags.length === 0}
+              onClick={handleRemoveAllTags}
+            >
+              <Trash2Icon size={20} />
+              <p className="ml-1">Clear All</p>
+            </Button>
+          </Link>
+
+          <Link
+            href={createPageURL(checkedTags)}
+            aria-disabled={checkedTags.length === 0}
+            className="cursor-default"
           >
-            <Trash2Icon size={20} />
-            <p className="ml-1">Clear All</p>
-          </Button>
-          <Button size={`sm`} className="rounded-2xl mx-1">
-            <SearchIcon size={20} />
-            <p className="ml-1">Apply Tags</p>
-          </Button>
+            <Button
+              disabled={checkedTags.length === 0}
+              size={`sm`}
+              className="rounded-2xl mx-1"
+            >
+              <SearchIcon size={20} />
+              <p className="ml-1">Apply Tags</p>
+            </Button>
+          </Link>
         </div>
       </div>
     </>

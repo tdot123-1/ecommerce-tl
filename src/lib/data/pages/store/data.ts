@@ -3,19 +3,40 @@
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 import { sql } from "@vercel/postgres";
 
-
 // FETCH NUMBER OF PAGES FOR ACTIVE PRODUCTS FOR STORE
 export const fetchActiveProductsPages = async (
-  category?: string | undefined
+  category?: string | undefined,
+  tags?: string[]
 ): Promise<number> => {
   if (ITEMS_PER_PAGE <= 0) {
     throw new Error("itemsPerPage must be a positive number");
   }
 
+  let normalizedTags;
+
+  if (tags && tags.length > 0) {
+    normalizedTags = tags.map((tag) => tag.toLowerCase());
+  }
+
   let count;
 
   try {
-    if (category) {
+    if (category && tags && tags.length > 0) {
+      // const normalizedTags = tags.map((tag) => tag.toLowerCase());
+
+      count = await sql`
+        SELECT COUNT(*) FROM products 
+        WHERE is_active = true
+        AND tags && ${JSON.stringify(normalizedTags)}::jsonb
+        AND category = ${category}`;
+    } else if (tags && tags.length > 0) {
+      // const normalizedTags = tags.map((tag) => tag.toLowerCase());
+
+      count = await sql`
+        SELECT COUNT(*) FROM products 
+        WHERE is_active = true
+        AND tags && ${JSON.stringify(normalizedTags)}::jsonb`;
+    } else if (category) {
       count = await sql`
         SELECT COUNT(*) FROM products 
         WHERE is_active = true

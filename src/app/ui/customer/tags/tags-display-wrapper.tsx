@@ -1,4 +1,4 @@
-import { fetchAllActiveTags } from "@/lib/data/products/store/data";
+import { fetchAllActiveTags } from "@/lib/data/tags/store/data";
 import TagsDisplay from "./tags-display";
 
 const TagsDisplayWrapper = async () => {

@@ -97,6 +97,7 @@ export const checkDeadline = (endDate: Date) => {
   }
 };
 
+
 // export const getSession = async (sessionId: string) => {
 //   const sessionData = await stripe.checkout.sessions.retrieve(sessionId);
 //   console.log("session: ", sessionData);
