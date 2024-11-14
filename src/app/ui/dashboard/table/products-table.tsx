@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { EditIcon, ImageIcon } from "lucide-react";
+import { EditIcon, ImageIcon, TagsIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ActivateSwitch from "./components/activate-product";
@@ -36,6 +36,7 @@ const ProductsTable = async ({ currentPage }: ProductsTableProps) => {
           <TableHead>Category</TableHead>
           <TableHead>Sizes</TableHead>
           <TableHead>Images</TableHead>
+          <TableHead>Tags</TableHead>
           <TableHead>Active</TableHead>
           <TableHead>Featured</TableHead>
           <TableHead>Edit</TableHead>
@@ -71,6 +72,14 @@ const ProductsTable = async ({ currentPage }: ProductsTableProps) => {
                   <Button variant="ghost" className="p-2">
                     <p className="hidden">Edit Images</p>
                     <ImageIcon size={24} />
+                  </Button>
+                </Link>
+              </TableCell>
+              <TableCell>
+                <Link href={`products/tags/edit/${product.id}`}>
+                  <Button variant="ghost" className="p-2">
+                    <p className="hidden">Edit Tags</p>
+                    <TagsIcon size={24} />
                   </Button>
                 </Link>
               </TableCell>

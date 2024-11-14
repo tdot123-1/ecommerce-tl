@@ -21,6 +21,8 @@ import SizesInput from "./components/sizes-input";
 import ImageUpload from "./components/image-upload";
 import CancelButton from "./components/cancel-create-btn";
 import { createProduct, State } from "@/lib/actions/products/actions";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 const Form = () => {
   // keep track of errors in form state
@@ -31,6 +33,7 @@ const Form = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   // get array of chosen sizes from child component, turn into string, add value to form input
   const handleChosenSizesStr = (sizes: string[]) => {
@@ -44,15 +47,35 @@ const Form = () => {
 
     // create form data object, call server action
     const formData = new FormData(event.currentTarget);
-    const result = await createProduct(formData);
 
-    // returns errors if there were any
-    setState(result);
-    setIsLoading(false);
+    try {
+      const result = await createProduct(formData);
 
-    // returns empty string in case of success -> redirect to products display
-    if (!result.message) {
-      router.push("/dashboard/products");
+      // returns errors if there were any
+      if (!result.productId) {
+        setState(result);
+      } else {
+        // returns id of created product -> redirect to tags edit
+        toast({
+          title: "Product Created!",
+          description:
+            "Optionally, add some tags to help users find this product easily.",
+          action: (
+            <ToastAction
+              onClick={() => router.push("/dashboard/products")}
+              altText="Go to products overview"
+            >
+              Skip for now
+            </ToastAction>
+          ),
+        });
+        router.push(`/dashboard/products/tags/edit/${result.productId}`);
+      }
+    } catch (error) {
+      console.error("Error creating product: ", error);
+      setState({ message: "Something went wrong" });
+    } finally {
+      setIsLoading(false);
     }
   };
 

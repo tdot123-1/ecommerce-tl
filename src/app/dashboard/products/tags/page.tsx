@@ -17,7 +17,7 @@ const Page = async (props: { searchParams?: Promise<{ page?: string }> }) => {
   return (
     <>
       <h1 className={`${montserrat.className} text-xl font-semibold mt-4`}>
-        Product Images
+        Product Tags
       </h1>
       <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-10">
         {/* grid of item cards */}

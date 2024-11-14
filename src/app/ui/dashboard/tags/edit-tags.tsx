@@ -114,6 +114,7 @@ const EditTags = ({
       await updateTags(productId, selectedTags);
       router.push("/dashboard/products/tags");
     } catch (error) {
+      console.error("Error updating tags: ", error);
       setError("Something went wrong.");
     } finally {
       setIsLoading(false);
@@ -122,7 +123,7 @@ const EditTags = ({
 
   return (
     <>
-      <div className="flex justify-center items-center p-4 gap-10">
+      <div className="flex justify-center items-center p-4 gap-5 flex-wrap">
         <div className="w-40 relative">
           <AspectRatio ratio={8 / 9}>
             <Image
@@ -144,7 +145,7 @@ const EditTags = ({
       <div>
         <div className="flex flex-col md:flex-row justify-center md:justify-evenly md:items-start items-center gap-2 md:gap-0">
           <div>
-            <h3>Selected Tags</h3>
+            <h3 className="text-sm">Selected Tags</h3>
             <ul className="border border-zinc-300 rounded-md p-4 grid grid-cols-2 gap-1">
               {selectedTags.map((tag, i) => (
                 <li key={`p-${tag}-${i}`}>
@@ -161,7 +162,7 @@ const EditTags = ({
             </ul>
           </div>
           <div>
-            <h3>Available Tags</h3>
+            <h3 className="text-sm">Available Tags</h3>
             <ul className="border border-zinc-300 rounded-md p-4 grid grid-cols-2 gap-1">
               {availableTags.map((tag, i) => (
                 <li key={`a-${tag}-${i}`}>
@@ -178,7 +179,7 @@ const EditTags = ({
             </ul>
           </div>
         </div>
-        <div>
+        <div className="mt-5 sm:w-1/2 lg:w-1/4 mx-auto">
           <Label>Add Tag</Label>
           <form onSubmit={(e) => handleAddInput(e, tagsInput)}>
             <div className="flex items-center gap-1">

@@ -1,18 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Label } from "@/components/ui/label";
-import { fetchAllTags } from "@/lib/data/products/store/data";
-import { FilterIcon, TagIcon } from "lucide-react";
-import TagCheckbox from "./tag-checkbox";
+import { TagIcon } from "lucide-react";
 import TagsDisplayContent from "./tags-display-content";
+import { fetchAllActiveTags } from "@/lib/data/products/store/data";
 
 const TagsDisplay = async () => {
-  const tags = await fetchAllTags();
+  const tags = await fetchAllActiveTags();
 
   return (
     <>

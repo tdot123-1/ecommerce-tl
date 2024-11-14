@@ -47,27 +47,26 @@ const ProductCardTags = ({
             </Link>
           </div>
         </div>
-        <div>
-          <ScrollArea className="h-24">
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-1">
-              {tags.length > 0 ? (
-                tags.map((tagName, i) => (
-                  <li key={`${tagName}-${i}`}>
-                    <Badge className="w-fit">
-                      <div className="flex justify-center gap-1">
-                        {tagName} <TagIcon size={18} />
-                      </div>
-                    </Badge>
-                  </li>
-                ))
-              ) : (
-                <li className="text-sm text-zinc-600 dark:text-zinc-400 italic">
-                  No tags yet.
+
+        <ScrollArea className="h-24 overflow-auto">
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-1">
+            {tags.length > 0 ? (
+              tags.map((tagName, i) => (
+                <li key={`${tagName}-${i}`}>
+                  <Badge className="w-fit">
+                    <div className="flex justify-center gap-1">
+                      {tagName} <TagIcon size={18} />
+                    </div>
+                  </Badge>
                 </li>
-              )}
-            </ul>
-          </ScrollArea>
-        </div>
+              ))
+            ) : (
+              <li className="text-sm text-zinc-600 dark:text-zinc-400 italic">
+                No tags yet.
+              </li>
+            )}
+          </ul>
+        </ScrollArea>
       </div>
     </>
   );

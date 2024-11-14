@@ -116,10 +116,16 @@ export async function createProduct(formData: FormData) {
 
     // insert stripe id's into created product (for payment integration)
 
-    await client.sql`
+    const result = await client.sql`
       UPDATE products
       SET stripe_product_id = ${stripeProductId}, stripe_price_id = ${stripePriceId}
-      WHERE id = ${createdProduct.id};`;
+      WHERE id = ${createdProduct.id}
+      RETURNING id
+      `;
+
+    if (!result.rowCount) {
+      throw new Error("Failed to insert stripe id's");
+    }
 
     await client.sql`COMMIT`;
 
@@ -131,7 +137,7 @@ export async function createProduct(formData: FormData) {
 
     // return empty string to indicate success
     return {
-      message: "",
+      productId: result.rows[0].id,
     };
   } catch (error) {
     // rollback transaction in case of error

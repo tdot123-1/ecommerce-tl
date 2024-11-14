@@ -15,7 +15,7 @@ const Page = ({ params }: { params: { productId: string } }) => {
   return (
     <>
       <h1 className={`${montserrat.className} text-xl font-semibold mt-4`}>
-        Edit images
+        Edit Tags
       </h1>
       <Link href={`/dashboard/products/tags`}>
         <Button variant={`ghost`} className="p-2 mt-4">
