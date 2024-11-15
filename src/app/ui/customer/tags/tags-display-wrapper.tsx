@@ -6,16 +6,17 @@ import TagsDisplay from "./tags-display";
 
 interface TagsDisplayWrapperProps {
   category?: string;
+  urlTags?: string[];
 }
 
-const TagsDisplayWrapper = async ({ category }: TagsDisplayWrapperProps) => {
+const TagsDisplayWrapper = async ({ category, urlTags }: TagsDisplayWrapperProps) => {
   const tags = category
     ? await fetchActiveTagsByCategory(category)
     : await fetchAllActiveTags();
 
   return (
     <>
-      <TagsDisplay tags={tags} />
+      <TagsDisplay tags={tags} urlTags={urlTags} />
     </>
   );
 };

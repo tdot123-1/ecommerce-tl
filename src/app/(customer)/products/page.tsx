@@ -28,7 +28,7 @@ const Page = async (props: { searchParams?: Promise<{ page?: string, tags?: stri
         Full Catalogue
       </h1>
       <Suspense fallback={<Skeleton className="h-10 w-20 rounded-md" />}>
-        <TagsDisplayWrapper />
+        <TagsDisplayWrapper urlTags={urlTagsArr} />
       </Suspense>
       <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 lg:gap-16 my-10">
         <Suspense fallback={<ProductListSkeleton />}>

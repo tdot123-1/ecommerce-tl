@@ -12,9 +12,10 @@ import { useState } from "react";
 
 interface TagsDisplayProps {
   tags: string[];
+  urlTags?: string[];
 }
 
-const TagsDisplay = ({ tags }: TagsDisplayProps) => {
+const TagsDisplay = ({ tags, urlTags }: TagsDisplayProps) => {
   const [collapsibleOpen, setCollapsibleOpen] = useState(false);
 
   return (
@@ -33,7 +34,7 @@ const TagsDisplay = ({ tags }: TagsDisplayProps) => {
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <TagsDisplayContent tags={tags} />
+          <TagsDisplayContent tags={tags} urlTags={urlTags} />
         </CollapsibleContent>
       </Collapsible>
     </>
