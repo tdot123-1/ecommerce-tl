@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   try {
-    // (!) validate cart items
 
     // get cart items in request
     const { cartItems }: { cartItems: CartItem[] } = await req.json();
