@@ -79,4 +79,16 @@ export const archiveStripeProduct = async (
 };
 
 
-// (!) add function to update stripe image
+export const updateStripeImage = async (
+  stripe_product_id: string,
+  imageUrl: string
+) => {
+  try {
+    await stripe.products.update(stripe_product_id, {
+      images: [imageUrl],
+    });
+  } catch (error) {
+    console.error("ERROR UPDATING STRIPE IMAGE: ", error);
+    throw new Error("Error updating stripe image");
+  }
+};

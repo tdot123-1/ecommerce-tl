@@ -1,6 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
+import { updateStripeImage } from "@/lib/stripe";
 import { del } from "@vercel/blob";
 import { db, sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
@@ -120,7 +121,7 @@ export const swapPrimaryImage = async (
       UPDATE products 
       SET image_url = ${secondary_url}
       WHERE id = ${product_id}
-      RETURNING category
+      RETURNING category, stripe_product_id
       `;
 
     if (result.rowCount === 0) {
@@ -128,7 +129,7 @@ export const swapPrimaryImage = async (
     }
 
     // store product's category for revalidating that path
-    const category = result.rows[0].category;
+    const { category, stripe_product_id } = result.rows[0];
 
     // store the previously primary image in the 'product_images' table
     await client.sql`
@@ -149,6 +150,8 @@ export const swapPrimaryImage = async (
         "Failed to delete the secondary image. Image not found or mismatch."
       );
     }
+
+    await updateStripeImage(stripe_product_id, secondary_url);
 
     await client.sql`COMMIT`;
 
