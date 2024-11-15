@@ -5,6 +5,12 @@ import Header from "../ui/dashboard/header";
 import Navbar from "../ui/dashboard/navbar/navbar";
 import { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import DashSidebar from "../ui/dashboard/sidebar/dash-sidebar";
 
 export const metadata: Metadata = {
   title: {
@@ -25,10 +31,21 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           defaultTheme="system"
           disableTransitionOnChange
         >
-          <Header />
-          <Navbar />
-          <main className="min-h-[calc(100vh-80px)] mx-5">{children}</main>
-          <Toaster />
+          <SidebarProvider>
+            <DashSidebar />
+
+            <main className="flex-shrink w-full">
+              <Header />
+              <Navbar />
+              {/* <SidebarInset> */}
+                <section className="min-h-[calc(100vh-80px)] mx-5">
+                  {/* <SidebarTrigger /> */}
+                  {children}
+                </section>
+              {/* </SidebarInset> */}
+            </main>
+            <Toaster />
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
