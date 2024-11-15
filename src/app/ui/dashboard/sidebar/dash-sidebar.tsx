@@ -8,7 +8,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import SidebarLinks from "./sidebar-links";
 import Link from "next/link";
+import { EuroIcon, StoreIcon } from "lucide-react";
 
 const DashSidebar = () => {
   return (
@@ -18,14 +20,31 @@ const DashSidebar = () => {
           <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              <SidebarLinks />
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>External</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href={`/dashboard/products/images`}>Images</Link>
+                  <Link
+                    href={`https://dashboard.stripe.com/test/dashboard`}
+                    target="_blank"
+                  >
+                    <EuroIcon />
+                    <span>Stripe Dashboard</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href={`/dashboard/products/tags`}>Tags</Link>
+                  <Link href={`/`} target="_blank">
+                    <StoreIcon />
+                    <span>Store</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

@@ -5,11 +5,7 @@ import Header from "../ui/dashboard/header";
 import Navbar from "../ui/dashboard/navbar/navbar";
 import { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import DashSidebar from "../ui/dashboard/sidebar/dash-sidebar";
 
 export const metadata: Metadata = {
@@ -37,12 +33,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <main className="flex-shrink w-full">
               <Header />
               <Navbar />
-              {/* <SidebarInset> */}
-                <section className="min-h-[calc(100vh-80px)] mx-5">
-                  {/* <SidebarTrigger /> */}
-                  {children}
-                </section>
-              {/* </SidebarInset> */}
+              <section className="min-h-[calc(100vh-80px)] mx-5">
+                {children}
+              </section>
             </main>
             <Toaster />
           </SidebarProvider>

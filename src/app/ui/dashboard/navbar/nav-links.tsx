@@ -1,36 +1,15 @@
 "use client";
 
+import { dashNavLinksList } from "@/lib/navlinks-list";
 import clsx from "clsx";
-import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const links = [
-  {
-    name: "Overview",
-    href: "/dashboard/products",
-  },
-  {
-    name: "Create",
-    href: "/dashboard/products/create",
-  },
-  {
-    name: "Shop",
-    href: "/",
-    icon: <ExternalLinkIcon size={12} />,
-  },
-  {
-    name: "Stripe",
-    href: "https://dashboard.stripe.com/test/dashboard",
-    icon: <ExternalLinkIcon size={12} />,
-  },
-];
 
 const NavLinks = () => {
   const pathname = usePathname();
   return (
     <>
-      {links.map((link) => (
+      {dashNavLinksList.map((link) => (
         <div
           key={link.name}
           className={clsx(
@@ -42,14 +21,15 @@ const NavLinks = () => {
           )}
         >
           {link.icon ? (
-            <Link target="_blank" href={link.href}>
-              {link.name}
-            </Link>
+            <>
+              <Link target="_blank" href={link.href}>
+                {link.name}
+              </Link>
+              <link.icon size={12} />
+            </>
           ) : (
             <Link href={link.href}>{link.name}</Link>
           )}
-
-          {link.icon}
         </div>
       ))}
     </>
