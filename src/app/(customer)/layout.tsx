@@ -6,14 +6,15 @@ import { ThemeProvider } from "../ui/theme-provider";
 import CartProviderWrapper from "../ui/cart-provider";
 import Footer from "../ui/customer/footer";
 import { Toaster } from "@/components/ui/toaster";
+import SignupForm from "../ui/customer/mailing/signup-form";
 
 export const metadata: Metadata = {
-  title: { 
+  title: {
     template: "%s | Ti'El Shopping",
-    default: "Ti'El Shopping"
+    default: "Ti'El Shopping",
   },
   description: "The easy shopping platform.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_URL!)
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL!),
 };
 
 export default function RootLayout({
@@ -33,6 +34,7 @@ export default function RootLayout({
           >
             <Navbar />
             <main className="px-3 min-h-[calc(100vh-80px)]">{children}</main>
+            <SignupForm />
             <Footer />
             <Toaster />
           </ThemeProvider>

@@ -31,7 +31,7 @@ const FeaturedProducts = async () => {
                    (max-width: 1280px) 25vw, 
                    20vw"
                 />
-                <Badge className="z-20 absolute">
+                <Badge className="z-10 absolute">
                   {formatPrice(product.price)}
                 </Badge>
               </div>
