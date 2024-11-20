@@ -16,7 +16,10 @@ export const sendMail = async ({ to, subject, text, html }: EmailInfo) => {
 
   const msg = {
     to,
-    from: process.env.SENDGRID_SENDER_EMAIL,
+    from: {
+      email: process.env.SENDGRID_SENDER_EMAIL,
+      name: "Ti'El Shopping",
+    },
     subject,
     text,
     html,
