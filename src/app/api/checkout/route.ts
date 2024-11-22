@@ -6,18 +6,17 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   try {
-
     // get cart items in request
     const { cartItems }: { cartItems: CartItem[] } = await req.json();
-    console.log("CART ITEMS: ", cartItems)
+    console.log("CART ITEMS: ", cartItems);
 
     // get list of price id's and product id's from db
-    const inventory = await fetchPriceValidationProducts()
-    console.log("INVENTORY: ", inventory)
+    const inventory = await fetchPriceValidationProducts();
+    console.log("INVENTORY: ", inventory);
 
     // return array of only validated cart items (matching price and product id's)
-    const validatedItems = validateCart(inventory, cartItems)
-    console.log("VALIDATED ITEMS: ", validatedItems)
+    const validatedItems = validateCart(inventory, cartItems);
+    console.log("VALIDATED ITEMS: ", validatedItems);
 
     // create array of line items with price id to send to Stripe checkout
     const line_items = validatedItems.map((item) => ({
@@ -28,13 +27,22 @@ export const POST = async (req: Request) => {
     // add metadata to display size for selected items in Stripe dashboard
     const metadata = validatedItems.reduce((acc, item, index) => {
       acc[`item_${index}_quantity`] = item.quantity.toString();
-      acc[`item_${index}_size`] = item.size; 
-      acc[`item_${index}_name`] = item.name; 
+      acc[`item_${index}_size`] = item.size;
+      acc[`item_${index}_name`] = item.name;
       return acc;
     }, {} as Record<string, string>);
 
     console.log("LINE ITEMS: ", line_items);
     console.log("META: ", metadata);
+
+    //(!) TESTING DISCOUNTS ///
+
+    /* 
+    1. create session params
+    2. check for first time purchase
+    3. check for other discounts
+    4. apply discounts if necessary
+    */
 
     // create checkout session
     const session = await stripe.checkout.sessions.create({
@@ -46,9 +54,16 @@ export const POST = async (req: Request) => {
       shipping_address_collection: {
         allowed_countries: ["NL", "FR", "US"],
       },
+      // customer: "",
+      // discounts: [
+      //   {
+      //     coupon: "oae9CeC8",
+      //   },
+      // ],
+      // allow_promotion_codes: false,
       payment_intent_data: {
-        metadata: {...metadata}
-      }
+        metadata: { ...metadata },
+      },
     });
 
     return NextResponse.json({ sessionID: session.id });

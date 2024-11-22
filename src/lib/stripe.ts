@@ -78,7 +78,6 @@ export const archiveStripeProduct = async (
   }
 };
 
-
 export const updateStripeImage = async (
   stripe_product_id: string,
   imageUrl: string
@@ -90,5 +89,19 @@ export const updateStripeImage = async (
   } catch (error) {
     console.error("ERROR UPDATING STRIPE IMAGE: ", error);
     throw new Error("Error updating stripe image");
+  }
+};
+
+export const createStripeCustomer = async (name: string, email: string) => {
+  try {
+    const customer = await stripe.customers.create({
+      name,
+      email,
+    });
+
+    return customer.id;
+  } catch (error) {
+    console.error("ERROR CREATING STRIPE CUSTOMER: ", error);
+    throw new Error("Error creating stripe customer");
   }
 };
