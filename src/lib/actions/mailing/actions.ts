@@ -1,10 +1,16 @@
 "use server";
 
-import { generateToken } from "@/lib/customer-auth/token";
+import {
+  generateToken,
+  generateVerificationLink,
+} from "@/lib/customer-auth/token";
 import { sendMail } from "@/lib/send-email";
 import { createStripeCustomer } from "@/lib/stripe";
-import { db } from "@vercel/postgres";
+import { db, sql } from "@vercel/postgres";
 import { z } from "zod";
+
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "@/lib/constants";
 
 const FormSchema = z.object({
   name: z
@@ -66,7 +72,7 @@ export async function signUpCustomer(formData: FormData) {
       RETURNING id
     `;
 
-    const customerId = createResult.rows[0].id;
+    const customerId: string = createResult.rows[0].id;
 
     if (!customerId) {
       throw new Error("Failure creating customer in db.");
@@ -91,12 +97,26 @@ export async function signUpCustomer(formData: FormData) {
       throw new Error("Failed to update customer with stripe id");
     }
 
-    // customer succesfully added to both stripe and db -> commit
-    await client.sql`COMMIT`;
-
     //(!) generate token
-    const token = generateToken(customerId);
+    // const token = generateToken(customerId);
+    // const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify/${token}`;
+
+    // console.log("TOKEN: ", token)
+    // console.log("TOKEN TYPE: ", typeof token)
+    // console.log("LINK: ", verificationLink)
+
+    // const verificationLink = generateVerificationLink(customerId)
+    // console.log("LINK: ", verificationLink)
+    // console.log("LINK TYPE: ", typeof verificationLink)
+
+    const token = jwt.sign({ userId: customerId }, JWT_SECRET!, {
+      expiresIn: 60 * 15,
+    });
     const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify/${token}`;
+
+    console.log("TOKEN: ", token);
+    console.log("TOKEN TYPE: ", typeof token);
+    console.log("LINK: ", verificationLink);
 
     // send email
 
@@ -119,7 +139,7 @@ export async function signUpCustomer(formData: FormData) {
       ${verificationLink}
       `,
       html: `
-      <h2>Welcome to Ti'El ${name}</h2> 
+      <h2>Welcome to Ti'El</h2> 
       <p>Hi ${name},</p>
       <p>Thanks for signing up. To complete the registration and take advantage of discounts, follow the link below.</p>
       <p>Remember that this link is intended for you alone and should not be shared.</p>
@@ -129,6 +149,9 @@ export async function signUpCustomer(formData: FormData) {
     };
 
     await sendMail(emailInfo);
+
+    // customer succesfully added to both stripe and db -> commit
+    await client.sql`COMMIT`;
 
     return {
       message: "Click the link in your email to complete the process!",
@@ -160,6 +183,88 @@ export async function signUpCustomer(formData: FormData) {
 
     return {
       message: "Registration error. Please try again later.",
+    };
+  } finally {
+    client.release();
+  }
+}
+
+const VerifyEmail = FormSchema.omit({ name: true, agree: true });
+
+export async function verifyCustomerEmail(formData: FormData) {
+  const rawFormData = Object.fromEntries(formData.entries());
+
+  console.log("FROM SERVER: ", rawFormData);
+
+  // validate form fields
+  const validatedFields = VerifyEmail.safeParse(rawFormData);
+
+  // return message early in case of field errors
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Failed verify. Please try again.",
+    };
+  }
+
+  const { email } = validatedFields.data;
+
+  try {
+    const data = await sql`
+    SELECT id, name
+    FROM customers
+    WHERE email = ${email}
+    `;
+
+    if (!data.rowCount) {
+      throw new Error("Customer not found");
+    }
+
+    const customerId: string = data.rows[0].id;
+    const name: string = data.rows[0].name;
+
+    const token = jwt.sign({ userId: customerId }, JWT_SECRET!, {
+      expiresIn: 60 * 15,
+    });
+    const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify/${token}`;
+
+    const emailInfo = {
+      to: email,
+      subject: "Signed in",
+      text: `
+      Signed in to Ti'El
+
+      Hi ${name},
+      
+      Click the link below to sign in to your Ti'El account.
+
+      Remember that this link is intended for you alone and should not be shared.
+
+      See you soon!
+      Click to complete the verification:
+
+      ${verificationLink}
+      `,
+      html: `
+      <h2>Welcome to Ti'El</h2> 
+      <p>Hi ${name},</p>
+      <p>Click the link below to sign in to your Ti'El account.</p>
+      <p>Remember that this link is intended for you alone and should not be shared.</p>
+      <p>See you soon!</p>
+      <a href=${verificationLink}>Click here to complete the verification</a>
+      `,
+    };
+
+    await sendMail(emailInfo);
+
+    return {
+      message: "Click the link in your email to sign in!",
+    };
+  } catch (error) {
+    console.error("Error signing in: ", error);
+
+    return {
+      message: "Something went wrong, please try again later.",
     };
   }
 }

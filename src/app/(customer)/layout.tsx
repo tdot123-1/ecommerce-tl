@@ -7,6 +7,7 @@ import CartProviderWrapper from "../ui/cart-provider";
 import Footer from "../ui/customer/footer";
 import { Toaster } from "@/components/ui/toaster";
 import SignupForm from "../ui/customer/mailing/signup-form";
+import VerifyCustomer from "../ui/customer/mailing/verify-customer";
 
 export const metadata: Metadata = {
   title: {
@@ -35,6 +36,7 @@ export default function RootLayout({
             <Navbar />
             <main className="px-3 min-h-[calc(100vh-80px)]">{children}</main>
             <SignupForm />
+            <VerifyCustomer />
             <Footer />
             <Toaster />
           </ThemeProvider>

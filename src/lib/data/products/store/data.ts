@@ -36,7 +36,8 @@ export const fetchOneActiveProduct = async (productId: string) => {
     // await new Promise((resolve) => setTimeout(resolve, 5000));
 
     const data = await sql`
-        SELECT name, price, sizes, category, description, image_url, currency, stripe_price_id, stripe_product_id FROM products 
+        SELECT name, price, sizes, category, description, image_url, currency, stripe_price_id, stripe_product_id 
+        FROM products 
         WHERE id = ${productId}
         AND is_active = true`;
 
