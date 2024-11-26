@@ -11,8 +11,20 @@ export async function verifyAndSetCookie(token: string) {
 
     const customer = await fetchOneCustomer(userId);
 
-    // Set the cookie
-    setCookie(customer.stripe_customer_id);
+    // // set the cookie
+    // await setCookie(customer.stripe_customer_id);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/verify`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ customerId: customer.stripe_customer_id }),
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error("Unsuccesful response from api route");
+    }
 
     return { message: `User ${customer.name} verified.` };
   } catch (error) {

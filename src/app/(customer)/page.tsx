@@ -6,10 +6,12 @@ import Link from "next/link";
 import { Suspense } from "react";
 import HomeSection1Skeleton from "../ui/skeletons/home-section1-skeleton";
 import FeaturedProducts from "../ui/customer/products/featured-products";
+import SetCookieTest from "@/test/set-cookie-test";
 
 export default function Home() {
   return (
     <>
+    {/* <SetCookieTest /> */}
       <section className="flex justify-center items-center gap-6 h-[calc(100vh-130px)]">
         <Suspense fallback={<HomeSection1Skeleton />}>
           <div className="w-60 dark:hidden">

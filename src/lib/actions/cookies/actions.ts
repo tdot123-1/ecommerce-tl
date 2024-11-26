@@ -8,8 +8,9 @@ export async function setCookie(customerId: string) {
   cookieStore.set({
     name: "user",
     value: customerId,
-    httpOnly: true,
-    secure: true,
+    path: "/"
+    // httpOnly: true,
+    // secure: true,
   });
 }
 
