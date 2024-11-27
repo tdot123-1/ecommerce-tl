@@ -5,11 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { verifyCustomerEmail } from "@/lib/actions/mailing/actions";
 import { State } from "@/lib/actions/products/actions";
+import { LoaderPinwheelIcon, MailCheckIcon } from "lucide-react";
 import { useState } from "react";
 
 //(!) TEST COMPONENT
 
-const VerifyCustomer = () => {
+const SendMagicLink = () => {
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,32 +38,44 @@ const VerifyCustomer = () => {
 
   return (
     <>
-      <div className="bg-zinc-300 rounded-md fixed left-1 bottom-1 p-2">
+      <div className="bg-zinc-100 dark:bg-zinc-900 rounded-md p-4">
         <form onSubmit={handleSubmit}>
           <div>
             <Label htmlFor="email">Sign in</Label>
-            <div className="flex flex-row gap-1">
-              <Input disabled={isLoading} type="email" name="email" id="email" />
-              <Button disabled={isLoading} type="submit">
-                Send
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Input
+                disabled={isLoading}
+                type="email"
+                name="email"
+                id="email"
+              />
+              <Button disabled={isLoading} type="submit" className="w-fit mx-auto sm:mx-0">
+                <div className="flex items-center justify-center gap-2">
+                  {isLoading ? (
+                    <LoaderPinwheelIcon size={20} className="animate-spin" />
+                  ) : (
+                    <MailCheckIcon size={20} />
+                  )}
+                  <span>Send</span>
+                </div>
               </Button>
-              <div>
-                {state.errors?.email &&
-                  state.errors.email.map((error: string, index) => (
-                    <p
-                      key={`${error}-${index}`}
-                      className="text-red-600 text-sm italic mt-1"
-                    >
-                      {error}
-                    </p>
-                  ))}
-              </div>
-              {state.message && (
-                <p className="text-red-600 text-sm italic mt-1">
-                  {state.message}
-                </p>
-              )}
             </div>
+            <div>
+              {state.errors?.email &&
+                state.errors.email.map((error: string, index) => (
+                  <p
+                    key={`${error}-${index}`}
+                    className="text-red-600 text-sm italic mt-1"
+                  >
+                    {error}
+                  </p>
+                ))}
+            </div>
+            {state.message && (
+              <p className="text-red-600 text-sm italic mt-1">
+                {state.message}
+              </p>
+            )}
           </div>
         </form>
       </div>
@@ -70,4 +83,4 @@ const VerifyCustomer = () => {
   );
 };
 
-export default VerifyCustomer;
+export default SendMagicLink;

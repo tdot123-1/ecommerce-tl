@@ -31,10 +31,13 @@ const SetCookieButton = ({ name, customerId }: SetCookieButtonProps) => {
       <h2
         className={`${montserrat.className} text-xl font-semibold`}
       >{`Welcome Back ${capitalize(name)}`}</h2>
-      <p className="text-sm text-zinc-800 dark:text-zinc-400 text-center">
-        Please click the button below to verify it is you, and to start taking
-        advantage of possible discounts while shopping!
-      </p>
+      {!verified && (
+        <p className="text-sm text-zinc-800 dark:text-zinc-400 text-center">
+          Please click the button below to verify it is you, and to start taking
+          advantage of possible discounts while shopping!
+        </p>
+      )}
+
       <Button onClick={handleSetCookie} disabled={isLoading || verified}>
         <div className="flex flex-row justify-center items-center gap-1">
           {verified ? (

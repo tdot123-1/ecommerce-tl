@@ -1,25 +1,25 @@
-//   return Response.json({ message: "route disabled" });
-
-import { setCookie } from "@/lib/actions/cookies/actions";
+// import { setCookie } from "@/lib/actions/cookies/actions";
 
 export async function POST(req: Request) {
 
-    const { customerId } = await req.json();
+  return Response.json({ message: "route disabled" });
 
-    console.log("ROUTE: CUSTOMER ID: ", customerId)
+  // const { customerId } = await req.json();
 
-    if (!customerId) {
-      return Response.json({ error: "customer ID not found. " }, { status: 400 });
-    }
+  // console.log("ROUTE: CUSTOMER ID: ", customerId);
 
-    try {
-      await setCookie(customerId);
+  // if (!customerId) {
+  //   return Response.json({ error: "customer ID not found. " }, { status: 400 });
+  // }
 
-      console.log("COOKIE SET IN ROUTE")
+  // try {
+  //   await setCookie(customerId);
 
-      return Response.json({ success: true }, { status: 200 });
-    } catch (error) {
-      console.error("Failed to set cookie in route: ", error);
-      return Response.json({ error: "failed to set cookie" }, { status: 500 });
-    }
+  //   console.log("COOKIE SET IN ROUTE");
+
+  //   return Response.json({ success: true }, { status: 200 });
+  // } catch (error) {
+  //   console.error("Failed to set cookie in route: ", error);
+  //   return Response.json({ error: "failed to set cookie" }, { status: 500 });
+  // }
 }

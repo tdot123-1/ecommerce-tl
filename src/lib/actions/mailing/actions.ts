@@ -1,9 +1,5 @@
 "use server";
 
-import {
-  generateToken,
-  generateVerificationLink,
-} from "@/lib/customer-auth/token";
 import { sendMail } from "@/lib/send-email";
 import { createStripeCustomer } from "@/lib/stripe";
 import { db, sql } from "@vercel/postgres";
@@ -97,20 +93,8 @@ export async function signUpCustomer(formData: FormData) {
       throw new Error("Failed to update customer with stripe id");
     }
 
-    //(!) generate token
-    // const token = generateToken(customerId);
-    // const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify/${token}`;
-
-    // console.log("TOKEN: ", token)
-    // console.log("TOKEN TYPE: ", typeof token)
-    // console.log("LINK: ", verificationLink)
-
-    // const verificationLink = generateVerificationLink(customerId)
-    // console.log("LINK: ", verificationLink)
-    // console.log("LINK TYPE: ", typeof verificationLink)
-
     const token = jwt.sign({ userId: customerId }, JWT_SECRET!, {
-      expiresIn: 60 * 15,
+      expiresIn: 60 * 30,
     });
     const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify/${token}`;
 
@@ -203,7 +187,7 @@ export async function verifyCustomerEmail(formData: FormData) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Failed verify. Please try again.",
+      message: "Failed to verify. Please try again.",
     };
   }
 
@@ -217,14 +201,16 @@ export async function verifyCustomerEmail(formData: FormData) {
     `;
 
     if (!data.rowCount) {
-      throw new Error("Customer not found");
+      return {
+        message: "Email not found. Please sign up on the 'discounts' tab",
+      };
     }
 
     const customerId: string = data.rows[0].id;
     const name: string = data.rows[0].name;
 
     const token = jwt.sign({ userId: customerId }, JWT_SECRET!, {
-      expiresIn: 60 * 15,
+      expiresIn: 60 * 30,
     });
     const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify/${token}`;
 

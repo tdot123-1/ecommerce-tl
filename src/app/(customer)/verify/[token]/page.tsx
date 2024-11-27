@@ -5,14 +5,6 @@ import { Suspense } from "react";
 const Page = ({ params }: { params: { token: string } }) => {
   const { token } = params;
 
-  // const result = await verifyAndSetCookie(token);
-
-  // if (result.message) {
-  //   return <div>{`Verified! ${result.message}`}</div>;
-  // } else {
-  //   return <div>{`Problem occurred: ${result.error}`}</div>;
-  // }
-
   return (
     <>
       <div>
