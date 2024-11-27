@@ -7,7 +7,7 @@ import CartProviderWrapper from "../ui/cart-provider";
 import Footer from "../ui/customer/footer";
 import { Toaster } from "@/components/ui/toaster";
 import SignupForm from "../ui/customer/mailing/signup-form";
-import VerifyCustomer from "../ui/customer/mailing/verify-customer";
+import VerifyCustomer from "../ui/customer/mailing/send-magic-link";
 
 export const metadata: Metadata = {
   title: {

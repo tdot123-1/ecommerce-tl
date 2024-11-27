@@ -1,6 +1,5 @@
-import FindCustomer from "@/app/ui/customer/mailing/find-customer";
+import FindCustomer from "@/app/ui/customer/customer-auth/find-customer";
 import { Skeleton } from "@/components/ui/skeleton";
-import { verifyAndSetCookie } from "@/lib/customer-auth/verify-set-cookie";
 import { Suspense } from "react";
 
 const Page = ({ params }: { params: { token: string } }) => {
