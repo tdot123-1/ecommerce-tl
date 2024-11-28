@@ -6,8 +6,6 @@ import { ThemeProvider } from "../ui/theme-provider";
 import CartProviderWrapper from "../ui/cart-provider";
 import Footer from "../ui/customer/footer";
 import { Toaster } from "@/components/ui/toaster";
-import SignupForm from "../ui/customer/mailing/signup-collapsible";
-import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: {
@@ -23,10 +21,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
-  const cookieStore = cookies();
-  const userCookie = cookieStore.get("user");
-  
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.className} antialiased`}>
@@ -39,8 +33,6 @@ export default function RootLayout({
           >
             <Navbar />
             <main className="px-3 min-h-[calc(100vh-80px)]">{children}</main>
-            {/* {!userCookie && <SignupForm />} */}
-
             <Footer />
             <Toaster />
           </ThemeProvider>

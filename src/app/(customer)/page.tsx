@@ -6,11 +6,17 @@ import Link from "next/link";
 import { Suspense } from "react";
 import HomeSection1Skeleton from "../ui/skeletons/home-section1-skeleton";
 import FeaturedProducts from "../ui/customer/products/featured-products";
-import SetCookieTest from "@/test/set-cookie-test";
+import { cookies } from "next/headers";
+import SignupCollapsible from "../ui/customer/mailing/signup-collapsible";
 
 export default function Home() {
+  
+  const cookieStore = cookies();
+  const userCookie = cookieStore.get("user");
+
   return (
     <>
+      {!userCookie && <SignupCollapsible />}
       <section className="flex justify-center items-center gap-6 h-[calc(100vh-130px)]">
         <Suspense fallback={<HomeSection1Skeleton />}>
           <div className="w-60 dark:hidden">

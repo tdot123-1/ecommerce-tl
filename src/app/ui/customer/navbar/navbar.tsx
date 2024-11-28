@@ -4,6 +4,8 @@ import ThemeButton from "../../theme-button";
 import Link from "next/link";
 import Basket from "../basket/basket";
 import NavbarMobile from "./navbar-mobile";
+import { User2Icon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   return (
@@ -23,6 +25,13 @@ const Navbar = () => {
       </div>
       <div className="flex justify-evenly gap-1 items-center">
         <NavbarMobile />
+        
+        <Link href={`/profile`}>
+          <Button variant="ghost" className="p-2">
+            <User2Icon size={24} />
+          </Button>
+        </Link>
+
         <ThemeButton />
         <Basket />
       </div>
