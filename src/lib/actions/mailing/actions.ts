@@ -202,7 +202,7 @@ export async function verifyCustomerEmail(formData: FormData) {
 
     if (!data.rowCount) {
       return {
-        message: "Email not found. Please sign up on the 'discounts' tab",
+        message: "Email not found. Please sign up on the 'profile' page",
       };
     }
 

@@ -1,4 +1,7 @@
 import SendMagicLink from "@/app/ui/customer/mailing/send-magic-link";
+import SignupForm from "@/app/ui/customer/mailing/signup-form";
+import CustomerProfile from "@/app/ui/customer/profile/customer-profile";
+import ProfileSignIn from "@/app/ui/customer/profile/profile-signin";
 import { montserrat } from "@/app/ui/fonts";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -19,35 +22,13 @@ const Page = () => {
       {userCookie ? (
         <div>
           <div>Customer profile</div>
+          <CustomerProfile customerStripeId={userCookie.value} />
           <div>Sign out</div>
           <div>Delete profile</div>
         </div>
       ) : (
-        <div className="w-2/4 mx-auto my-8">
-          <div>
-            <h2
-              className={`${montserrat.className} mb-4 text-center font-semibold`}
-            >
-              Sign in to your account
-            </h2>
-            <p className="mb-4 text-sm text-zinc-800 dark:text-zinc-400 text-center">
-              To view your profile and take advantage of discounts, please
-              submit your email address below and follow the link you receive in
-              your email.
-            </p>
-            <SendMagicLink />
-          </div>
-          <div className="mt-8">
-            <h2
-              className={`${montserrat.className} mb-4 text-center font-semibold`}
-            >
-              Sign up for an account
-            </h2>
-            <p className="mb-4 text-sm text-zinc-800 dark:text-zinc-400 text-center">
-              Don't have an account yet? Sign up with the form below to take
-              advantage of several benefits including exclusive discounts!
-            </p>
-          </div>
+        <div className="sm:w-2/4 lg:w-1/3 mx-auto my-8">
+          <ProfileSignIn />
         </div>
       )}
     </>

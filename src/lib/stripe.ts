@@ -105,3 +105,38 @@ export const createStripeCustomer = async (name: string, email: string) => {
     throw new Error("Error creating stripe customer");
   }
 };
+
+export const getPurchaseHistory = async (stripe_customer_id: string) => {
+  try {
+    const sessions = await stripe.checkout.sessions.list({
+      customer: stripe_customer_id,
+      limit: 10,
+    });
+
+    const purchaseHistory = [];
+
+    for (const session of sessions.data) {
+      const lineItems = await stripe.checkout.sessions.listLineItems(
+        session.id
+      );
+
+      const items = lineItems.data.map((item) => ({
+        stripe_id: item.id,
+        quantity: item.quantity,
+        price: item.price?.unit_amount ? item.price.unit_amount : null,
+      }));
+
+      purchaseHistory.push({
+        sessionId: session.id,
+        amountTotal: session.amount_total ? session.amount_total : null,
+        created: new Date(session.created * 1000).toLocaleDateString(),
+        items,
+      });
+    }
+
+    return purchaseHistory;
+  } catch (error) {
+    console.error("ERROR FETCHING PURCHASE HISTORY: ", error);
+    throw new Error("Error fetching stripe payment intents");
+  }
+};
