@@ -11,7 +11,6 @@ import SetCookieTest from "@/test/set-cookie-test";
 export default function Home() {
   return (
     <>
-    {/* <SetCookieTest /> */}
       <section className="flex justify-center items-center gap-6 h-[calc(100vh-130px)]">
         <Suspense fallback={<HomeSection1Skeleton />}>
           <div className="w-60 dark:hidden">
