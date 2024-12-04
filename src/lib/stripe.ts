@@ -106,37 +106,81 @@ export const createStripeCustomer = async (name: string, email: string) => {
   }
 };
 
-export const getPurchaseHistory = async (stripe_customer_id: string) => {
+// get all sessions overview
+export const getAllSessions = async (stripe_customer_id: string) => {
   try {
     const sessions = await stripe.checkout.sessions.list({
       customer: stripe_customer_id,
       limit: 10,
     });
 
-    const purchaseHistory = [];
+    const allSessions = sessions.data.map((session) => ({
+      sessionId: session.id,
+      created: new Date(session.created * 1000).toLocaleDateString(),
+      amountTotal: session.amount_total ? session.amount_total : null,
+      discounts: session.total_details?.amount_discount || 0,
+    }));
 
-    for (const session of sessions.data) {
-      const lineItems = await stripe.checkout.sessions.listLineItems(
-        session.id
-      );
-
-      const items = lineItems.data.map((item) => ({
-        stripe_id: item.id,
-        quantity: item.quantity,
-        price: item.price?.unit_amount ? item.price.unit_amount : null,
-      }));
-
-      purchaseHistory.push({
-        sessionId: session.id,
-        amountTotal: session.amount_total ? session.amount_total : null,
-        created: new Date(session.created * 1000).toLocaleDateString(),
-        items,
-      });
-    }
-
-    return purchaseHistory;
+    return { sessions: allSessions, hasMore: sessions.has_more };
   } catch (error) {
     console.error("ERROR FETCHING PURCHASE HISTORY: ", error);
     throw new Error("Error fetching stripe payment intents");
   }
 };
+
+// get details on line items for one session
+export const getOneSession = async (sessionId: string) => {
+  try {
+    const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
+
+    const sessionItems = lineItems.data.map((item) => ({
+      stripe_id: item.id,
+      price: item.price,
+      quantity: item.quantity,
+      description: item.description,
+      discount: item.discounts || [],
+    }));
+
+    return sessionItems;
+  } catch (error) {
+    console.error("ERROR FETCHING LINE ITEMS: ", error);
+    throw new Error(`Failed to fetch line items for session: ${sessionId}`);
+  }
+};
+
+
+// fetch full purchase history (sessions + line items)
+// export const getPurchaseHistory = async (stripe_customer_id: string) => {
+//   try {
+//     const sessions = await stripe.checkout.sessions.list({
+//       customer: stripe_customer_id,
+//       limit: 10,
+//     });
+
+//     const purchaseHistory = [];
+
+//     for (const session of sessions.data) {
+//       const lineItems = await stripe.checkout.sessions.listLineItems(
+//         session.id
+//       );
+
+//       const items = lineItems.data.map((item) => ({
+//         stripe_id: item.id,
+//         quantity: item.quantity,
+//         price: item.price?.unit_amount ? item.price.unit_amount : null,
+//       }));
+
+//       purchaseHistory.push({
+//         sessionId: session.id,
+//         amountTotal: session.amount_total ? session.amount_total : null,
+//         created: new Date(session.created * 1000).toLocaleDateString(),
+//         items,
+//       });
+//     }
+
+//     return purchaseHistory;
+//   } catch (error) {
+//     console.error("ERROR FETCHING PURCHASE HISTORY: ", error);
+//     throw new Error("Error fetching stripe payment intents");
+//   }
+// };

@@ -1,4 +1,4 @@
-import { getPurchaseHistory } from "@/lib/stripe";
+
 import { formatPrice } from "@/lib/utils";
 
 interface PurchaseHistoryProps {
@@ -6,14 +6,13 @@ interface PurchaseHistoryProps {
 }
 
 const PurchaseHistory = async ({ customerStripeId }: PurchaseHistoryProps) => {
-  const purchaseHistory = await getPurchaseHistory(customerStripeId);
 
-  console.log("PURCHASE HISTORY: ", purchaseHistory);
+  
   return (
     <>
       <div>
         <h2>Purchase history</h2>
-        {purchaseHistory.map((session) => (
+        {/* {purchaseHistory.map((session) => (
           <div key={session.sessionId}>
             <p>{`Date: ${session.created}`}</p>
             <p>{`Total: ${formatPrice(session.amountTotal!) }`}</p>
@@ -27,7 +26,7 @@ const PurchaseHistory = async ({ customerStripeId }: PurchaseHistoryProps) => {
               ))}
             </ul>
           </div>
-        ))}
+        ))} */}
       </div>
     </>
   );
