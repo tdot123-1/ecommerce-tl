@@ -1,5 +1,3 @@
-import SendMagicLink from "@/app/ui/customer/mailing/send-magic-link";
-import SignupForm from "@/app/ui/customer/mailing/signup-form";
 import CustomerProfile from "@/app/ui/customer/profile/customer-profile";
 import ProfileSignIn from "@/app/ui/customer/profile/profile-signin";
 import { montserrat } from "@/app/ui/fonts";

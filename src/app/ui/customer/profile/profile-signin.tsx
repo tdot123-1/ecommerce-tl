@@ -19,7 +19,7 @@ const ProfileSignIn = () => {
               Sign up for an account
             </h2>
             <p className="mb-4 text-sm text-zinc-800 dark:text-zinc-400 text-center">
-              Don't have an account yet? Sign up with the form below to take
+              Don&apos;t have an account yet? Sign up with the form below to take
               advantage of several benefits including exclusive discounts!
             </p>
             <div className="bg-zinc-100 dark:bg-zinc-900 rounded-md p-4">
@@ -57,7 +57,7 @@ const ProfileSignIn = () => {
               variant={`link`}
               onClick={() => setShowSignUpForm(true)}
             >
-              I don't have an account
+              I don&apos;t have an account
             </Button>
           </div>
         </>

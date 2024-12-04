@@ -56,7 +56,7 @@ const SetCookieButton = ({ name, customerId }: SetCookieButtonProps) => {
       {verified && (
         <div className="text-center text-sm text-zinc-800 dark:text-zinc-400">
           <p className="mb-2">
-            That's all! Remember to take advantage of discounts by adding your
+            That&apos;s all! Remember to take advantage of discounts by adding your
             promo code at the checkout
           </p>
           <p>You can now continue shopping from this window,</p>

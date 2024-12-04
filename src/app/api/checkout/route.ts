@@ -33,8 +33,8 @@ export const POST = async (req: Request) => {
       return acc;
     }, {} as Record<string, string>);
 
-    console.log("LINE ITEMS: ", line_items);
-    console.log("META: ", metadata);
+    // console.log("LINE ITEMS: ", line_items);
+    // console.log("META: ", metadata);
 
     //(!) TESTING DISCOUNTS ///
 
@@ -46,7 +46,7 @@ export const POST = async (req: Request) => {
     */
 
     const customerId = await getCookie();
-    console.log("CUSTOMER ID COOKIE: ", customerId)
+    // console.log("CUSTOMER ID COOKIE: ", customerId)
 
     const session = await stripe.checkout.sessions.create({
       line_items,
@@ -65,28 +65,6 @@ export const POST = async (req: Request) => {
         allow_promotion_codes: true,
       }),
     });
-
-    // // create checkout session
-    // const session = await stripe.checkout.sessions.create({
-    //   line_items,
-    //   mode: "payment",
-    //   payment_method_types: ["card", "ideal"],
-    //   success_url: `${process.env.NEXT_PUBLIC_URL}/checkout/success`,
-    //   cancel_url: `${process.env.NEXT_PUBLIC_URL}/checkout`,
-    //   shipping_address_collection: {
-    //     allowed_countries: ["NL", "FR", "US"],
-    //   },
-    //   // customer: "",
-    //   // discounts: [
-    //   //   {
-    //   //     coupon: "oae9CeC8",
-    //   //   },
-    //   // ],
-    //   // allow_promotion_codes: false,
-    //   payment_intent_data: {
-    //     metadata: { ...metadata },
-    //   },
-    // });
 
     return NextResponse.json({ sessionID: session.id });
   } catch (error) {

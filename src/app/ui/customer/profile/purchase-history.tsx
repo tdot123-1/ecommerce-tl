@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { getAllSessions } from "@/lib/stripe";
 import { formatPrice } from "@/lib/utils";
 import { montserrat } from "../../fonts";
-import { ReceiptEuroIcon } from "lucide-react";
+
 import PurchaseDetails from "./purchase-details";
 
 interface PurchaseHistoryProps {
@@ -48,7 +47,10 @@ const PurchaseHistory = async ({ customerStripeId }: PurchaseHistoryProps) => {
                 <p>{session.discounts > 0 ? session.discounts : "N/A"}</p>
               </div>
               <div className="w-fit mx-auto mt-2">
-                <PurchaseDetails purchaseDate={session.created} sessionId={session.sessionId} />
+                <PurchaseDetails
+                  purchaseDate={session.created}
+                  sessionId={session.sessionId}
+                />
               </div>
             </div>
           ))}
