@@ -21,7 +21,6 @@ const Page = () => {
       </h1>
       {userCookie ? (
         <div>
-          <div>Customer profile</div>
           <CustomerProfile customerStripeId={userCookie.value} />
           <div>Sign out</div>
           <div>Delete profile</div>

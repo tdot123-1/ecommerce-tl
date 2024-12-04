@@ -10,7 +10,7 @@ const CustomerProfile = async ({ customerStripeId }: CustomerProfileProps) => {
   return (
     <>
       <div className="my-8">
-        <h2>{`Signed in as ${customer.name}`}</h2>
+        <h2 className="italic">Signed in as <span className="font-semibold text-lg">{`${customer.name}`}</span></h2>
         <div>{`Deleted: ${customer.deleted}`}</div>
         <PurchaseHistory customerStripeId={customerStripeId} />
       </div>

@@ -135,7 +135,7 @@ export const getOneSession = async (sessionId: string) => {
 
     const sessionItems = lineItems.data.map((item) => ({
       stripe_id: item.id,
-      price: item.price,
+      price: item.price?.unit_amount,
       quantity: item.quantity,
       description: item.description,
       discount: item.discounts || [],
