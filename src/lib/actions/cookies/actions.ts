@@ -10,7 +10,7 @@ export async function setCookie(customerId: string) {
     value: customerId,
     path: "/",
     httpOnly: true,
-    // secure: true,
+    secure: true,
   });
 }
 
