@@ -50,6 +50,7 @@ const PurchaseHistory = async ({ customerStripeId }: PurchaseHistoryProps) => {
                 <PurchaseDetails
                   purchaseDate={session.created}
                   sessionId={session.sessionId}
+                  amountTotal={session.amountTotal}
                 />
               </div>
             </div>

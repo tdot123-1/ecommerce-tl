@@ -15,9 +15,14 @@ import PurchaseDetailsLoading from "./purchase-details-loading";
 interface PurchaseDetailsProps {
   purchaseDate: string;
   sessionId: string;
+  amountTotal: number | null;
 }
 
-const PurchaseDetails = ({ purchaseDate, sessionId }: PurchaseDetailsProps) => {
+const PurchaseDetails = ({
+  purchaseDate,
+  sessionId,
+  amountTotal,
+}: PurchaseDetailsProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -36,7 +41,10 @@ const PurchaseDetails = ({ purchaseDate, sessionId }: PurchaseDetailsProps) => {
           </DialogDescription>
         </DialogHeader>
         <Suspense fallback={<PurchaseDetailsLoading />}>
-          <PurchaseDetailsReceipt sessionId={sessionId} />
+          <PurchaseDetailsReceipt
+            sessionId={sessionId}
+            amountTotal={amountTotal}
+          />
         </Suspense>
       </DialogContent>
     </Dialog>
