@@ -20,8 +20,6 @@ const Page = () => {
       {userCookie ? (
         <div>
           <CustomerProfile customerStripeId={userCookie.value} />
-          <div>Sign out</div>
-          <div>Delete profile</div>
         </div>
       ) : (
         <div className="sm:w-2/4 lg:w-1/3 mx-auto my-8">
