@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { ReceiptEuroIcon } from "lucide-react";
 import PurchaseDetailsReceipt from "./purchase-details-receipt";
+import { Suspense } from "react";
+import PurchaseDetailsLoading from "./purchase-details-loading";
 
 interface PurchaseDetailsProps {
   purchaseDate: string;
@@ -33,7 +35,9 @@ const PurchaseDetails = ({ purchaseDate, sessionId }: PurchaseDetailsProps) => {
             {`An overview of the purchase made from this account on ${purchaseDate}`}
           </DialogDescription>
         </DialogHeader>
-        <PurchaseDetailsReceipt sessionId={sessionId} />
+        <Suspense fallback={<PurchaseDetailsLoading />}>
+          <PurchaseDetailsReceipt sessionId={sessionId} />
+        </Suspense>
       </DialogContent>
     </Dialog>
   );

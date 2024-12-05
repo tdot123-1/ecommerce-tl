@@ -138,3 +138,47 @@ export const fetchFeaturedProducts = async () => {
     throw new Error("Failed to fetch product data.");
   }
 };
+
+
+// fetch images and names to show on customer receipts
+export const fetchPurchaseHistoryProducts = async (
+  stripe_product_id_list: string[]
+) => {
+  try {
+    const promises = stripe_product_id_list.map(async (stripe_product_id) => {
+      try {
+        const result = await sql`
+        SELECT name, image_url
+        FROM products
+        WHERE stripe_product_id = ${stripe_product_id}
+      `;
+
+        if (!result.rowCount) {
+          throw new Error("Product not found");
+        }
+
+        return {
+          stripeProductId: stripe_product_id,
+          name: result.rows[0].name,
+          imageUrl: result.rows[0].image_url,
+        };
+
+      } catch (error) {
+        console.error(`Error fetch image for: ${stripe_product_id}`, error);
+        return {
+          stripeProductId: stripe_product_id,
+          name: "N/A",
+          imageUrl: "/placeholder.png",
+        };
+      }
+    });
+
+    const resolvedProductData = await Promise.all(promises)
+
+    return resolvedProductData
+
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch product data.");
+  }
+};

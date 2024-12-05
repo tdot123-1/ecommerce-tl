@@ -134,7 +134,7 @@ export const getOneSession = async (sessionId: string) => {
     const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
 
     const sessionItems = lineItems.data.map((item) => ({
-      stripe_id: item.id,
+      stripe_id: item.price?.product.toString() || "N/A",
       price: item.price?.unit_amount,
       quantity: item.quantity,
       description: item.description,
