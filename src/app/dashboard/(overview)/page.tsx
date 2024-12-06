@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowBigRight, ImageIcon, LucideStar, PlusSquareIcon, TagsIcon } from "lucide-react";
+import { ArrowBigRight, ImageIcon, LucideStar, MailIcon, PlusSquareIcon, ReceiptEuroIcon, TagsIcon } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -85,7 +85,7 @@ export default function Page() {
           <CardHeader>
             <CardTitle>Tags</CardTitle>
             <CardDescription>
-              Adding tags will help the customer more easily find products.
+              Adding tags will help the customer more easily find products
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -93,6 +93,38 @@ export default function Page() {
               <div className="flex justify-center items-center gap-1">
                 <span className="italic underline">To tags overview</span>{" "}
                 <TagsIcon size={24} />
+              </div>
+            </Link>
+          </CardContent>
+        </Card>
+        <Card className="min-w-full md:min-w-fit">
+          <CardHeader>
+            <CardTitle>Discounts</CardTitle>
+            <CardDescription>
+              Manage all discounts on your products
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/dashboard/discounts">
+              <div className="flex justify-center items-center gap-1">
+                <span className="italic underline">To discounts</span>{" "}
+                <ReceiptEuroIcon size={24} />
+              </div>
+            </Link>
+          </CardContent>
+        </Card>
+        <Card className="min-w-full md:min-w-fit">
+          <CardHeader>
+            <CardTitle>Mailing</CardTitle>
+            <CardDescription>
+              Reach out to your customers through email
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/dashboard/mailing">
+              <div className="flex justify-center items-center gap-1">
+                <span className="italic underline">To emailing</span>{" "}
+                <MailIcon size={24} />
               </div>
             </Link>
           </CardContent>

@@ -3,7 +3,9 @@ import {
   ImageIcon,
   LucideStar,
   LucideTags,
+  MailIcon,
   PlusSquare,
+  ReceiptEuroIcon,
   Table2Icon,
 } from "lucide-react";
 
@@ -37,5 +39,15 @@ export const sidebarLinksList = [
     name: "Product Tags",
     href: "/dashboard/products/tags",
     icon: LucideTags,
+  },
+  {
+    name: "Discounts",
+    href: "/dashboard/discounts",
+    icon: ReceiptEuroIcon,
+  },
+  {
+    name: "Mailing",
+    href: "/dashboard/mailing",
+    icon: MailIcon,
   },
 ];

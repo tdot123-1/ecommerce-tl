@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 import SidebarLinks from "./sidebar-links";
 import Link from "next/link";
-import { EuroIcon, StoreIcon } from "lucide-react";
+import { ChartLineIcon, EuroIcon, StoreIcon } from "lucide-react";
 
 const DashSidebar = () => {
   return (
@@ -36,6 +36,14 @@ const DashSidebar = () => {
                   >
                     <EuroIcon />
                     <span>Stripe Dashboard</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link href={`https://app.sendgrid.com/`} target="_blank">
+                    <ChartLineIcon />
+                    <span>SendGrid Dashboard</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
