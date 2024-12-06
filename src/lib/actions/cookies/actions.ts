@@ -2,9 +2,9 @@
 
 import { cookies } from "next/headers";
 
-const cookieStore = cookies();
-
 export async function setCookie(customerId: string) {
+  const cookieStore = cookies();
+
   cookieStore.set({
     name: "user",
     value: customerId,
@@ -15,11 +15,15 @@ export async function setCookie(customerId: string) {
 }
 
 export async function getCookie() {
+  const cookieStore = cookies();
+
   const userId = cookieStore.get("user");
 
   return userId?.value || null;
 }
 
 export async function deleteCookie() {
+  const cookieStore = cookies();
+
   cookieStore.delete("user");
 }
