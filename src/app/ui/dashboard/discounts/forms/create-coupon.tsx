@@ -1,0 +1,126 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { State } from "@/lib/actions/products/actions";
+import {
+  LoaderPinwheelIcon,
+  PercentCircleIcon,
+  PercentIcon,
+  PlusCircleIcon,
+} from "lucide-react";
+import { useState } from "react";
+
+const Form = () => {
+  // keep track of errors in form state
+  const [state, setState] = useState<State>({ message: null, errors: {} });
+  const [isLoading, setIsLoading] = useState(false);
+
+  return (
+    <form>
+      <div className="mb-4">
+        <Label htmlFor="name">Name</Label>
+        <p className="ml-4 text-xs italic text-zinc-700 dark:text-zinc-400">
+          This name will appear on customers' receipts.
+        </p>
+        <Input
+          name="name"
+          id="name"
+          type="text"
+          disabled={isLoading}
+          className="ml-4"
+        />
+        <div>
+          {state.errors?.name &&
+            state.errors.name.map((error: string, index) => (
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic mt-1"
+              >
+                {error}
+              </p>
+            ))}
+        </div>
+      </div>
+
+      <div className="mb-4">
+        <Label htmlFor="percent_off">Percent off</Label>
+        <div className="ml-4 flex items-center gap-1">
+          <Input
+            name="percent_off"
+            id="percent_off"
+            type="number"
+            disabled={isLoading}
+            className=""
+          />
+          <PercentIcon />
+        </div>
+
+        <div>
+          {state.errors?.percent_off &&
+            state.errors.percent_off.map((error: string, index) => (
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic mt-1"
+              >
+                {error}
+              </p>
+            ))}
+        </div>
+      </div>
+
+      <div className="mb-4">
+        <Label htmlFor="max_redemptions">Max redemptions</Label>
+        <p className="ml-4 text-xs italic text-zinc-700 dark:text-zinc-400">
+          Specify how many times this coupon can be redeemed in total
+          (optional).
+        </p>
+        <Input
+          name="max_redemptions"
+          id="max_redemptions"
+          type="number"
+          disabled={isLoading}
+          className="ml-4"
+        />
+        <div>
+          {state.errors?.max_redemptions &&
+            state.errors.max_redemptions.map((error: string, index) => (
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic mt-1"
+              >
+                {error}
+              </p>
+            ))}
+        </div>
+      </div>
+
+      <div>Redeem by</div>
+      {/**TO DO */}
+
+      <div className="flex flex-col justify-center items-center">
+        <div className="flex justify-center items-center gap-5">
+          <Button type="button" variant={`secondary`}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={isLoading}>
+            <div className="flex justify-center items-center gap-2">
+              {isLoading ? (
+                <LoaderPinwheelIcon size={20} className="animate-spin" />
+              ) : (
+                <PlusCircleIcon size={20} />
+              )}
+              <span>Create Product</span>
+            </div>
+          </Button>
+        </div>
+        {state.message && (
+          <p className="text-red-600 text-sm italic mt-1">{state.message}</p>
+        )}
+      </div>
+    </form>
+  );
+};
+
+export default Form;
