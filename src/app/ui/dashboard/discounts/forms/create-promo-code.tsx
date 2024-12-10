@@ -5,14 +5,20 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { State } from "@/lib/actions/products/actions";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import RedeemDatePicker from "../coupons/redeem-date-picker";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { LoaderPinwheelIcon, PlusCircleIcon } from "lucide-react";
+import { createPromoCode } from "@/lib/actions/discounts/codes/actions";
+import { ToastAction } from "@/components/ui/toast";
 
-const Form = () => {
+interface FormProps {
+  couponId: string;
+}
+
+const Form = ({ couponId }: FormProps) => {
   // keep track of errors in form state
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
@@ -22,16 +28,72 @@ const Form = () => {
   const router = useRouter();
   const { toast } = useToast();
 
-  useEffect(() => {
-    console.log("Min amount: ", minAmount);
-  }, [minAmount]);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    // set loading state, prevent default
+    setIsLoading(true);
+    event.preventDefault();
 
-  // handle submit
-    // if minAmount === true: set errors on min value if empty
+    // create form data object, call server action
+    const formData = new FormData(event.currentTarget);
+
+    console.log("FORM CLIENT: ", formData);
+
+    // get raw form data
+    const rawFormData = Object.fromEntries(formData.entries());
+
+    console.log("FORM: ", rawFormData);
+
+    try {
+      const result = await createPromoCode(formData);
+
+      if (!result.success) {
+        setState(result);
+      } else {
+        toast({
+          title: "Promo Code Created!",
+          description:
+            "Finally, send an email to your customers to inform them about the new promo.",
+          action: (
+            <ToastAction
+              onClick={() => router.push("/dashboard/discounts")}
+              altText="Go to discounts"
+            >
+              Skip for now
+            </ToastAction>
+          ),
+        });
+        router.push(`/dashboard/mailing/promo-codes/${result.success}`);
+      }
+    } catch (error) {
+      console.error("Error creating product: ", error);
+      setState({ message: "Something went wrong" });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
+        <Input
+          name="coupon"
+          id="coupon"
+          type="hidden"
+          value={couponId}
+          className="hidden"
+          readOnly
+        />
+        <div>
+          {state.errors?.coupon &&
+            state.errors.coupon.map((error: string, index) => (
+              <p
+                key={`${error}-${index}`}
+                className="text-red-600 text-sm italic my-2"
+              >
+                {error}
+              </p>
+            ))}
+        </div>
         <div className="mb-4">
           <Label htmlFor="code">Code</Label>
           <p className="ml-4 text-xs italic text-zinc-700 dark:text-zinc-400">
@@ -86,7 +148,7 @@ const Form = () => {
         <div className="mb-4">
           <Label htmlFor="redeem_by">Redeem by</Label>
           <p className="ml-4 text-xs italic text-zinc-700 dark:text-zinc-400">
-            Select a date until when this coupon will be valid (optional).
+            Select a date until when this promo code will be valid (optional).
           </p>
           <RedeemDatePicker
             redeemDate={redeemDate}
@@ -131,15 +193,15 @@ const Form = () => {
 
         {minAmount && (
           <div className="mb-4">
-            <Label htmlFor="min_euro">Minimum value in Euro</Label>
+            <Label htmlFor="min_euros">Minimum value in Euro</Label>
             <Label htmlFor="min_cents" className="hidden">
               Minimum value in cents
             </Label>
             <div className="flex items-baseline gap-1 ml-4">
               <span className="text-lg">€</span>
               <Input
-                name="min_euro"
-                id="min_euro"
+                name="min_euros"
+                id="min_euros"
                 type="number"
                 className="w-16"
                 defaultValue={0}
@@ -159,8 +221,8 @@ const Form = () => {
               />
             </div>
             <div>
-              {state.errors?.min_euro &&
-                state.errors.min_euro.map((error: string, index) => (
+              {state.errors?.min_euros &&
+                state.errors.min_euros.map((error: string, index) => (
                   <p
                     key={`${error}-${index}`}
                     className="text-red-600 text-sm italic mt-1"

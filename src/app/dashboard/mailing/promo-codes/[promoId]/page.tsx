@@ -1,5 +1,5 @@
 const Page = () => {
-  return <h1>Promo codes overview</h1>;
+  return <h1>Send promo by mail</h1>;
 };
 
 export default Page;

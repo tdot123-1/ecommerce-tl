@@ -4,42 +4,62 @@ import { auth } from "@/auth";
 import { stripe } from "@/lib/stripe-object";
 import { z } from "zod";
 
-const FormSchema = z.object({
-  coupon: z
-    .string({
-      invalid_type_error: "Please add a coupon",
-    })
-    .min(1, { message: "Please add a coupon" }),
-  code: z
-    .string({
-      invalid_type_error: "Please add a code",
-    })
-    .min(3, { message: "Code must be at least 3 characters" })
-    .max(35, { message: "Please choose a shorter code" }),
-  max_redemptions: z.coerce
-    .number({ invalid_type_error: "Max redemptions must be a number" })
-    .int("Please enter a whole number")
-    .gte(1, { message: "Max redemptions must be at least 1" })
-    .lte(999999, { message: "Maximum number of redemptions exceeded" })
-    .optional(),
-  redeem_by: z.coerce
-    .date({ message: "Invalid time format" })
-    .optional()
-    .refine((date) => !date || date.getTime() > Date.now(), {
-      message: "Redeem date must be in the future",
-    }),
-  min_euros: z.coerce
-    .number()
-    .gte(0, { message: "Please enter an amount of at least 0" })
-    .lt(999999, { message: "maximum amount exceeded" })
-    .default(0),
-  min_cents: z.coerce
-    .number()
-    .lt(100, { message: "Please enter an amount between 0 and 99" })
-    .gte(0, { message: "Please enter an amount between 0 and 99" })
-    .default(0),
-  first_time_transaction: z.coerce.boolean().optional(),
-});
+const FormSchema = z
+  .object({
+    coupon: z
+      .string({
+        invalid_type_error: "Please add a coupon",
+      })
+      .min(1, { message: "Please add a coupon" }),
+    code: z
+      .string({
+        invalid_type_error: "Please add a code",
+      })
+      .min(3, { message: "Code must be at least 3 characters" })
+      .max(35, { message: "Please choose a shorter code" }),
+    max_redemptions: z.coerce
+      .number({ invalid_type_error: "Max redemptions must be a number" })
+      .int("Please enter a whole number")
+      .gte(1, { message: "Max redemptions must be at least 1" })
+      .lte(999999, { message: "Maximum number of redemptions exceeded" })
+      .optional(),
+    redeem_by: z.coerce
+      .date({ message: "Invalid time format" })
+      .optional()
+      .refine((date) => !date || date.getTime() > Date.now(), {
+        message: "Redeem date must be in the future",
+      }),
+    min_euros: z.coerce
+      .number()
+      .gte(0, { message: "Please enter an amount of at least 0" })
+      .lt(999999, { message: "maximum amount exceeded" })
+      .default(0),
+    min_cents: z.coerce
+      .number()
+      .lt(100, { message: "Please enter an amount between 0 and 99" })
+      .gte(0, { message: "Please enter an amount between 0 and 99" })
+      .default(0),
+    first_time_transaction: z.coerce.boolean().optional(),
+    minimum_amount: z.coerce.boolean().optional(),
+  })
+  .refine(
+    (data) =>
+      !data.minimum_amount || (data.min_euros >= 1 && data.min_cents >= 0),
+    {
+      path: ["min_euros"],
+      message:
+        "If 'Minimum order value' is selected, 'Minimum value in Euro' must be at least 1",
+    }
+  )
+  .refine(
+    (data) =>
+      data.minimum_amount || (data.min_euros === 0 && data.min_cents === 0),
+    {
+      path: ["min_euros"],
+      message:
+        "If 'Minimum order value' is not selected, 'Minimum value in Euro' must be 0",
+    }
+  );
 
 export async function createPromoCode(formData: FormData) {
   const session = await auth();
@@ -58,6 +78,7 @@ export async function createPromoCode(formData: FormData) {
 
   // return message early in case of field errors
   if (!validatedFields.success) {
+    console.error("FORM ERRORS: ", validatedFields.error.flatten().fieldErrors)
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Missing data. Error creating new promo code.",
