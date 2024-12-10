@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { State } from "@/lib/actions/products/actions";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RedeemDatePicker from "../coupons/redeem-date-picker";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,6 +21,13 @@ const Form = () => {
 
   const router = useRouter();
   const { toast } = useToast();
+
+  useEffect(() => {
+    console.log("Min amount: ", minAmount);
+  }, [minAmount]);
+
+  // handle submit
+    // if minAmount === true: set errors on min value if empty
 
   return (
     <>

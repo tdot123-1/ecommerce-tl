@@ -7,7 +7,7 @@ import { State } from "@/lib/actions/products/actions";
 import { LoaderPinwheelIcon, PercentIcon, PlusCircleIcon } from "lucide-react";
 import { useState } from "react";
 import RedeemDatePicker from "../coupons/redeem-date-picker";
-import { createCoupon } from "@/lib/actions/discounts/actions";
+import { createCoupon } from "@/lib/actions/discounts/coupons/actions";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
