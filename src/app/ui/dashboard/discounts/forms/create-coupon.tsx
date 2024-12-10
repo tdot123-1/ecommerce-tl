@@ -187,7 +187,7 @@ const Form = () => {
               ) : (
                 <PlusCircleIcon size={20} />
               )}
-              <span>Create Product</span>
+              <span>Create Coupon</span>
             </div>
           </Button>
         </div>
