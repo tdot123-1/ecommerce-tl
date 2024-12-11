@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth";
 import { stripe } from "@/lib/stripe-object";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const FormSchema = z.object({
@@ -71,6 +72,8 @@ export async function createCoupon(formData: FormData) {
       max_redemptions,
       redeem_by: redeemByTimestamp,
     });
+
+    revalidatePath("/dashboard/discounts");
 
     return { success: coupon.id };
   } catch (error) {

@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth";
 import { stripe } from "@/lib/stripe-object";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const FormSchema = z
@@ -17,18 +18,19 @@ const FormSchema = z
       })
       .min(3, { message: "Code must be at least 3 characters" })
       .max(35, { message: "Please choose a shorter code" }),
-    max_redemptions: z.coerce
-      .number({ invalid_type_error: "Max redemptions must be a number" })
-      .int("Please enter a whole number")
-      .gte(1, { message: "Max redemptions must be at least 1" })
-      .lte(999999, { message: "Maximum number of redemptions exceeded" })
-      .optional(),
-    redeem_by: z.coerce
-      .date({ message: "Invalid time format" })
-      .optional()
-      .refine((date) => !date || date.getTime() > Date.now(), {
-        message: "Redeem date must be in the future",
-      }),
+    max_redemptions: z.preprocess(
+      (value) => (value === "" || value === undefined ? undefined : value),
+      z.coerce.number().int().gte(1).lte(999999).optional()
+    ),
+    redeem_by: z.preprocess(
+      (value) => (value === "" || value === undefined ? undefined : value),
+      z.coerce
+        .date()
+        .optional()
+        .refine((date) => !date || date.getTime() > Date.now(), {
+          message: "Redeem date must be in the future",
+        })
+    ),
     min_euros: z.coerce
       .number()
       .gte(0, { message: "Please enter an amount of at least 0" })
@@ -78,7 +80,7 @@ export async function createPromoCode(formData: FormData) {
 
   // return message early in case of field errors
   if (!validatedFields.success) {
-    console.error("FORM ERRORS: ", validatedFields.error.flatten().fieldErrors)
+    console.error("FORM ERRORS: ", validatedFields.error.flatten().fieldErrors);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Missing data. Error creating new promo code.",
@@ -115,6 +117,8 @@ export async function createPromoCode(formData: FormData) {
         minimum_amount_currency: "eur",
       },
     });
+
+    revalidatePath("/dashboard/discounts")
 
     return { success: promoCode.id };
   } catch (error) {
