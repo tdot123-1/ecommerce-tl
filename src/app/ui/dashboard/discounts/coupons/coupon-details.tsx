@@ -8,32 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDate, formatPrice } from "@/lib/utils";
-import { PlusCircleIcon } from "lucide-react";
+import { Coupon, PromoCode } from "@/lib/types";
+import { checkDiscountStatus } from "@/lib/utils";
+import { EditIcon, PlusCircleIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
-
-interface PromoCode {
-  id: string;
-  code: string;
-  max_redemptions: number | null;
-  times_redeemed: number;
-  active: boolean;
-  minimum_amount: number | null;
-  first_time_transaction: boolean;
-  expires_at: number | null;
-  created: number;
-}
-
-interface Coupon {
-  id: string;
-  name: string | null;
-  percent_off: number | null;
-  redeem_by: number | null;
-  max_redemptions: number | null;
-  times_redeemed: number;
-  valid: boolean;
-  created: number;
-}
+import CodeTableRow from "../codes/code-table-row";
 
 interface CouponDetailsProps {
   coupon: Coupon;
@@ -44,14 +23,27 @@ const CouponDetails = ({ coupon, promoCodes }: CouponDetailsProps) => {
   return (
     <div className="mb-4">
       <div className="bg-zinc-300 dark:bg-zinc-900 rounded-t-lg p-4">
-        <h2 className="text-lg font-semibold">
-          {coupon.name || "Unnamed Coupon"}
-        </h2>
+        <div className="flex justify-between items-baseline mb-2">
+          <h2 className="text-lg font-semibold">
+            {coupon.name || "Unnamed Coupon"}
+          </h2>
+          <div>
+            <Button variant="ghost" className="p-2 mr-1.5">
+              <EditIcon size={24} />
+              <p className="hidden">Edit name</p>
+            </Button>
+            <Button variant="ghost" className="p-2">
+              <Trash2Icon size={24} />
+              <p className="hidden">Delete</p>
+            </Button>
+          </div>
+        </div>
+
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Percent off</TableHead>
-              <TableHead>Valid</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Times redeemed</TableHead>
               <TableHead>Max redemptions</TableHead>
               <TableHead>Redeem by</TableHead>
@@ -63,7 +55,16 @@ const CouponDetails = ({ coupon, promoCodes }: CouponDetailsProps) => {
               <TableCell>
                 {coupon.percent_off ? `${coupon.percent_off} %` : "N/A"}
               </TableCell>
-              <TableCell>{coupon.valid ? "True" : "False"}</TableCell>
+              <TableCell>
+                {
+                  checkDiscountStatus(
+                    coupon.redeem_by,
+                    coupon.max_redemptions,
+                    coupon.times_redeemed,
+                    coupon.valid
+                  ).message
+                }
+              </TableCell>
               <TableCell>{coupon.times_redeemed}</TableCell>
               <TableCell>{coupon.max_redemptions || "N/A"}</TableCell>
               <TableCell>
@@ -95,6 +96,7 @@ const CouponDetails = ({ coupon, promoCodes }: CouponDetailsProps) => {
             <TableHeader>
               <TableRow>
                 <TableHead>Code</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>Active</TableHead>
                 <TableHead>Times redeemed</TableHead>
                 <TableHead>Max redemptions</TableHead>
@@ -106,28 +108,7 @@ const CouponDetails = ({ coupon, promoCodes }: CouponDetailsProps) => {
             </TableHeader>
             <TableBody>
               {promoCodes.map((code) => (
-                <TableRow key={code.id}>
-                  <TableCell>{code.code}</TableCell>
-                  <TableCell>{code.active ? "True" : "False"}</TableCell>
-                  <TableCell>{code.times_redeemed}</TableCell>
-                  <TableCell>{code.max_redemptions || "N/A"}</TableCell>
-                  <TableCell>
-                    {code.minimum_amount
-                      ? formatPrice(code.minimum_amount)
-                      : "N/A"}
-                  </TableCell>
-                  <TableCell>
-                    {code.first_time_transaction ? "True" : "False"}
-                  </TableCell>
-                  <TableCell>
-                    {code.expires_at
-                      ? new Date(code.expires_at * 1000).toLocaleDateString()
-                      : "N/A"}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(code.created * 1000).toLocaleDateString()}
-                  </TableCell>
-                </TableRow>
+                <CodeTableRow promoCode={code} key={code.id} />
               ))}
             </TableBody>
           </Table>

@@ -118,11 +118,36 @@ export async function createPromoCode(formData: FormData) {
       },
     });
 
-    revalidatePath("/dashboard/discounts")
+    revalidatePath("/dashboard/discounts");
 
     return { success: promoCode.id };
   } catch (error) {
     console.error("Error creating promo code:", error);
     return { message: "Failed to create promo code." };
+  }
+}
+
+// DEACTIVATE PROMO CODE
+export async function deactivatePromoCode(
+  promoCodeId: string,
+  active: boolean
+) {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const updatedPromo = await stripe.promotionCodes.update(promoCodeId, {
+      active,
+    });
+
+    revalidatePath("/dashboard/discounts");
+
+    return { success: true, updatedCode: updatedPromo.id };
+  } catch (error) {
+    console.error("Error archiving promo code: ", error);
+    throw new Error("Failed to archive promo code");
   }
 }

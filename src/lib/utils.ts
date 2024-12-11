@@ -97,6 +97,38 @@ export const checkDeadline = (endDate: Date) => {
   }
 };
 
+export const checkDiscountStatus = (
+  redeem_by: number | null | undefined,
+  max_redemptions: number | null | undefined,
+  times_redeemed: number,
+  active: boolean
+) => {
+  if (max_redemptions && times_redeemed >= max_redemptions) {
+    return {
+      message: "Max redemptions reached",
+      isActive: false,
+      canActivate: false,
+    };
+  } else if (redeem_by && redeem_by < Date.now() / 1000) {
+    return {
+      message: "Expired",
+      isActive: false,
+      canActivate: false,
+    };
+  } else if (!active) {
+    return {
+      message: "Inactive",
+      isActive: false,
+      canActivate: true,
+    };
+  } else {
+    return {
+      message: "Active",
+      isActive: true,
+      canActivate: true,
+    };
+  }
+};
 
 // export const getSession = async (sessionId: string) => {
 //   const sessionData = await stripe.checkout.sessions.retrieve(sessionId);

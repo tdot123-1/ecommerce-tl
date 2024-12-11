@@ -74,7 +74,7 @@ export const fetchAllCouponsAndCodes = async () => {
       })
     );
 
-    console.log("COUPON DETAILS: ", couponDetails)
+    // console.log("COUPON DETAILS: ", couponDetails)
     return couponDetails;
   } catch (error) {
     console.error("Error fetching coupons or promo codes:", error);
