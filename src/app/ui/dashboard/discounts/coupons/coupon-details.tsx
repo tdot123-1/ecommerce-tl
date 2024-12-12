@@ -10,9 +10,11 @@ import {
 } from "@/components/ui/table";
 import { Coupon, PromoCode } from "@/lib/types";
 import { checkDiscountStatus } from "@/lib/utils";
-import { EditIcon, PlusCircleIcon, Trash2Icon } from "lucide-react";
+import { PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
 import CodeTableRow from "../codes/code-table-row";
+import DeleteCoupon from "./delete-coupon";
+import EditCouponName from "./edit-coupon-name";
 
 interface CouponDetailsProps {
   coupon: Coupon;
@@ -28,14 +30,8 @@ const CouponDetails = ({ coupon, promoCodes }: CouponDetailsProps) => {
             {coupon.name || "Unnamed Coupon"}
           </h2>
           <div>
-            <Button variant="ghost" className="p-2 mr-1.5">
-              <EditIcon size={24} />
-              <p className="hidden">Edit name</p>
-            </Button>
-            <Button variant="ghost" className="p-2">
-              <Trash2Icon size={24} />
-              <p className="hidden">Delete</p>
-            </Button>
+            <EditCouponName couponId={coupon.id} />
+            <DeleteCoupon couponId={coupon.id} />
           </div>
         </div>
 

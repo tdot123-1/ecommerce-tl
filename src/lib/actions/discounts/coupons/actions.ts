@@ -11,7 +11,10 @@ const FormSchema = z.object({
       invalid_type_error: "Please add a name",
     })
     .min(1, { message: "Please add a name" })
-    .max(35, { message: "Please choose a shorter name" }),
+    .max(50, { message: "Please choose a shorter name" })
+    .regex(/^[\w\s!@#$%^&*()_+=[\]{}|\\;:'",.<>?/-]*$/, {
+      message: "Coupon name contains invalid characters",
+    }),
   percent_off: z.coerce
     .number({
       invalid_type_error: "Percent off must be a number",
@@ -82,5 +85,57 @@ export async function createCoupon(formData: FormData) {
   }
 }
 
-
 // DELETE COUPON
+export const deleteCoupon = async (couponId: string) => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    await stripe.coupons.del(couponId);
+
+    revalidatePath("/dashboard/discounts");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting coupon: ", error);
+    throw new Error("Failed to delete coupon");
+  }
+};
+
+const EditName = FormSchema.omit({
+  percent_off: true,
+  max_redemptions: true,
+  redeem_by: true,
+});
+// EDIT NAME
+export const editCouponName = async (couponId: string, formData: FormData) => {
+  
+  const rawFormData = Object.fromEntries(formData.entries());
+  const validatedName = EditName.safeParse(rawFormData);
+
+  // return message early in case of field errors
+  if (!validatedName.success) {
+    return {
+      errors: validatedName.error.flatten().fieldErrors,
+      message: "Missing data. Error updating coupon name.",
+    };
+  }
+
+  const { name } = validatedName.data;
+
+  try {
+    await stripe.coupons.update(couponId, {
+      name,
+    });
+
+    revalidatePath("/dashboard/discounts");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating coupon name: ", error);
+    throw new Error("Failed to update coupon name");
+  }
+};
