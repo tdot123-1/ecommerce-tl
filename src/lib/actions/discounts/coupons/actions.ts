@@ -112,7 +112,12 @@ const EditName = FormSchema.omit({
 });
 // EDIT NAME
 export const editCouponName = async (couponId: string, formData: FormData) => {
-  
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
   const rawFormData = Object.fromEntries(formData.entries());
   const validatedName = EditName.safeParse(rawFormData);
 
