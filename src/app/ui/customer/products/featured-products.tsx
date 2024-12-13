@@ -2,15 +2,21 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { fetchFeaturedProducts } from "@/lib/data/products/store/data";
 import { formatPrice } from "@/lib/utils";
+import { LucideStar } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { montserrat } from "../../fonts";
 
 const FeaturedProducts = async () => {
   const featured = await fetchFeaturedProducts();
 
   return (
     <div className="mx-auto w-full md:w-1/2">
-      <h2 className="text-lg italic">Featured Products</h2>
+      <div className="flex justify-start items-center gap-1">
+        <LucideStar size={28} />
+        <h2 className={`${montserrat.className} text-lg font-semibold`}>Featured Products</h2>
+      </div>
+
       <ScrollArea className="max-w-full whitespace-nowrap ">
         <div className="flex w-max space-x-4 p-4">
           {featured.map((product) => (

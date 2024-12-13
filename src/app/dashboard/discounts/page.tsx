@@ -21,10 +21,7 @@ const Page = () => {
         </Link>
       </div>
       <CouponsOverview />
-      <p>Create new coupon</p>
-      <p>Create new promo codes</p>
-      <p>Deactivate coupon/promo code</p>
-      <p>Delete coupon/promo code</p>
+      
     </>
   );
 };

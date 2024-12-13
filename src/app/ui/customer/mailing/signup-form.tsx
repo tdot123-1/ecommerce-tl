@@ -4,25 +4,39 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signUpCustomer } from "@/lib/actions/mailing/actions";
+import { signupCustomerWithTemplate } from "@/lib/actions/mailing/actions";
 import { State } from "@/lib/actions/products/actions";
 import { useState } from "react";
+import ResendMail from "./resend-mail";
 
 const SignupForm = () => {
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
+  const [resend, setResend] = useState(false);
+  const [email, setEmail] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setState({ message: null, errors: {} });
     setIsLoading(true);
     event.preventDefault();
 
     // create form data object, call server action
     const formData = new FormData(event.currentTarget);
     console.log("FROM CLIENT: ", formData);
+    const submittedEmail = formData.get("email");
 
     try {
-      const result = await signUpCustomer(formData);
-      setState(result);
+      if (!submittedEmail) {
+        throw new Error("Missing email");
+      }
+
+      const result = await signupCustomerWithTemplate(formData);
+      if (result.success) {
+        setEmail(submittedEmail as string);
+        setResend(true);
+      } else {
+        setState(result);
+      }
     } catch (error) {
       console.error("Registration error: ", error);
       setState({
@@ -98,6 +112,7 @@ const SignupForm = () => {
         {state.message && (
           <p className="text-red-600 text-sm italic mt-1">{state.message}</p>
         )}
+        {resend && <ResendMail email={email} />}
       </div>
     </form>
   );
