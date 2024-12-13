@@ -22,18 +22,19 @@ const FormSchema = z.object({
     .int("Please enter a whole number")
     .gte(1, { message: "Please enter an number between 1 and 99" })
     .lt(100, { message: "Please enter an number between 1 and 99" }),
-  max_redemptions: z.coerce
-    .number({ invalid_type_error: "Max redemptions must be a number" })
-    .int("Please enter a whole number")
-    .gte(1, { message: "Max redemptions must be at least 1" })
-    .lte(999999, { message: "Maximum number of redemptions exceeded" })
-    .optional(),
-  redeem_by: z.coerce
-    .date({ message: "Invalid time format" })
-    .optional()
-    .refine((date) => !date || date.getTime() > Date.now(), {
-      message: "Redeem date must be in the future",
-    }),
+  max_redemptions: z.preprocess(
+    (value) => (value === "" || value === undefined ? undefined : value),
+    z.coerce.number().int().gte(1).lte(999999).optional()
+  ),
+  redeem_by: z.preprocess(
+    (value) => (value === "" || value === undefined ? undefined : value),
+    z.coerce
+      .date()
+      .optional()
+      .refine((date) => !date || date.getTime() > Date.now(), {
+        message: "Redeem date must be in the future",
+      })
+  ),
 });
 
 // CREATE

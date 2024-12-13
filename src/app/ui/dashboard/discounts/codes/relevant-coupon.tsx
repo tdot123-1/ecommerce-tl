@@ -9,9 +9,17 @@ const RelevantCoupon = async ({ couponId }: RelevantCouponProps) => {
     const coupon = await fetchOneCouponData(couponId);
 
     return (
-      <div className="my-4">
-        <h2>{coupon.name}</h2>
-        <p>{`${coupon.percent_off} % off`}</p>
+      <div className="my-4 border-b border-b-zinc-300 bg-zinc-100 dark:bg-zinc-900 dark:border-b-zinc-700 rounded-t-lg px-2 pt-2">
+        <h2 className="flex justify-between items-baseline">
+          <span className="font-semibold">Coupon: </span>
+          <span className="text-zinc-700 dark:text-zinc-400">
+            {coupon.name}
+          </span>
+        </h2>
+        <p className="flex justify-between items-baseline">
+          <span className="font-semibold">Details: </span>
+          <span className="text-zinc-700 dark:text-zinc-400">{`${coupon.percent_off}% off`}</span>
+        </p>
       </div>
     );
   } catch (error) {

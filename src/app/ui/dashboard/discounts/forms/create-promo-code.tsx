@@ -96,16 +96,13 @@ const Form = ({ couponId }: FormProps) => {
         </div>
         <div className="mb-4">
           <Label htmlFor="code">Code</Label>
-          <p className="ml-4 text-xs italic text-zinc-700 dark:text-zinc-400">
-            This is the code that customers will use to redeem the discount.
-          </p>
-          <Input
-            name="code"
-            id="code"
-            type="text"
-            disabled={isLoading}
-            className="ml-4"
-          />
+          <div className="pl-4">
+            <p className=" text-xs italic text-zinc-700 dark:text-zinc-400">
+              This is the code that customers will use to redeem the discount.
+            </p>
+            <Input name="code" id="code" type="text" disabled={isLoading} />
+          </div>
+
           <div>
             {state.errors?.code &&
               state.errors.code.map((error: string, index) => (
@@ -121,17 +118,19 @@ const Form = ({ couponId }: FormProps) => {
 
         <div className="mb-4">
           <Label htmlFor="max_redemptions">Max redemptions</Label>
-          <p className="ml-4 text-xs italic text-zinc-700 dark:text-zinc-400">
-            Specify how many times this promo code can be redeemed in total
-            (optional).
-          </p>
-          <Input
-            name="max_redemptions"
-            id="max_redemptions"
-            type="number"
-            disabled={isLoading}
-            className="ml-4"
-          />
+          <div className="pl-4">
+            <p className=" text-xs italic text-zinc-700 dark:text-zinc-400">
+              Specify how many times this promo code can be redeemed in total
+              (optional).
+            </p>
+            <Input
+              name="max_redemptions"
+              id="max_redemptions"
+              type="number"
+              disabled={isLoading}
+            />
+          </div>
+
           <div>
             {state.errors?.max_redemptions &&
               state.errors.max_redemptions.map((error: string, index) => (
@@ -147,21 +146,23 @@ const Form = ({ couponId }: FormProps) => {
 
         <div className="mb-4">
           <Label htmlFor="redeem_by">Redeem by</Label>
-          <p className="ml-4 text-xs italic text-zinc-700 dark:text-zinc-400">
-            Select a date until when this promo code will be valid (optional).
-          </p>
-          <RedeemDatePicker
-            redeemDate={redeemDate}
-            setRedeemDate={setRedeemDate}
-          />
-          <Input
-            name="redeem_by"
-            id="redeem_by"
-            type="hidden"
-            value={redeemDate ? redeemDate.toISOString() : ""}
-            className="hidden"
-            readOnly
-          />
+          <div className="pl-4">
+            <p className="text-xs italic text-zinc-700 dark:text-zinc-400">
+              Select a date until when this promo code will be valid (optional).
+            </p>
+            <RedeemDatePicker
+              redeemDate={redeemDate}
+              setRedeemDate={setRedeemDate}
+            />
+            <Input
+              name="redeem_by"
+              id="redeem_by"
+              type="hidden"
+              value={redeemDate ? redeemDate.toISOString() : ""}
+              className="hidden"
+              readOnly
+            />
+          </div>
           <div>
             {state.errors?.redeem_by &&
               state.errors.redeem_by.map((error: string, index) => (
@@ -177,18 +178,19 @@ const Form = ({ couponId }: FormProps) => {
 
         <div className="mb-4">
           <Label htmlFor="minimum_amount">Minimum order value</Label>
-          <p className="ml-4 text-xs italic text-zinc-700 dark:text-zinc-400">
-            Specify a minimum order value for this promo code to be applicable
-            to (optional).
-          </p>
-          <Switch
-            id="minimum_amount"
-            disabled={isLoading}
-            name="minimum_amount"
-            className="ml-4"
-            checked={minAmount}
-            onCheckedChange={() => setMinAmount(!minAmount)}
-          />
+          <div className="pl-4">
+            <p className="text-xs italic text-zinc-700 dark:text-zinc-400">
+              Specify a minimum order value for this promo code to be applicable
+              to (optional).
+            </p>
+            <Switch
+              id="minimum_amount"
+              disabled={isLoading}
+              name="minimum_amount"
+              checked={minAmount}
+              onCheckedChange={() => setMinAmount(!minAmount)}
+            />
+          </div>
         </div>
 
         {minAmount && (
@@ -197,7 +199,7 @@ const Form = ({ couponId }: FormProps) => {
             <Label htmlFor="min_cents" className="hidden">
               Minimum value in cents
             </Label>
-            <div className="flex items-baseline gap-1 ml-4">
+            <div className="flex items-baseline gap-1 pl-4">
               <span className="text-lg">€</span>
               <Input
                 name="min_euros"
@@ -249,16 +251,18 @@ const Form = ({ couponId }: FormProps) => {
           <Label htmlFor="first_time_transaction">
             First time purchase only
           </Label>
-          <p className="ml-4 text-xs italic text-zinc-700 dark:text-zinc-400">
-            Select this option if you want this code to only work for customers
-            who have never made a purchase before.
-          </p>
-          <Checkbox
-            id="first_time_transaction"
-            name="first_time_transaction"
-            disabled={isLoading}
-            className="ml-4"
-          />
+          <div className="pl-4">
+            <p className="text-xs italic text-zinc-700 dark:text-zinc-400">
+              Select this option if you want this code to only work for
+              customers who have never made a purchase before.
+            </p>
+            <Checkbox
+              id="first_time_transaction"
+              name="first_time_transaction"
+              disabled={isLoading}
+            />
+          </div>
+
           <div>
             {state.errors?.first_time_transaction &&
               state.errors.first_time_transaction.map(

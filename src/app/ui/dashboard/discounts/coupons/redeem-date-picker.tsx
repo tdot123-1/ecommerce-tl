@@ -24,7 +24,7 @@ const RedeemDatePicker = ({
       <Popover>
         <div className="flex items-center gap-1">
           <PopoverTrigger asChild>
-            <Button id="redeem_by" variant={"outline"} className="w-fit ml-4">
+            <Button id="redeem_by" variant={"outline"} className="w-fit">
               <div className="flex justify-center items-center gap-1">
                 <CalendarCheck />
                 {redeemDate ? (

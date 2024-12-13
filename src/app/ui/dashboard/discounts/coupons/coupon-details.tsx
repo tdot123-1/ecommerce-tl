@@ -30,7 +30,7 @@ const CouponDetails = ({ coupon, promoCodes }: CouponDetailsProps) => {
             {coupon.name || "Unnamed Coupon"}
           </h2>
           <div>
-            <EditCouponName couponId={coupon.id} />
+            <EditCouponName couponId={coupon.id} couponName={coupon.name} />
             <DeleteCoupon couponId={coupon.id} />
           </div>
         </div>
@@ -79,8 +79,8 @@ const CouponDetails = ({ coupon, promoCodes }: CouponDetailsProps) => {
         <div className="flex justify-between items-baseline p-2">
           <h2 className={`${montserrat.className} text-lg`}>Promo Codes</h2>
           <Link href={`/dashboard/discounts/promo-codes/create/${coupon.id}`}>
-            <Button>
-              <div className="flex justify-center items-center gap-2">
+            <Button className="p-2">
+              <div className="flex justify-center items-center gap-1">
                 <PlusCircleIcon size={20} />
                 <span>Create Code</span>
               </div>
@@ -109,8 +109,8 @@ const CouponDetails = ({ coupon, promoCodes }: CouponDetailsProps) => {
             </TableBody>
           </Table>
         ) : (
-          <div>
-            <p>No promo codes yet!</p>
+          <div className="flex justify-center items-center p-2">
+            <p className="italic text-zinc-700 dark:text-zinc-300">No promo codes yet!</p>
           </div>
         )}
       </div>

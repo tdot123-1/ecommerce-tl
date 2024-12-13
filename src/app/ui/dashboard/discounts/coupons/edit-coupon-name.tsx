@@ -21,9 +21,10 @@ import { useState } from "react";
 
 interface EditCouponNameProps {
   couponId: string;
+  couponName: string | null;
 }
 
-const EditCouponName = ({ couponId }: EditCouponNameProps) => {
+const EditCouponName = ({ couponId, couponName }: EditCouponNameProps) => {
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -34,8 +35,6 @@ const EditCouponName = ({ couponId }: EditCouponNameProps) => {
     // set loading state, prevent default
     setIsLoading(true);
     event.preventDefault();
-
-    
 
     // create form data object, call server action
     const formData = new FormData(event.currentTarget);
@@ -84,6 +83,7 @@ const EditCouponName = ({ couponId }: EditCouponNameProps) => {
                 type="text"
                 disabled={isLoading}
                 className="ml-4"
+                defaultValue={couponName || "Unnamed Coupon"}
               />
               <div>
                 {state.errors?.name &&
@@ -122,7 +122,9 @@ const EditCouponName = ({ couponId }: EditCouponNameProps) => {
           </Button>
         </DialogFooter>
         {state.message && (
-          <p className="text-red-600 text-sm italic mt-1 text-right">{state.message}</p>
+          <p className="text-red-600 text-sm italic mt-1 text-right">
+            {state.message}
+          </p>
         )}
       </DialogContent>
     </Dialog>
