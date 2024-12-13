@@ -70,7 +70,8 @@ const EditCouponName = ({ couponId, couponName }: EditCouponNameProps) => {
         <DialogHeader>
           <DialogTitle>Edit Coupon Name</DialogTitle>
           <DialogDescription>
-            This name will appear on customers&apos; receipts.
+            This name will appear on customers&apos; receipts when they redeem
+            the coupon.
           </DialogDescription>
         </DialogHeader>
         <div>
