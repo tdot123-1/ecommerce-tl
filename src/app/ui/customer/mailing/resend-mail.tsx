@@ -2,30 +2,48 @@
 
 import { Button } from "@/components/ui/button";
 import { resendEmail } from "@/lib/actions/mailing/actions";
+import { LoaderPinwheelIcon, SendIcon } from "lucide-react";
+import { useState } from "react";
 
 interface ResendEmailProps {
   email: string;
 }
 
 const ResendMail = ({ email }: ResendEmailProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleResend = async () => {
+    setIsLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 300));
     try {
       await resendEmail(email);
     } catch (error) {
       console.error("Error resending: ", error);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
     <>
-      <div>
+      <div className="text-center">
         <p className="text-sm text-green-600 italic mt-1">
           Click the link in your email to complete the process!
         </p>
-        <p className="text-xs italic">
-          This could take a few seconds, click the button below to re-send the
-          email
+        <p className="text-xs italic my-1">
+          It could take a few seconds before you receive the email. Click the
+          button below to re-send the email in case it takes too long.
         </p>
-        <Button onClick={handleResend}>Re-send email</Button>
+
+        <Button type="button" onClick={handleResend} disabled={isLoading}>
+          <div className="flex justify-center items-center gap-2">
+            {isLoading ? (
+              <LoaderPinwheelIcon size={20} className="animate-spin" />
+            ) : (
+              <SendIcon size={20} />
+            )}
+            <span>Re-send email</span>
+          </div>
+        </Button>
       </div>
     </>
   );

@@ -17,8 +17,22 @@ const CustomerProfile = async ({ customerStripeId }: CustomerProfileProps) => {
           Signed in as{" "}
           <span className="font-semibold text-lg">{`${customer.name}`}</span>
         </h2>
-        <div>{`Deleted: ${customer.deleted}`}</div>
+        {!customer.deleted && (
+          <div className="my-8 text-center">
+            <h3 className="text-xl font-semibold text-red-600 ">Warning</h3>
+            <p className="italic text-sm">
+              Your profile will be permanently deleted in [delete_expiry_date]
+              days.
+            </p>
+            <p className="italic mb-4 text-sm">
+              To restore your profile, click the button below.
+            </p>
+            <Button>Restore Profile</Button>
+          </div>
+        )}
+
         <PurchaseHistory customerStripeId={customerStripeId} />
+        <div>Active promotions</div>
         <div className="flex justify-around mt-24 bg-zinc-100 dark:bg-zinc-700 rounded-lg py-10 md:px-10 mx-auto shadow-lg">
           <SignoutButton />
           <Button variant={`destructive`}>

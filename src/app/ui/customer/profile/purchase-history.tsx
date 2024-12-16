@@ -17,45 +17,54 @@ const PurchaseHistory = async ({ customerStripeId }: PurchaseHistoryProps) => {
         <h2 className={`${montserrat.className} font-semibold text-lg`}>
           Purchase history
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
-          {purchaseHistory.sessions.map((session) => (
-            <div
-              key={session.sessionId}
-              className="bg-zinc-200 dark:bg-zinc-800 p-4 rounded-lg"
-            >
-              <div className="flex justify-between">
-                <p>
-                  <span className="font-semibold">Date of Purchase</span>:
-                </p>
-                <p>{session.created}</p>
-              </div>
-              <div className="flex justify-between">
-                <p>
-                  <span className="font-semibold">Total Paid</span>:
-                </p>
-                <p>
-                  {session.amountTotal
-                    ? formatPrice(session.amountTotal)
-                    : "N/A"}
-                </p>
-              </div>
 
-              <div className="flex justify-between">
-                <p>
-                  <span className="font-semibold">Discount</span>:
-                </p>
-                <p>{session.discounts > 0 ? session.discounts : "N/A"}</p>
+        {purchaseHistory.sessions.length ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3">
+            {purchaseHistory.sessions.map((session) => (
+              <div
+                key={session.sessionId}
+                className="bg-zinc-200 dark:bg-zinc-800 p-4 rounded-lg"
+              >
+                <div className="flex justify-between">
+                  <p>
+                    <span className="font-semibold">Date of Purchase</span>:
+                  </p>
+                  <p>{session.created}</p>
+                </div>
+                <div className="flex justify-between">
+                  <p>
+                    <span className="font-semibold">Total Paid</span>:
+                  </p>
+                  <p>
+                    {session.amountTotal
+                      ? formatPrice(session.amountTotal)
+                      : "N/A"}
+                  </p>
+                </div>
+
+                <div className="flex justify-between">
+                  <p>
+                    <span className="font-semibold">Discount</span>:
+                  </p>
+                  <p>{session.discounts > 0 ? session.discounts : "N/A"}</p>
+                </div>
+                <div className="w-fit mx-auto mt-2">
+                  <PurchaseDetails
+                    purchaseDate={session.created}
+                    sessionId={session.sessionId}
+                    amountTotal={session.amountTotal}
+                  />
+                </div>
               </div>
-              <div className="w-fit mx-auto mt-2">
-                <PurchaseDetails
-                  purchaseDate={session.created}
-                  sessionId={session.sessionId}
-                  amountTotal={session.amountTotal}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex justify-center items-center mt-10">
+            <p className="italic text-zinc-700 dark:text-zinc-300">
+              No purchases yet!
+            </p>
+          </div>
+        )}
       </div>
     </>
   );

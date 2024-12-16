@@ -22,8 +22,10 @@ const SignupForm = () => {
 
     // create form data object, call server action
     const formData = new FormData(event.currentTarget);
-    console.log("FROM CLIENT: ", formData);
+    // console.log("FROM CLIENT: ", formData);
     const submittedEmail = formData.get("email");
+
+    // console.log("EMAIL: ", submittedEmail)
 
     try {
       if (!submittedEmail) {
