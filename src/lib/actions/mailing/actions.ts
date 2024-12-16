@@ -1,8 +1,8 @@
 "use server";
 
 import { sendMail, sendSignupTemplateMail } from "@/lib/send-email";
-// import { createStripeCustomer } from "@/lib/stripe";
-import { sql } from "@vercel/postgres";
+import { createStripeCustomer, deleteStripeCustomer } from "@/lib/stripe";
+import { db, sql } from "@vercel/postgres";
 import { z } from "zod";
 
 import jwt from "jsonwebtoken";
@@ -262,136 +262,153 @@ export async function verifyCustomerEmail(formData: FormData) {
 export async function signupCustomerWithTemplate(formData: FormData) {
   // DISABLE FUNCTION
 
-  const rawFormData = Object.fromEntries(formData.entries());
-  console.log(rawFormData);
-  return {
-    message: "Signup currently not yet possible.",
-    success: false,
-  };
-
   // const rawFormData = Object.fromEntries(formData.entries());
+  // console.log(rawFormData);
+  // return {
+  //   message: "Signup currently not yet possible.",
+  //   success: false,
+  // };
 
-  // // validate form fields
-  // const validatedFields = FormSchema.safeParse(rawFormData);
+  const rawFormData = Object.fromEntries(formData.entries());
 
-  // // return message early in case of field errors
-  // if (!validatedFields.success) {
-  //   return {
-  //     errors: validatedFields.error.flatten().fieldErrors,
-  //     message: "Failed to sign up. Please try again.",
-  //   };
-  // }
+  // validate form fields
+  const validatedFields = FormSchema.safeParse(rawFormData);
 
-  // const { name, email } = validatedFields.data;
+  // return message early in case of field errors
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Failed to sign up. Please try again.",
+    };
+  }
 
-  // // establish db connection, return early if connection issues
-  // let client;
+  const { name, email } = validatedFields.data;
 
-  // try {
-  //   client = await db.connect();
-  // } catch (error) {
-  //   console.error("DB CONNECTION ERROR: ", error);
-  //   return { message: "Connection error. Please try again later" };
-  // }
+  // establish db connection, return early if connection issues
+  let client;
 
-  // try {
-  //   // insert user into db
-  //   await client.sql`BEGIN`;
+  try {
+    client = await db.connect();
+  } catch (error) {
+    console.error("DB CONNECTION ERROR: ", error);
+    return { message: "Connection error. Please try again later" };
+  }
 
-  //   const createResult = await client.sql`
-  //       INSERT INTO customers (name, email)
-  //       VALUES (${name}, ${email})
-  //       RETURNING id
-  //     `;
+  // create var for stripe id, in case customer needs to be deleted on error
+  let stripe_customer_id;
 
-  //   const customerId: string = createResult.rows[0].id;
+  try {
+    // insert user into db
+    await client.sql`BEGIN`;
 
-  //   if (!customerId) {
-  //     throw new Error("Failure creating customer in db.");
-  //   }
+    const createResult = await client.sql`
+        INSERT INTO customers (name, email)
+        VALUES (${name}, ${email})
+        RETURNING id
+      `;
 
-  //   // create stripe customer
-  //   const stripe_customer_id = await createStripeCustomer(name, email);
+    const customerId: string = createResult.rows[0].id;
 
-  //   if (!stripe_customer_id) {
-  //     throw new Error("Failure creating stripe customer.");
-  //   }
+    if (!customerId) {
+      throw new Error("Failure creating customer in db.");
+    }
 
-  //   // set stripe_customer_id in db
-  //   const updateResult = await client.sql`
-  //     UPDATE customers
-  //     SET stripe_customer_id = ${stripe_customer_id}
-  //     WHERE id = ${customerId}
-  //     RETURNING id
-  //     `;
+    // create stripe customer
+    stripe_customer_id = await createStripeCustomer(name, email);
 
-  //   if (!updateResult.rowCount) {
-  //     throw new Error("Failed to update customer with stripe id");
-  //   }
+    if (!stripe_customer_id) {
+      throw new Error("Failure creating stripe customer.");
+    }
 
-  //   const token = jwt.sign({ userId: customerId }, JWT_SECRET!, {
-  //     expiresIn: 60 * 30,
-  //   });
-  //   const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify/${token}`;
+    // set stripe_customer_id in db
+    const updateResult = await client.sql`
+      UPDATE customers
+      SET stripe_customer_id = ${stripe_customer_id}
+      WHERE id = ${customerId}
+      RETURNING id
+      `;
 
-  //   console.log("TOKEN: ", token);
-  //   console.log("TOKEN TYPE: ", typeof token);
-  //   console.log("LINK: ", verificationLink);
+    if (!updateResult.rowCount) {
+      throw new Error("Failed to update customer with stripe id");
+    }
 
-  //   // send email
+    const token = jwt.sign({ userId: customerId }, JWT_SECRET!, {
+      expiresIn: 60 * 30,
+    });
+    const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify/${token}`;
 
-  //   // TEST
-  //   // (!) RETRIEVE TEMPLATE AND CODE FROM DB (?) OR .ENV (?) ///////////////
-  //   const emailInfo = {
-  //     to: email,
-  //     name: name,
-  //     promo_code: "welcome20",
-  //     verify_link: verificationLink,
-  //     templateId: "d-79f6c264ef9447a79e17bd2cbc5d042d",
-  //   };
+    console.log("TOKEN: ", token);
+    console.log("TOKEN TYPE: ", typeof token);
+    console.log("LINK: ", verificationLink);
 
-  //   await sendSignupTemplateMail(emailInfo);
+    // send email
 
-  //   // customer succesfully added to both stripe and db -> commit
-  //   await client.sql`COMMIT`;
+    // TEST
+    // (!) RETRIEVE TEMPLATE AND CODE FROM DB (?) OR .ENV (?) ///////////////
+    const emailInfo = {
+      to: email,
+      name: name,
+      promo_code: "welcome20",
+      verify_link: verificationLink,
+      templateId: "d-79f6c264ef9447a79e17bd2cbc5d042d",
+    };
 
-  //   return {
-  //     message: "Click the link in your email to complete the process!",
-  //     success: true,
-  //   };
-  // } catch (error) {
-  //   console.error("ERROR ON REGISTRATION: ", error);
+    await sendSignupTemplateMail(emailInfo);
 
-  //   await client.sql`ROLLBACK`;
+    // customer succesfully added to both stripe and db -> commit
+    await client.sql`COMMIT`;
 
-  //   // (!) DELETE STRIPE CUSTOMER IF CREATED ////////////////////////////////////
+    return {
+      message: "Click the link in your email to complete the process!",
+      success: true,
+    };
+  } catch (error) {
+    console.error("ERROR ON REGISTRATION: ", error);
 
-  //   // type assertion to access the specific properties of db error
-  //   const dbError = error as {
-  //     code?: string;
-  //     constraint?: string;
-  //     detail?: string;
-  //   };
+    // attempt rollback
+    try {
+      await client.sql`ROLLBACK`;
+    } catch (error) {
+      console.error("Rollback failure: ", error);
+    }
 
-  //   // check for unique constraint violation
-  //   if (
-  //     dbError.code === "23505" &&
-  //     dbError.constraint === "customers_email_key"
-  //   ) {
-  //     return {
-  //       message: "Failed to register. Please try again.",
-  //       errors: {
-  //         email: ["This email is already taken. Please use another one."],
-  //       },
-  //     };
-  //   }
+    // attempt to delete stripe customer
+    try {
+      // (!) DELETE STRIPE CUSTOMER IF CREATED ////////////////////////////////////
+      if (stripe_customer_id) {
+        const deletedCustomer = await deleteStripeCustomer(stripe_customer_id);
+        console.log("Customer deleted from stripe: ", deletedCustomer.message);
+      }
+    } catch (error) {
+      console.error("Stripe error: ", error);
+    }
 
-  //   return {
-  //     message: "Registration error. Please try again later.",
-  //   };
-  // } finally {
-  //   client.release();
-  // }
+    // type assertion to access the specific properties of db error
+    const dbError = error as {
+      code?: string;
+      constraint?: string;
+      detail?: string;
+    };
+
+    // check for unique constraint violation
+    if (
+      dbError.code === "23505" &&
+      dbError.constraint === "customers_email_key"
+    ) {
+      return {
+        message: "Failed to register. Please try again.",
+        errors: {
+          email: ["This email is already taken. Please use another one."],
+        },
+      };
+    }
+
+    return {
+      message: "Registration error. Please try again later.",
+    };
+  } finally {
+    client.release();
+  }
 }
 
 // RESEND EMAIL (NEEDS WORK)

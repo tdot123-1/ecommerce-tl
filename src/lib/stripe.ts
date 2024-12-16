@@ -106,6 +106,27 @@ export const createStripeCustomer = async (name: string, email: string) => {
   }
 };
 
+export const deleteStripeCustomer = async (stripe_customer_id: string) => {
+  try {
+    const deletedCustomer = await stripe.customers.del(stripe_customer_id);
+
+    if (deletedCustomer.deleted) {
+      return {
+        success: true,
+        message: `Customer ${stripe_customer_id} deleted.`,
+      };
+    } else {
+      return {
+        success: false,
+        message: `Customer ${stripe_customer_id} not found`,
+      };
+    }
+  } catch (error) {
+    console.error("ERROR DELETING STRIPE CUSTOMER: ", error);
+    throw new Error("Error deleting stripe customer");
+  }
+};
+
 // get all sessions overview
 export const getAllSessions = async (stripe_customer_id: string) => {
   try {
@@ -147,7 +168,6 @@ export const getOneSession = async (sessionId: string) => {
     throw new Error(`Failed to fetch line items for session: ${sessionId}`);
   }
 };
-
 
 // fetch full purchase history (sessions + line items)
 // export const getPurchaseHistory = async (stripe_customer_id: string) => {
