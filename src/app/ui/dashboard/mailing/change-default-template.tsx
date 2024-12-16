@@ -1,14 +1,19 @@
 import { Button } from "@/components/ui/button";
 
 interface ChangeDefaultTemplateProps {
-    default: string;
-    templates: string;
+  defaultTemplate: string;
+  templates: string[];
 }
 
-const ChangeDefaultTemplate = () => {
+const ChangeDefaultTemplate = ({
+  defaultTemplate,
+  templates,
+}: ChangeDefaultTemplateProps) => {
+  //TODO:  create dialog form to change default
+  console.log(templates);
   return (
     <>
-      <p></p>
+      <p>{defaultTemplate}</p>
       <Button>Change</Button>
     </>
   );

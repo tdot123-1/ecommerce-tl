@@ -1,7 +1,7 @@
+import ChangeDefaultTemplateWrapper from "@/app/ui/dashboard/mailing/change-default-template-wrapper";
 import MailTemplatesTable from "@/app/ui/dashboard/mailing/mail-templates-table";
 import { montserrat } from "@/app/ui/fonts";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -18,7 +18,7 @@ const Page = () => {
         </h2>
         <p className="italic text-sm text-zinc-800 dark:text-zinc-400 mb-4">
           You can view your dynamic templates on the SendGrid dashboard under
-          the tab 'Email API/Dynamic Templates'.
+          the tab &apos;Email API/Dynamic Templates&apos;.
         </p>
         <div className="mx-auto w-fit mb-2">
           <Link href="/dashboard/mailing/templates/add">
@@ -46,8 +46,7 @@ const Page = () => {
         </p>
         <div className="pl-4 flex items-center gap-1">
           <p>Template: </p>
-          <p>basic_signup</p>
-          <Button>Change</Button>
+          <ChangeDefaultTemplateWrapper templatesCategory={`signup`} />
         </div>
         <h3 className="font-semibold">Signin</h3>
         <p className="italic text-sm text-zinc-800 dark:text-zinc-400 mb-2">
@@ -68,12 +67,16 @@ const Page = () => {
           Emailing is used for communicating to customers about new discounts
           and promotions.
         </p>
-        <div className="pl-4 flex items-center gap-1">
+        <div className="pl-4 flex items-center gap-1 mb-4">
           <p>Template: </p>
           <p>basic_signup</p>
           <Button>Change</Button>
         </div>
-        <p>Send new promo code email</p>
+        <h3 className="font-semibold">Send new promo code by email</h3>
+        <div className="flex gap-2 mt-2 pl-4">
+          <Button>Use Template</Button>
+          <Button variant={`outline`}>Use Plaintext</Button>
+        </div>
       </div>
       <div className="mt-1 p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg mb-8">
         <h2 className={`${montserrat.className} text-lg font-semibold`}>
@@ -83,9 +86,11 @@ const Page = () => {
           Use the emailing service to inform customers about new products,
           limited offers, or anything else you wish to communicate.
         </p>
-        <p>Send email</p>
-        <p>Template</p>
-        <p>Plain Text</p>
+        <h3 className="font-semibold">Send email</h3>
+        <div className="flex gap-2 mt-2 pl-4">
+          <Button>Use Template</Button>
+          <Button variant={`outline`}>Use Plaintext</Button>
+        </div>
       </div>
     </>
   );
