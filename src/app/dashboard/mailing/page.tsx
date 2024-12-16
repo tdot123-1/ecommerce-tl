@@ -39,15 +39,26 @@ const Page = () => {
         <p className="italic text-sm text-zinc-800 dark:text-zinc-400 mb-4">
           Emailing is used for signing up and verifying customer profiles.
         </p>
-        <p>
+        <h3 className="font-semibold">Signup</h3>
+        <p className="italic text-sm text-zinc-800 dark:text-zinc-400 mb-2">
           Upon signing up, the customer receives a welcome email with a link to
           verify their profile
         </p>
-        <p>
+        <div className="pl-4 flex items-center gap-1">
+          <p>Template: </p>
+          <p>basic_signup</p>
+          <Button>Change</Button>
+        </div>
+        <h3 className="font-semibold">Signin</h3>
+        <p className="italic text-sm text-zinc-800 dark:text-zinc-400 mb-2">
           When an existing customer logs in, they receive an email to
           authenticate and log into their accont
         </p>
-        <p></p>
+        <div className="pl-4 flex items-center gap-1">
+          <p>Template: </p>
+          <p>basic_signup</p>
+          <Button>Change</Button>
+        </div>
       </div>
       <div className="mt-1 p-4 bg-zinc-200 dark:bg-zinc-900 rounded-lg">
         <h2 className={`${montserrat.className} text-lg font-semibold`}>
@@ -57,8 +68,11 @@ const Page = () => {
           Emailing is used for communicating to customers about new discounts
           and promotions.
         </p>
-        <p>Default template:</p>
-        <p>Change default template</p>
+        <div className="pl-4 flex items-center gap-1">
+          <p>Template: </p>
+          <p>basic_signup</p>
+          <Button>Change</Button>
+        </div>
         <p>Send new promo code email</p>
       </div>
       <div className="mt-1 p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg mb-8">
