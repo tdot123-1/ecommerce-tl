@@ -11,6 +11,7 @@ interface ResendEmailProps {
 
 const ResendMail = ({ email }: ResendEmailProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleResend = async () => {
     setIsLoading(true);
@@ -19,6 +20,7 @@ const ResendMail = ({ email }: ResendEmailProps) => {
       await resendEmail(email);
     } catch (error) {
       console.error("Error resending: ", error);
+      setError("Something went wrong, please try again later.");
     } finally {
       setIsLoading(false);
     }
@@ -44,6 +46,7 @@ const ResendMail = ({ email }: ResendEmailProps) => {
             <span>Re-send email</span>
           </div>
         </Button>
+        {error && <p className="text-red-600 text-sm italic mt-1">{error}</p>}
       </div>
     </>
   );
