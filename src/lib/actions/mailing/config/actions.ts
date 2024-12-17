@@ -87,7 +87,7 @@ export const changeMailTemplate = async (
 
     return { newDefault: data.rows[0].name, success: true };
   } catch (error) {
-    console.error("Error signing in: ", error);
+    console.error("Error changing template: ", error);
 
     return {
       message: "Something went wrong, please try again later.",

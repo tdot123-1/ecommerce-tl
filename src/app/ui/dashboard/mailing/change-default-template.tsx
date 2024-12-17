@@ -146,6 +146,9 @@ const ChangeDefaultTemplate = ({
               </div>
             </Button>
           </DialogFooter>
+          {state.message && (
+            <p className="text-red-600 text-sm italic mt-1">{state.message}</p>
+          )}
         </DialogContent>
       </Dialog>
     </>
