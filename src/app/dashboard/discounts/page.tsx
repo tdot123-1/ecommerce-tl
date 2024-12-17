@@ -10,7 +10,7 @@ const Page = () => {
       <h1 className={`${montserrat.className} text-xl font-semibold mt-4`}>
         Discounts Overview
       </h1>
-      <div className="mx-auto w-fit">
+      <div className="mx-auto w-fit mt-2">
         <Link href="/dashboard/discounts/coupons/create">
           <Button variant="outline" className="p-2">
             <div className="flex justify-center items-center gap-1 font-semibold">

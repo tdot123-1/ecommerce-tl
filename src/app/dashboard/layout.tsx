@@ -33,7 +33,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <main className="flex-shrink w-full">
               <Header />
               <Navbar />
-              <section className="min-h-[calc(100vh-80px)] mx-5">
+              <section className="min-h-[calc(100vh-80px)] px-3">
                 {children}
               </section>
             </main>
