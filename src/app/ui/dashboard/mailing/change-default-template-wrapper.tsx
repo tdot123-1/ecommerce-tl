@@ -27,6 +27,7 @@ const ChangeDefaultTemplateWrapper = async ({
       <ChangeDefaultTemplate
         defaultTemplate={defaultTemplate.name}
         templates={otherTemplates}
+        category={templatesCategory}
       />
     );
   } catch (error) {

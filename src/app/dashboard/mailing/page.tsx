@@ -55,8 +55,7 @@ const Page = () => {
         </p>
         <div className="pl-4 flex items-center gap-1">
           <p>Template: </p>
-          <p>basic_signup</p>
-          <Button>Change</Button>
+          <ChangeDefaultTemplateWrapper templatesCategory={`signin`} />
         </div>
       </div>
       <div className="mt-1 p-4 bg-zinc-200 dark:bg-zinc-900 rounded-lg">
@@ -69,8 +68,7 @@ const Page = () => {
         </p>
         <div className="pl-4 flex items-center gap-1 mb-4">
           <p>Template: </p>
-          <p>basic_signup</p>
-          <Button>Change</Button>
+          <ChangeDefaultTemplateWrapper templatesCategory={`discount`} />
         </div>
         <h3 className="font-semibold">Send new promo code by email</h3>
         <div className="flex gap-2 mt-2 pl-4">

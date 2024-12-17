@@ -51,7 +51,7 @@ const EditCouponName = ({ couponId, couponName }: EditCouponNameProps) => {
         setIsDialogOpen(false);
       }
     } catch (error) {
-      console.error("Error creating product: ", error);
+      console.error("Error updating coupon name: ", error);
       setState({ message: "Something went wrong" });
     } finally {
       setIsLoading(false);

@@ -14,7 +14,7 @@ const FormSchema = z.object({
       invalid_type_error: "Please add a name",
     })
     .min(3, { message: "Name must be at least 3 characters" })
-    .max(25, { message: "Name must can be max 25 characters" }),
+    .max(25, { message: "Name can be max 25 characters" }),
   email: z
     .string({
       invalid_type_error: "Please add an email address",
