@@ -161,7 +161,7 @@ const Form = () => {
           <SizesInput handleChosenSizesStr={handleChosenSizesStr} />
           <Input
             className="hidden"
-            type="text"
+            type="hidden"
             value={chosenSizesStr}
             name="sizes"
             readOnly
