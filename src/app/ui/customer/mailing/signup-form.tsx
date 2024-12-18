@@ -20,6 +20,10 @@ const SignupForm = () => {
     setIsLoading(true);
     event.preventDefault();
 
+    // DISABLE FUNCTION
+
+    return setState({ message: "Signup not yet possible" });
+
     // create form data object, call server action
     const formData = new FormData(event.currentTarget);
     // console.log("FROM CLIENT: ", formData);
