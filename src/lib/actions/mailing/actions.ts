@@ -345,12 +345,29 @@ export async function signupCustomerWithTemplate(formData: FormData) {
 
     // TEST
     // (!) RETRIEVE TEMPLATE AND CODE FROM DB (?) OR .ENV (?) ///////////////
+
+    const data = await client.sql`
+    SELECT sendgrid_id, dynamic_values
+    FROM email_templates
+    WHERE category = 'signup'
+    AND is_default = TRUE
+    `;
+
+    if (!data.rowCount) {
+      throw new Error("No email template found");
+    }
+
+    const templateId: string = data.rows[0].sendgrid_id;
+    const dynamic_template_data = {
+      name: name,
+      promoCode: "welcome20",
+      verifyLink: verificationLink,
+    };
+
     const emailInfo = {
       to: email,
-      name: name,
-      promo_code: "welcome20",
-      verify_link: verificationLink,
-      templateId: "d-79f6c264ef9447a79e17bd2cbc5d042d",
+      dynamic_template_data,
+      templateId,
     };
 
     await sendSignupTemplateMail(emailInfo);
@@ -440,12 +457,28 @@ export async function resendEmail(email: string) {
 
     // TEST
     // (!) RETRIEVE TEMPLATE AND CODE FROM DB (?) OR .ENV (?) ///////////////
+    const emailData = await sql`
+    SELECT sendgrid_id, dynamic_values
+    FROM email_templates
+    WHERE category = 'signup'
+    AND is_default = TRUE
+    `;
+
+    if (!emailData.rowCount) {
+      throw new Error("No email template found");
+    }
+
+    const templateId: string = emailData.rows[0].sendgrid_id;
+    const dynamic_template_data = {
+      name: name,
+      promoCode: "welcome20",
+      verifyLink: verificationLink,
+    };
+
     const emailInfo = {
       to: email,
-      name: name,
-      promo_code: "welcome20",
-      verify_link: verificationLink,
-      templateId: "d-79f6c264ef9447a79e17bd2cbc5d042d",
+      dynamic_template_data,
+      templateId,
     };
 
     await sendSignupTemplateMail(emailInfo);

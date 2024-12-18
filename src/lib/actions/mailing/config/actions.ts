@@ -27,8 +27,8 @@ const FormSchema = z.object({
   category: CategoryEnum,
 
   dynamic_values: z
-    .array(z.string(), {
-      invalid_type_error: "Dynamic values must be an array of strings",
+    .string({
+      invalid_type_error: "Dynamic values has to be a string",
     })
     .optional()
     .nullable(),
@@ -91,6 +91,52 @@ export const changeMailTemplate = async (
 
     return {
       message: "Something went wrong, please try again later.",
+      success: false,
+    };
+  }
+};
+
+export const addMailTemplate = async (formData: FormData) => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  const rawFormData = Object.fromEntries(formData.entries());
+
+  console.log("FROM SERVER: ", rawFormData);
+
+  // validate form fields
+  const validatedFields = FormSchema.safeParse(rawFormData);
+
+  // return message early in case of field errors
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Failed to add template. Please try again.",
+      success: false,
+    };
+  }
+
+  const { sendgrid_id, name, category, dynamic_values } = validatedFields.data;
+
+  try {
+    const data = await sql`
+    INSERT INTO email_templates (sendgrid_id, name, category, dynamic_values)
+    VALUES (${sendgrid_id}, ${name}, ${category}, ${dynamic_values})
+    RETURNING id
+    `;
+
+    if (!data.rowCount) {
+      throw new Error("Error adding template");
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error adding template: ", error);
+    return {
+      message: "Database Error: Failed to add template.",
       success: false,
     };
   }

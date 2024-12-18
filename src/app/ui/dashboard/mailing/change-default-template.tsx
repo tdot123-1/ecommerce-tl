@@ -74,10 +74,10 @@ const ChangeDefaultTemplate = ({
 
   return (
     <>
-      <p>{defaultTemplate}</p>
+      <p>{`"${defaultTemplate}"`}</p>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button>Change</Button>
+          <Button className="ml-1">Change</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogTitle>Change email template</DialogTitle>
@@ -87,7 +87,7 @@ const ChangeDefaultTemplate = ({
             before changing.
           </DialogDescription>
           <div>
-            <form id="changeTemplateForm">
+            <form onSubmit={handleSubmit} id="changeTemplateForm">
               <Select name="name" disabled={isLoading || !templates.length}>
                 <SelectTrigger>
                   <SelectValue
@@ -103,10 +103,10 @@ const ChangeDefaultTemplate = ({
                     <SelectLabel>{capitalize(category)}</SelectLabel>
                     {templates.length ? (
                       templates.map((template) => (
-                        <SelectItem value={template}>{template}</SelectItem>
+                        <SelectItem key={template} value={template}>{template}</SelectItem>
                       ))
                     ) : (
-                      <SelectItem value="">No other templates</SelectItem>
+                      <SelectItem value="none">No other templates</SelectItem>
                     )}
                   </SelectGroup>
                 </SelectContent>
@@ -132,7 +132,7 @@ const ChangeDefaultTemplate = ({
             </DialogClose>
             <Button
               variant={`default`}
-              disabled={isLoading}
+              disabled={isLoading || !templates.length}
               type="submit"
               form="editNameForm"
             >

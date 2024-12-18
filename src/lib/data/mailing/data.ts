@@ -3,7 +3,28 @@
 import { auth } from "@/auth";
 import { sql } from "@vercel/postgres";
 
-export const fetchAllTemplates = async () => {};
+export const fetchAllTemplates = async () => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const data = await sql`
+    SELECT * FROM email_templates
+    `;
+
+    if (!data.rowCount) {
+      throw new Error("No templates found");
+    }
+
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch email templates data.");
+  }
+};
 
 export const fetchCategoryTemplates = async (category: string) => {
   const session = await auth();
@@ -24,8 +45,7 @@ export const fetchCategoryTemplates = async (category: string) => {
       throw new Error("No templates found");
     }
 
-    return data.rows
-    
+    return data.rows;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch email templates data.");

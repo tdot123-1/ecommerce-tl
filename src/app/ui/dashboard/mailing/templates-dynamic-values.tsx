@@ -19,7 +19,9 @@ const TemplateDynamicValues = ({
   // user inputted values
   const [valuesInput, setValuesInput] = useState("");
 
-  const [dynamicValues, setDynamicValues] = useState<string[]>([]);
+  const [dynamicValues, setDynamicValues] = useState<string[]>(
+    initialValues ? initialValues.split(",") : []
+  );
 
   useEffect(() => {
     handleChosenValuesStr(dynamicValues);

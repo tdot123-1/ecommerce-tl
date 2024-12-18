@@ -35,17 +35,13 @@ export const sendMail = async ({ to, subject, text, html }: EmailInfo) => {
 
 type SignupTemplateMailInfo = {
   to: string;
-  name: string;
-  promo_code: string;
-  verify_link: string;
   templateId: string;
+  dynamic_template_data: Record<string, string>;
 };
 
 export const sendSignupTemplateMail = async ({
   to,
-  name,
-  promo_code,
-  verify_link,
+  dynamic_template_data,
   templateId,
 }: SignupTemplateMailInfo) => {
   if (!process.env.SENDGRID_SENDER_EMAIL) {
@@ -60,15 +56,7 @@ export const sendSignupTemplateMail = async ({
       name: "Ti'El Shopping",
     },
     templateId,
-    dynamic_template_data: {
-      name,
-      promo_code,
-      verify_link,
-      Sender_Name: "Ti'El Shopping",
-      Sender_Address: "Test Street 111",
-      Sender_City: "Paris",
-      Sender_Zip: "1234AB",
-    },
+    dynamic_template_data,
   };
 
   try {
