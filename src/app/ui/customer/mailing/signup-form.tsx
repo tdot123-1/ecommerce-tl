@@ -118,7 +118,7 @@ const SignupForm = () => {
         {state.message && (
           <p className="text-red-600 text-sm italic mt-1">{state.message}</p>
         )}
-        {resend && <ResendMail email={email} />}
+        {resend && <ResendMail email={email} category="signup" />}
       </div>
     </form>
   );

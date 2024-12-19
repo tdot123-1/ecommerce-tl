@@ -7,14 +7,18 @@ import { verifyCustomerEmail } from "@/lib/actions/mailing/actions";
 import { State } from "@/lib/actions/products/actions";
 import { LoaderPinwheelIcon, MailCheckIcon } from "lucide-react";
 import { useState } from "react";
+import ResendMail from "./resend-mail";
 
 //(!) TEST COMPONENT
 
 const SendMagicLink = () => {
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
+  const [resend, setResend] = useState(false);
+  const [email, setEmail] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setState({ message: null, errors: {} });
     setIsLoading(true);
     event.preventDefault();
 
@@ -22,9 +26,20 @@ const SendMagicLink = () => {
     const formData = new FormData(event.currentTarget);
     console.log("FROM CLIENT: ", formData);
 
+    const submittedEmail = formData.get("email");
+
     try {
+      if (!submittedEmail) {
+        throw new Error("Missing email");
+      }
+
       const result = await verifyCustomerEmail(formData);
-      setState(result);
+      if (result.success) {
+        setEmail(submittedEmail as string);
+        setResend(true);
+      } else {
+        setState(result);
+      }
     } catch (error) {
       console.error("Login error: ", error);
       setState({
@@ -49,7 +64,11 @@ const SendMagicLink = () => {
                 name="email"
                 id="email"
               />
-              <Button disabled={isLoading} type="submit" className="w-fit mx-auto sm:mx-0">
+              <Button
+                disabled={isLoading}
+                type="submit"
+                className="w-fit mx-auto sm:mx-0"
+              >
                 <div className="flex items-center justify-center gap-2">
                   {isLoading ? (
                     <LoaderPinwheelIcon size={20} className="animate-spin" />
@@ -76,6 +95,7 @@ const SendMagicLink = () => {
                 {state.message}
               </p>
             )}
+            {resend && <ResendMail email={email} category="signin" />}
           </div>
         </form>
       </div>

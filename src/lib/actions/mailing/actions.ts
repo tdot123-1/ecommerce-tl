@@ -1,6 +1,6 @@
 "use server";
 
-import { sendMail, sendSignupTemplateMail } from "@/lib/send-email";
+import { sendMail, sendTemplateMail } from "@/lib/send-email";
 import { createStripeCustomer, deleteStripeCustomer } from "@/lib/stripe";
 import { db, sql } from "@vercel/postgres";
 import { z } from "zod";
@@ -29,153 +29,6 @@ const FormSchema = z.object({
       message: "You must agree to the terms and conditions",
     }),
 });
-
-// (!!) function temporarily closed //////////////////////////////////////////
-export async function signUpCustomer(formData: FormData) {
-  const rawFormData = Object.fromEntries(formData.entries());
-  console.log(rawFormData);
-  return {
-    message: "Signup currently not yet possible.",
-  };
-  //   const rawFormData = Object.fromEntries(formData.entries());
-
-  //   // validate form fields
-  //   const validatedFields = FormSchema.safeParse(rawFormData);
-
-  //   // return message early in case of field errors
-  //   if (!validatedFields.success) {
-  //     return {
-  //       errors: validatedFields.error.flatten().fieldErrors,
-  //       message: "Failed to sign up. Please try again.",
-  //     };
-  //   }
-
-  //   const { name, email } = validatedFields.data;
-
-  //   // establish db connection, return early if connection issues
-  //   let client;
-
-  //   try {
-  //     client = await db.connect();
-  //   } catch (error) {
-  //     console.error("DB CONNECTION ERROR: ", error);
-  //     return { message: "Connection error. Please try again later" };
-  //   }
-
-  //   try {
-  //     // insert user into db
-  //     await client.sql`BEGIN`;
-
-  //     const createResult = await client.sql`
-  //       INSERT INTO customers (name, email)
-  //       VALUES (${name}, ${email})
-  //       RETURNING id
-  //     `;
-
-  //     const customerId: string = createResult.rows[0].id;
-
-  //     if (!customerId) {
-  //       throw new Error("Failure creating customer in db.");
-  //     }
-
-  //     // create stripe customer
-  //     const stripe_customer_id = await createStripeCustomer(name, email);
-
-  //     if (!stripe_customer_id) {
-  //       throw new Error("Failure creating stripe customer.");
-  //     }
-
-  //     // set stripe_customer_id in db
-  //     const updateResult = await client.sql`
-  //     UPDATE customers
-  //     SET stripe_customer_id = ${stripe_customer_id}
-  //     WHERE id = ${customerId}
-  //     RETURNING id
-  //     `;
-
-  //     if (!updateResult.rowCount) {
-  //       throw new Error("Failed to update customer with stripe id");
-  //     }
-
-  //     const token = jwt.sign({ userId: customerId }, JWT_SECRET!, {
-  //       expiresIn: 60 * 30,
-  //     });
-  //     const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify/${token}`;
-
-  //     console.log("TOKEN: ", token);
-  //     console.log("TOKEN TYPE: ", typeof token);
-  //     console.log("LINK: ", verificationLink);
-
-  //     // send email
-
-  //     // TEST
-  //     const emailInfo = {
-  //       to: email,
-  //       subject: "sendGrid test",
-  //       text: `
-  //       Welcome to Ti'El
-
-  //       Hi ${name},
-
-  //       Thanks for signing up. To complete the registration and take advantage of discounts, follow the link below.
-
-  //       Remember that this link is intended for you alone and should not be shared.
-
-  //       See you soon!
-  //       Click to complete the verification:
-
-  //       ${verificationLink}
-  //       `,
-  //       html: `
-  //       <h2>Welcome to Ti'El</h2>
-  //       <p>Hi ${name},</p>
-  //       <p>Thanks for signing up. To complete the registration and take advantage of discounts, follow the link below.</p>
-  //       <p>Remember that this link is intended for you alone and should not be shared.</p>
-  //       <p>See you soon!</p>
-  //       <a href=${verificationLink}>Click here to complete the verification</a>
-  //       `,
-  //     };
-
-  //     await sendMail(emailInfo);
-
-  //     // customer succesfully added to both stripe and db -> commit
-  //     await client.sql`COMMIT`;
-
-  //     return {
-  //       message: "Click the link in your email to complete the process!",
-  //     };
-  //   } catch (error) {
-  //     console.error("ERROR ON REGISTRATION: ", error);
-
-  //     await client.sql`ROLLBACK`;
-
-  //     // type assertion to access the specific properties of db error
-  //     const dbError = error as {
-  //       code?: string;
-  //       constraint?: string;
-  //       detail?: string;
-  //     };
-
-  //     // check for unique constraint violation
-  //     if (
-  //       dbError.code === "23505" &&
-  //       dbError.constraint === "customers_email_key"
-  //     ) {
-  //       return {
-  //         message: "Failed to register. Please try again.",
-  //         errors: {
-  //           email: ["This email is already taken. Please use another one."],
-  //         },
-  //       };
-  //     }
-
-  //     return {
-  //       message: "Registration error. Please try again later.",
-  //     };
-  //   } finally {
-  //     client.release();
-  //   }
-}
 
 const VerifyEmail = FormSchema.omit({ name: true, agree: true });
 
@@ -218,37 +71,34 @@ export async function verifyCustomerEmail(formData: FormData) {
     });
     const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify/${token}`;
 
-    const emailInfo = {
-      to: email,
-      subject: "Signed in",
-      text: `
-      Signed in to Ti'El
+    const templateData = await sql`
+    SELECT sendgrid_id, dynamic_values
+    FROM email_templates
+    WHERE category = 'signin'
+    AND is_default = TRUE
+    `;
 
-      Hi ${name},
-      
-      Click the link below to sign in to your Ti'El account.
+    if (!templateData.rowCount) {
+      throw new Error("No email template found");
+    }
 
-      Remember that this link is intended for you alone and should not be shared.
-
-      See you soon!
-      Click to complete the verification:
-
-      ${verificationLink}
-      `,
-      html: `
-      <h2>Welcome to Ti'El</h2> 
-      <p>Hi ${name},</p>
-      <p>Click the link below to sign in to your Ti'El account.</p>
-      <p>Remember that this link is intended for you alone and should not be shared.</p>
-      <p>See you soon!</p>
-      <a href=${verificationLink}>Click here to complete the verification</a>
-      `,
+    const templateId: string = templateData.rows[0].sendgrid_id;
+    const dynamic_template_data = {
+      name: name,
+      verifyLink: verificationLink,
     };
 
-    await sendMail(emailInfo);
+    const emailInfo = {
+      to: email,
+      dynamic_template_data,
+      templateId,
+    };
+
+    await sendTemplateMail(emailInfo);
 
     return {
       message: "Click the link in your email to sign in!",
+      success: true,
     };
   } catch (error) {
     console.error("Error signing in: ", error);
@@ -260,15 +110,6 @@ export async function verifyCustomerEmail(formData: FormData) {
 }
 
 export async function signupCustomerWithTemplate(formData: FormData) {
-  // DISABLE FUNCTION
-
-  // const rawFormData = Object.fromEntries(formData.entries());
-  // console.log(rawFormData);
-  // return {
-  //   message: "Signup currently not yet possible.",
-  //   success: false,
-  // };
-
   const rawFormData = Object.fromEntries(formData.entries());
 
   // validate form fields
@@ -370,7 +211,7 @@ export async function signupCustomerWithTemplate(formData: FormData) {
       templateId,
     };
 
-    await sendSignupTemplateMail(emailInfo);
+    await sendTemplateMail(emailInfo);
 
     // customer succesfully added to both stripe and db -> commit
     await client.sql`COMMIT`;
@@ -429,7 +270,7 @@ export async function signupCustomerWithTemplate(formData: FormData) {
 }
 
 // RESEND EMAIL (NEEDS WORK)
-export async function resendEmail(email: string) {
+export async function resendAuthEmail(email: string, category: string) {
   try {
     const data = await sql`
     SELECT id, name 
@@ -460,7 +301,7 @@ export async function resendEmail(email: string) {
     const emailData = await sql`
     SELECT sendgrid_id, dynamic_values
     FROM email_templates
-    WHERE category = 'signup'
+    WHERE category = ${category}
     AND is_default = TRUE
     `;
 
@@ -481,7 +322,7 @@ export async function resendEmail(email: string) {
       templateId,
     };
 
-    await sendSignupTemplateMail(emailInfo);
+    await sendTemplateMail(emailInfo);
 
     return { success: true };
   } catch (error) {

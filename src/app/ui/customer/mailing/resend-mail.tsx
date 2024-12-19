@@ -1,15 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { resendEmail } from "@/lib/actions/mailing/actions";
+import { resendAuthEmail } from "@/lib/actions/mailing/actions";
 import { LoaderPinwheelIcon, SendIcon } from "lucide-react";
 import { useState } from "react";
 
 interface ResendEmailProps {
   email: string;
+  category: string;
 }
 
-const ResendMail = ({ email }: ResendEmailProps) => {
+const ResendMail = ({ email, category }: ResendEmailProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -17,7 +18,7 @@ const ResendMail = ({ email }: ResendEmailProps) => {
     setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 300));
     try {
-      await resendEmail(email);
+      await resendAuthEmail(email, category);
     } catch (error) {
       console.error("Error resending: ", error);
       setError("Something went wrong, please try again later.");

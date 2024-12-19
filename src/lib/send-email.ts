@@ -33,17 +33,17 @@ export const sendMail = async ({ to, subject, text, html }: EmailInfo) => {
   }
 };
 
-type SignupTemplateMailInfo = {
+type TemplateMailInfo = {
   to: string;
   templateId: string;
   dynamic_template_data: Record<string, string>;
 };
 
-export const sendSignupTemplateMail = async ({
+export const sendTemplateMail = async ({
   to,
   dynamic_template_data,
   templateId,
-}: SignupTemplateMailInfo) => {
+}: TemplateMailInfo) => {
   if (!process.env.SENDGRID_SENDER_EMAIL) {
     console.error("SENDER EMAIL NOT FOUND");
     throw new Error("Verified sender email not found.");
