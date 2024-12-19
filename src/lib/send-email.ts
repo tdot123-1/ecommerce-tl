@@ -67,3 +67,46 @@ export const sendTemplateMail = async ({
     throw new Error("Failed to send template email.");
   }
 };
+
+
+// send batch emails
+type RecipientInfo = {
+  email: string;
+  name: string;
+};
+
+type EmailBatchInfo = {
+  recipients: RecipientInfo[];
+  templateId: string;
+  otherDynamicValues?: Record<string, string>; 
+};
+
+export const sendBatchEmails = async ({
+  recipients,
+  templateId,
+  otherDynamicValues = {},
+}: EmailBatchInfo) => {
+  try {
+    const emailPromises = recipients.map(async ({ email, name }) => {
+      const dynamic_template_data = {
+        name, 
+        ...otherDynamicValues, 
+      };
+
+      const emailInfo = {
+        to: email,
+        templateId,
+        dynamic_template_data,
+      };
+
+      await sendTemplateMail(emailInfo);
+      console.log(`Email sent to ${email}`);
+    });
+
+    await Promise.all(emailPromises);
+    console.log("All emails sent successfully.");
+  } catch (error) {
+    console.error("Error sending batch emails:", error);
+    throw new Error("Failed to send batch emails.");
+  }
+};
