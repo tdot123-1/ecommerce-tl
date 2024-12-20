@@ -18,10 +18,12 @@ const Page = ({
         Share Promo Code
       </h1>
       <div>
-        <SendPromoWithTemplate
-          code={code}
-          percentOff={percentOff ? parseInt(percentOff) : undefined}
-        />
+        {emailType === "template" && (
+          <SendPromoWithTemplate
+            code={code}
+            percentOff={percentOff ? parseInt(percentOff) : undefined}
+          />
+        )}
       </div>
     </>
   );

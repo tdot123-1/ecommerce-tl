@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { sendPromoEmailTemplate } from "@/lib/actions/mailing/actions";
 import { State } from "@/lib/actions/products/actions";
 import { LoaderPinwheelIcon, PercentIcon, SendIcon } from "lucide-react";
 import Link from "next/link";
@@ -36,11 +37,25 @@ const SendPromoWithTemplate = ({
 
     console.log("FORM CLIENT: ", formData);
 
-    const rawFormData = Object.fromEntries(formData.entries());
+    try {
+      const result = await sendPromoEmailTemplate(formData);
 
-    console.log("FORM VALUES: ", rawFormData);
-
-    setIsLoading(false);
+      if (result.success) {
+        toast({
+          title: "Promo Code sent!",
+          description:
+            "An email has been sent to inform your customers of the new discount",
+        });
+        router.push("/dashboard/mailing");
+      } else {
+        setState(result);
+      }
+    } catch (error) {
+      console.error("Error sending emails: ", error);
+      setState({ message: "Something went wrong" });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -77,9 +92,10 @@ const SendPromoWithTemplate = ({
               name="percent_off"
               id="percent_off"
               type="number"
-              disabled={!!percentOff || isLoading}
+              disabled={isLoading}
               className=""
               defaultValue={percentOff}
+              readOnly={!!percentOff}
             />
             <PercentIcon />
           </div>

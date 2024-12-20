@@ -1,12 +1,13 @@
 "use server";
 
-import { sendMail, sendTemplateMail } from "@/lib/send-email";
+import { sendBatchEmails, sendMail, sendTemplateMail } from "@/lib/send-email";
 import { createStripeCustomer, deleteStripeCustomer } from "@/lib/stripe";
 import { db, sql } from "@vercel/postgres";
 import { z } from "zod";
 
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "@/lib/constants";
+import { auth } from "@/auth";
 
 const FormSchema = z.object({
   name: z
@@ -328,5 +329,101 @@ export async function resendAuthEmail(email: string, category: string) {
   } catch (error) {
     console.error("Error resending email: ", error);
     throw new Error("Failed to resend email");
+  }
+}
+
+const PromoEmailTemplateSchema = z.object({
+  code: z
+    .string({
+      invalid_type_error: "Please add the promo code",
+    })
+    .min(2, { message: "Please add the promo code" })
+    .max(50, { message: "Max length for code exceeded" }),
+  percentOff: z.coerce
+    .number()
+    .gte(1, { message: "Please enter an percentage of at least 1" })
+    .lte(99, { message: "Please enter a percentage between 1 and 99" }),
+  conditions: z
+    .string({
+      invalid_type_error: "Conditions must be of type string",
+    })
+    .optional(),
+});
+export async function sendPromoEmailTemplate(formData: FormData) {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  const rawFormData = Object.fromEntries(formData.entries());
+
+  // validate form fields
+  const validatedFields = PromoEmailTemplateSchema.safeParse(rawFormData);
+
+  // return message early in case of field errors
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Failed to send emsil. Please try again.",
+    };
+  }
+
+  const { code, percentOff, conditions } = validatedFields.data;
+
+  try {
+    // fetch customers
+    const customersData = await sql`
+    SELECT name, email 
+    FROM customers
+    `;
+
+    if (!customersData.rowCount) {
+      throw new Error("Failed to fetch customers");
+    }
+
+    // fetch template
+
+    const emailData = await sql`
+     SELECT sendgrid_id, dynamic_values
+     FROM email_templates
+     WHERE category = 'discount'
+     AND is_default = TRUE
+     `;
+
+    if (!emailData.rowCount) {
+      throw new Error("No email template found");
+    }
+
+    const templateId: string = emailData.rows[0].sendgrid_id;
+
+    const recipients = customersData.rows.map((customer) => ({
+      email: customer.email,
+      name: customer.name,
+    }));
+
+    const dynamicValues: Record<string, string> = {
+      promoCode: code,
+      percentOff: percentOff.toString(),
+      conditions: conditions || "",
+    };
+
+    const emailInfo = {
+      recipients,
+      templateId,
+      otherDynamicValues: dynamicValues,
+    };
+
+    await sendBatchEmails(emailInfo);
+
+    return { success: true };
+
+    // send bulk email
+  } catch (error) {
+    console.error("Error sending email: ", error);
+    return {
+      message: "Error: failed to send email.",
+      success: false,
+    };
   }
 }
