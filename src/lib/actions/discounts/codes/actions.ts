@@ -63,6 +63,12 @@ const FormSchema = z
     }
   );
 
+interface PromoCodeRestrictions {
+  first_time_transaction?: boolean;
+  minimum_amount?: number;
+  minimum_amount_currency?: string;
+}
+
 export async function createPromoCode(formData: FormData) {
   const session = await auth();
 
@@ -95,11 +101,23 @@ export async function createPromoCode(formData: FormData) {
     min_euros,
     min_cents,
     first_time_transaction,
+    minimum_amount,
   } = validatedFields.data;
 
   // combine submitted price and cents data to get full price in cents
   const formattedAmount = min_euros * 100 + min_cents;
   console.log("formatted price: ", formattedAmount);
+
+  // create the restrictions object
+  const restrictions: PromoCodeRestrictions = {
+    first_time_transaction,
+  };
+
+  // conditionally include minimum_amount if minAmount is true
+  if (minimum_amount) {
+    restrictions.minimum_amount = formattedAmount; // add the minimum amount
+    restrictions.minimum_amount_currency = "eur"; // add the currency
+  }
 
   try {
     const redeemByTimestamp = redeem_by
@@ -111,11 +129,7 @@ export async function createPromoCode(formData: FormData) {
       coupon,
       max_redemptions,
       expires_at: redeemByTimestamp,
-      restrictions: {
-        first_time_transaction,
-        minimum_amount: formattedAmount,
-        minimum_amount_currency: "eur",
-      },
+      restrictions,
     });
 
     revalidatePath("/dashboard/discounts");
