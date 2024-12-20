@@ -5,22 +5,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { sendPromoEmailTemplate } from "@/lib/actions/mailing/actions";
+import { sendPlaintextEmail } from "@/lib/actions/mailing/actions";
 import { State } from "@/lib/actions/products/actions";
-import { LoaderPinwheelIcon, PercentIcon, SendIcon } from "lucide-react";
+import { LoaderPinwheelIcon, SendIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface SendPromoWithTemplateProps {
+interface SendPromoPlaintextProps {
   code?: string;
   percentOff?: number;
 }
 
-const SendPromoWithTemplate = ({
-  code,
-  percentOff,
-}: SendPromoWithTemplateProps) => {
+const SendPromoPlaintext = ({ code, percentOff }: SendPromoPlaintextProps) => {
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,7 +35,7 @@ const SendPromoWithTemplate = ({
     console.log("FORM CLIENT: ", formData);
 
     try {
-      const result = await sendPromoEmailTemplate(formData);
+      const result = await sendPlaintextEmail(formData);
 
       if (result.success) {
         toast({
@@ -61,35 +58,36 @@ const SendPromoWithTemplate = ({
   return (
     <div>
       <div className="text-center mb-4">
-        <h2 className="font-semibold">Using default template</h2>
+        <h2 className="font-semibold">Using Plaintext</h2>
         <p className="text-sm mb-2 text-zinc-800 dark:text-zinc-400 italic">
-          A template is a pre-crafted email where you only have to add certain
-          dynamic values.
+          For a plaintext email you write the complete email. The email will
+          include only the text you submit, and every recipient will receive the
+          exact same content.
         </p>
         <Link
-          href={`/dashboard/mailing/promo-codes/plaintext?code=${code || ""}&percentoff=${percentOff || ""}`}
+          href={`/dashboard/mailing/promo-codes/template?code=${code || ""}&percentoff=${percentOff || ""}`}
         >
           <Button type="button" size={`sm`}>
-            Use Plaintext
+            Use Template
           </Button>
         </Link>
       </div>
-
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <Label htmlFor="code">Promo Code</Label>
+          <Label htmlFor="subject">Subject</Label>
+          <p className="text-zinc-700 dark:text-zinc-400 text-xs italic">
+            Give a descriptive subject to your email.
+          </p>
           <Input
-            name="code"
-            id="code"
+            name="subject"
+            id="subject"
             type="text"
             disabled={isLoading}
-            defaultValue={code}
             className=""
-            readOnly={!!code}
           />
           <div>
-            {state.errors?.code &&
-              state.errors.code.map((error: string, index) => (
+            {state.errors?.subject &&
+              state.errors.subject.map((error: string, index) => (
                 <p
                   key={`${error}-${index}`}
                   className="text-red-600 text-sm italic mt-1"
@@ -100,46 +98,15 @@ const SendPromoWithTemplate = ({
           </div>
         </div>
         <div className="mb-4">
-          <Label htmlFor="percent_off">Percent off</Label>
-          <div className="flex items-center gap-1">
-            <Input
-              name="percent_off"
-              id="percent_off"
-              type="number"
-              disabled={isLoading}
-              className=""
-              defaultValue={percentOff}
-              readOnly={!!percentOff}
-            />
-            <PercentIcon />
-          </div>
-          <div>
-            {state.errors?.percent_off &&
-              state.errors.percent_off.map((error: string, index) => (
-                <p
-                  key={`${error}-${index}`}
-                  className="text-red-600 text-sm italic mt-1"
-                >
-                  {error}
-                </p>
-              ))}
-          </div>
-        </div>
-        <div className="mb-4">
-          <Label htmlFor="code">Conditions (optional)</Label>
+          <Label htmlFor="text">Text</Label>
           <p className="text-zinc-700 dark:text-zinc-400 text-xs italic">
-            Inform your customers in case of any special conditions to this
-            discount.
+            The main text content of your email. Remember to mention the promo
+            code, conditions, and the discount.
           </p>
-          <Textarea
-            name="conditions"
-            id="conditions"
-            disabled={isLoading}
-            className="min-h-40"
-          />
+          <Textarea name="text" id="text" disabled={isLoading} className="min-h-40" />
           <div>
-            {state.errors?.conditions &&
-              state.errors.conditions.map((error: string, index) => (
+            {state.errors?.text &&
+              state.errors.text.map((error: string, index) => (
                 <p
                   key={`${error}-${index}`}
                   className="text-red-600 text-sm italic mt-1"
@@ -176,4 +143,4 @@ const SendPromoWithTemplate = ({
   );
 };
 
-export default SendPromoWithTemplate;
+export default SendPromoPlaintext;

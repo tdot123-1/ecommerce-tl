@@ -72,8 +72,14 @@ const Page = () => {
         </div>
         <h3 className="font-semibold">Send new promo code by email</h3>
         <div className="flex gap-2 mt-2 pl-4">
-          <Button>Use Template</Button>
-          <Button variant={`outline`}>Use Plaintext</Button>
+          <Link href={`/dashboard/mailing/promo-codes/template`}>
+            <Button type="button">Use Template</Button>
+          </Link>
+          <Link href={`/dashboard/mailing/promo-codes/plaintext`}>
+            <Button type="button" variant={`outline`}>
+              Use Plaintext
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="mt-1 p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg mb-8">

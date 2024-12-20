@@ -68,7 +68,6 @@ export const sendTemplateMail = async ({
   }
 };
 
-
 // send batch emails
 type RecipientInfo = {
   email: string;
@@ -78,7 +77,7 @@ type RecipientInfo = {
 type EmailBatchInfo = {
   recipients: RecipientInfo[];
   templateId: string;
-  otherDynamicValues?: Record<string, string>; 
+  otherDynamicValues?: Record<string, string>;
 };
 
 export const sendBatchEmails = async ({
@@ -89,8 +88,8 @@ export const sendBatchEmails = async ({
   try {
     const emailPromises = recipients.map(async ({ email, name }) => {
       const dynamic_template_data = {
-        name, 
-        ...otherDynamicValues, 
+        name,
+        ...otherDynamicValues,
       };
 
       const emailInfo = {
@@ -105,6 +104,33 @@ export const sendBatchEmails = async ({
 
     await Promise.all(emailPromises);
     console.log("All emails sent successfully.");
+  } catch (error) {
+    console.error("Error sending batch emails:", error);
+    throw new Error("Failed to send batch emails.");
+  }
+};
+
+export const sendBatchEmailsPlaintext = async (
+  to: string[],
+  subject: string,
+  text: string
+) => {
+  if (!process.env.SENDGRID_SENDER_EMAIL) {
+    console.error("SENDER EMAIL NOT FOUND");
+    throw new Error("Verified sender email not found.");
+  }
+
+  const msg = {
+    to,
+    from: {
+      email: process.env.SENDGRID_SENDER_EMAIL,
+      name: "Ti'El Shopping",
+    },
+    subject,
+    text,
+  };
+  try {
+    await sendGrid.sendMultiple(msg);
   } catch (error) {
     console.error("Error sending batch emails:", error);
     throw new Error("Failed to send batch emails.");
