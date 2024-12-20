@@ -81,3 +81,28 @@ export const fetchAllCouponsAndCodes = async () => {
     throw new Error("Failed to fetch coupons and promo codes");
   }
 };
+
+export const fetchOnePromocodeDataForMail = async (promoCodeId: string) => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const promoCode = await stripe.promotionCodes.retrieve(promoCodeId);
+    const coupon = await stripe.coupons.retrieve(promoCode.id);
+
+    return {
+      code: promoCode.code,
+      percentOff: coupon.percent_off,
+      couponName: coupon.name,
+      maxRedemptions: promoCode.max_redemptions,
+      minAmount: promoCode.restrictions.minimum_amount,
+      expiresAt: promoCode.expires_at,
+    };
+  } catch (error) {
+    console.error("Error fetching coupon or promo code:", error);
+    throw new Error("Failed to fetch coupon or promo code");
+  }
+};

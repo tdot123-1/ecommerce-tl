@@ -14,7 +14,7 @@ import { useState } from "react";
 
 interface SendPromoWithTemplateProps {
   code?: string;
-  percentOff?: number;
+  percentOff?: number | null;
 }
 
 const SendPromoWithTemplate = ({
@@ -60,21 +60,6 @@ const SendPromoWithTemplate = ({
 
   return (
     <div>
-      <div className="text-center mb-4">
-        <h2 className="font-semibold">Using default template</h2>
-        <p className="text-sm mb-2 text-zinc-800 dark:text-zinc-400 italic">
-          A template is a pre-crafted email where you only have to add certain
-          dynamic values.
-        </p>
-        <Link
-          href={`/dashboard/mailing/promo-codes/plaintext?code=${code || ""}&percentoff=${percentOff || ""}`}
-        >
-          <Button type="button" size={`sm`}>
-            Use Plaintext
-          </Button>
-        </Link>
-      </div>
-
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <Label htmlFor="code">Promo Code</Label>
@@ -108,7 +93,7 @@ const SendPromoWithTemplate = ({
               type="number"
               disabled={isLoading}
               className=""
-              defaultValue={percentOff}
+              defaultValue={percentOff ? percentOff : undefined}
               readOnly={!!percentOff}
             />
             <PercentIcon />

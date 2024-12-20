@@ -17,7 +17,7 @@ interface SendPromoPlaintextProps {
   percentOff?: number;
 }
 
-const SendPromoPlaintext = ({ code, percentOff }: SendPromoPlaintextProps) => {
+const SendPromoPlaintext = () => {
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -57,21 +57,6 @@ const SendPromoPlaintext = ({ code, percentOff }: SendPromoPlaintextProps) => {
 
   return (
     <div>
-      <div className="text-center mb-4">
-        <h2 className="font-semibold">Using Plaintext</h2>
-        <p className="text-sm mb-2 text-zinc-800 dark:text-zinc-400 italic">
-          For a plaintext email you write the complete email. The email will
-          include only the text you submit, and every recipient will receive the
-          exact same content.
-        </p>
-        <Link
-          href={`/dashboard/mailing/promo-codes/template?code=${code || ""}&percentoff=${percentOff || ""}`}
-        >
-          <Button type="button" size={`sm`}>
-            Use Template
-          </Button>
-        </Link>
-      </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <Label htmlFor="subject">Subject</Label>
@@ -103,7 +88,12 @@ const SendPromoPlaintext = ({ code, percentOff }: SendPromoPlaintextProps) => {
             The main text content of your email. Remember to mention the promo
             code, conditions, and the discount.
           </p>
-          <Textarea name="text" id="text" disabled={isLoading} className="min-h-40" />
+          <Textarea
+            name="text"
+            id="text"
+            disabled={isLoading}
+            className="min-h-40"
+          />
           <div>
             {state.errors?.text &&
               state.errors.text.map((error: string, index) => (
