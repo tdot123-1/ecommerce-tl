@@ -74,7 +74,7 @@ const ChangeDefaultTemplate = ({
 
   return (
     <>
-      <p>{`"${defaultTemplate}"`}</p>
+      <p className="underline">{`"${defaultTemplate}"`}</p>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
           <Button className="ml-1">Change</Button>

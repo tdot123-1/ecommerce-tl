@@ -12,11 +12,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface SendPromoPlaintextProps {
-  code?: string;
-  percentOff?: number;
-}
-
 const SendPromoPlaintext = () => {
   const [state, setState] = useState<State>({ message: null, errors: {} });
   const [isLoading, setIsLoading] = useState(false);

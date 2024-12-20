@@ -3,7 +3,6 @@
 import {
   sendBatchEmails,
   sendBatchEmailsPlaintext,
-  sendMail,
   sendTemplateMail,
 } from "@/lib/send-email";
 import { createStripeCustomer, deleteStripeCustomer } from "@/lib/stripe";
@@ -344,7 +343,7 @@ const PromoEmailTemplateSchema = z.object({
     })
     .min(2, { message: "Please add the promo code" })
     .max(50, { message: "Max length for code exceeded" }),
-  percentOff: z.coerce
+  percent_off: z.coerce
     .number()
     .gte(1, { message: "Please enter an percentage of at least 1" })
     .lte(99, { message: "Please enter a percentage between 1 and 99" }),
@@ -352,7 +351,8 @@ const PromoEmailTemplateSchema = z.object({
     .string({
       invalid_type_error: "Conditions must be of type string",
     })
-    .optional(),
+    .optional()
+    .default(""),
 });
 export async function sendPromoEmailTemplate(formData: FormData) {
   const session = await auth();
@@ -363,8 +363,13 @@ export async function sendPromoEmailTemplate(formData: FormData) {
 
   const rawFormData = Object.fromEntries(formData.entries());
 
+  console.log("form data: ", rawFormData);
+
   // validate form fields
   const validatedFields = PromoEmailTemplateSchema.safeParse(rawFormData);
+
+  console.log("valid: ", validatedFields);
+  console.log("Error: ", validatedFields.error);
 
   // return message early in case of field errors
   if (!validatedFields.success) {
@@ -374,7 +379,7 @@ export async function sendPromoEmailTemplate(formData: FormData) {
     };
   }
 
-  const { code, percentOff, conditions } = validatedFields.data;
+  const { code, percent_off, conditions } = validatedFields.data;
 
   try {
     // fetch customers
@@ -410,7 +415,7 @@ export async function sendPromoEmailTemplate(formData: FormData) {
 
     const dynamicValues: Record<string, string> = {
       promoCode: code,
-      percentOff: percentOff.toString(),
+      percentOff: percent_off.toString(),
       conditions: conditions || "",
     };
 

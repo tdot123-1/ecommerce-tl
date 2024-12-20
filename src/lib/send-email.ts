@@ -2,6 +2,18 @@
 
 import { sendGrid } from "./sendgrid-object";
 
+interface SendGridError {
+  response?: {
+    body: {
+      errors: Array<{
+        message: string;
+        field?: string;
+        code?: string;
+      }>;
+    };
+  };
+}
+
 type EmailInfo = {
   to: string;
   subject: string;
@@ -55,7 +67,7 @@ export const sendTemplateMail = async ({
       email: process.env.SENDGRID_SENDER_EMAIL,
       name: "Ti'El Shopping",
     },
-    templateId,
+    templateId: templateId.trim(),
     dynamic_template_data,
   };
 
@@ -63,6 +75,17 @@ export const sendTemplateMail = async ({
     await sendGrid.send(msg);
     console.log(`Template email sent to ${to}`);
   } catch (error) {
+    const sendGridError = error as SendGridError;
+
+    if (sendGridError.response) {
+      console.error(
+        "Error sending template email:",
+        sendGridError.response.body
+      );
+      console.error("Errors:", sendGridError.response.body.errors); // Inspect errors
+    } else {
+      console.error("Error sending template email:", (error as Error).message); // Cast to Error
+    }
     console.error("Error sending template email: ", error);
     throw new Error("Failed to send template email.");
   }
@@ -83,7 +106,7 @@ type EmailBatchInfo = {
 export const sendBatchEmails = async ({
   recipients,
   templateId,
-  otherDynamicValues = {},
+  otherDynamicValues,
 }: EmailBatchInfo) => {
   try {
     const emailPromises = recipients.map(async ({ email, name }) => {
@@ -106,6 +129,7 @@ export const sendBatchEmails = async ({
     console.log("All emails sent successfully.");
   } catch (error) {
     console.error("Error sending batch emails:", error);
+
     throw new Error("Failed to send batch emails.");
   }
 };
