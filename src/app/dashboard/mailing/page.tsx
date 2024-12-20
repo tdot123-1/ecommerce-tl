@@ -1,5 +1,6 @@
 import ChangeDefaultTemplateWrapper from "@/app/ui/dashboard/mailing/change-default-template-wrapper";
 import MailTemplatesTable from "@/app/ui/dashboard/mailing/mail-templates-table";
+import SelectPromo from "@/app/ui/dashboard/mailing/send-promo/select-promo";
 import { montserrat } from "@/app/ui/fonts";
 import { Button } from "@/components/ui/button";
 import { PlusCircleIcon } from "lucide-react";
@@ -72,14 +73,8 @@ const Page = () => {
         </div>
         <h3 className="font-semibold">Send new promo code by email</h3>
         <div className="flex gap-2 mt-2 pl-4">
-          <Link href={`/dashboard/mailing/promo-codes/template`}>
-            <Button type="button">Use Template</Button>
-          </Link>
-          <Link href={`/dashboard/mailing/promo-codes/plaintext`}>
-            <Button type="button" variant={`outline`}>
-              Use Plaintext
-            </Button>
-          </Link>
+          <SelectPromo type="template" />
+          <SelectPromo type="plaintext" />
         </div>
       </div>
       <div className="mt-1 p-4 bg-zinc-50 dark:bg-zinc-800 rounded-lg mb-8">

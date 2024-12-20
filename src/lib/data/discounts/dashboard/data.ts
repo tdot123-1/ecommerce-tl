@@ -90,13 +90,15 @@ export const fetchOnePromocodeDataForMail = async (promoCodeId: string) => {
   }
 
   try {
+    console.log("FETCHING: ", promoCodeId)
     const promoCode = await stripe.promotionCodes.retrieve(promoCodeId);
-    const coupon = await stripe.coupons.retrieve(promoCode.id);
+    console.log("PROMO: ", promoCode)
+    // const coupon = await stripe.coupons.retrieve(promoCode.id);
 
     return {
       code: promoCode.code,
-      percentOff: coupon.percent_off,
-      couponName: coupon.name,
+      percentOff: promoCode.coupon.percent_off,
+      couponName: promoCode.coupon.name,
       maxRedemptions: promoCode.max_redemptions,
       minAmount: promoCode.restrictions.minimum_amount,
       expiresAt: promoCode.expires_at,
@@ -104,5 +106,29 @@ export const fetchOnePromocodeDataForMail = async (promoCodeId: string) => {
   } catch (error) {
     console.error("Error fetching coupon or promo code:", error);
     throw new Error("Failed to fetch coupon or promo code");
+  }
+};
+
+export const fetchAllActiveCodes = async () => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const promoCodes = await stripe.promotionCodes.list({
+      active: true,
+      limit: 100,
+    });
+
+    const codesArray = promoCodes.data.map((promo) => ({
+      code: promo.code,
+      id: promo.id,
+    }));
+    return codesArray;
+  } catch (error) {
+    console.error("Error fetching promo codes:", error);
+    throw new Error("Failed to fetch promo codes");
   }
 };

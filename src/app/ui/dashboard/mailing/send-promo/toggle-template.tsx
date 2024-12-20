@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import SendPromoWithTemplate from "./send-promo-with-template";
 import SendPromoPlaintext from "./send-promo-plaintext";
+import { formatPrice } from "@/lib/utils";
 
 interface PromoData {
   code: string;
@@ -15,7 +16,7 @@ interface PromoData {
 }
 
 interface ToggleTemplateProps {
-  promoData?: PromoData;
+  promoData: PromoData;
   type?: string;
 }
 
@@ -23,14 +24,52 @@ const ToggleTemplate = ({ promoData, type }: ToggleTemplateProps) => {
   const [useTemplate, setUseTemplate] = useState(type !== "plaintext");
   return (
     <>
-      <div>
-        <h2>Promo code data:</h2>
-        <p>Code: </p>
-        <p>Coupon name: </p>
-        <p>Percent off: </p>
-        <p>Max redemptions: </p>
-        <p>Minimum order amount: </p>
-        <p>Expires at: </p>
+      <div className="mb-3 text-sm">
+        <h2 className="pl-2 font-semibold text-lg bg-zinc-200 dark:bg-zinc-900 rounded-t-lg">
+          Promo code data
+        </h2>
+        <div className="p-2 rounded-b-lg bg-zinc-100 dark:bg-zinc-800">
+          <p className="flex justify-between">
+            <span>Code:</span>{" "}
+            <span className="text-zinc-700 dark:text-zinc-300 italic">
+              {promoData.code}
+            </span>
+          </p>
+          <p className="flex justify-between">
+            <span>Coupon name: </span>
+            <span className="text-zinc-700 dark:text-zinc-300 italic">
+              {promoData.couponName}
+            </span>
+          </p>
+          <p className="flex justify-between">
+            <span>Discount:</span>
+            <span className="text-zinc-700 dark:text-zinc-300 italic">
+              {" "}
+              {`${promoData.percentOff} % off` || "N/A"}
+            </span>
+          </p>
+          <p className="flex justify-between">
+            <span>Max redemptions:</span>
+            <span className="text-zinc-700 dark:text-zinc-300 italic">
+              {promoData.maxRedemptions || "N/A"}
+            </span>
+          </p>
+          <p className="flex justify-between">
+            <span>Minimum order amount:</span>
+            <span className="text-zinc-700 dark:text-zinc-300 italic">
+              {promoData.minAmount ? formatPrice(promoData.minAmount) : "N/A"}
+            </span>
+          </p>
+          <p className="flex justify-between">
+            <span>Expires at:</span>
+
+            <span className="text-zinc-700 dark:text-zinc-300 italic">
+              {promoData.expiresAt
+                ? new Date(promoData.expiresAt * 1000).toLocaleDateString()
+                : "N/A"}
+            </span>
+          </p>
+        </div>
       </div>
       <div className="text-center mb-4">
         <h2 className="font-semibold">
@@ -51,7 +90,10 @@ const ToggleTemplate = ({ promoData, type }: ToggleTemplateProps) => {
         </Button>
       </div>
       {useTemplate ? (
-        <SendPromoWithTemplate code={promoData ? promoData.code : undefined} percentOff={promoData ? promoData.percentOff : undefined} />
+        <SendPromoWithTemplate
+          code={promoData ? promoData.code : undefined}
+          percentOff={promoData ? promoData.percentOff : undefined}
+        />
       ) : (
         <SendPromoPlaintext />
       )}
