@@ -27,8 +27,6 @@ const SendPromoPlaintext = () => {
     // create form data object, call server action
     const formData = new FormData(event.currentTarget);
 
-    console.log("FORM CLIENT: ", formData);
-
     try {
       const result = await sendPlaintextEmail(formData);
 

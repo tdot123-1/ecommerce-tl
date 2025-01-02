@@ -86,7 +86,6 @@ export async function createPromoCode(formData: FormData) {
 
   // return message early in case of field errors
   if (!validatedFields.success) {
-    console.error("FORM ERRORS: ", validatedFields.error.flatten().fieldErrors);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Missing data. Error creating new promo code.",
@@ -104,10 +103,6 @@ export async function createPromoCode(formData: FormData) {
     minimum_amount,
   } = validatedFields.data;
 
-  // combine submitted price and cents data to get full price in cents
-  const formattedAmount = min_euros * 100 + min_cents;
-  console.log("formatted price: ", formattedAmount);
-
   // create the restrictions object
   const restrictions: PromoCodeRestrictions = {
     first_time_transaction,
@@ -115,8 +110,8 @@ export async function createPromoCode(formData: FormData) {
 
   // conditionally include minimum_amount if minAmount is true
   if (minimum_amount) {
-    restrictions.minimum_amount = formattedAmount; // add the minimum amount
-    restrictions.minimum_amount_currency = "eur"; // add the currency
+    restrictions.minimum_amount =  min_euros * 100 + min_cents; // add the minimum amount
+    restrictions.minimum_amount_currency = "eur";
   }
 
   try {
