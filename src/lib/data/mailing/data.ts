@@ -12,6 +12,29 @@ export const fetchAllTemplates = async () => {
 
   try {
     const data = await sql`
+    SELECT * FROM email_templates
+    `;
+
+    if (!data.rowCount) {
+      throw new Error("No templates found");
+    }
+
+    return data.rows
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch email templates data.");
+  }
+};
+
+export const fetchAllTemplateNames = async () => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const data = await sql`
     SELECT name, id FROM email_templates
     `;
 
@@ -27,7 +50,7 @@ export const fetchAllTemplates = async () => {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch email templates data.");
   }
-};
+}
 
 export const fetchCategoryTemplates = async (category: string) => {
   const session = await auth();

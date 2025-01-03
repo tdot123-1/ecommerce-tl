@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchAllTemplates } from "@/lib/data/mailing/data";
+import { fetchAllTemplateNames } from "@/lib/data/mailing/data";
 import TemplateSelect from "./template-select";
 import { useEffect, useState } from "react";
 
@@ -18,7 +18,7 @@ const TemplateSelectWrapper = ({
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
-        const templates = await fetchAllTemplates();
+        const templates = await fetchAllTemplateNames();
         setAllTemplates(templates);
       } catch (error) {
         console.error("Error fetching templates on client: ", error);
