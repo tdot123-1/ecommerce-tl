@@ -5,7 +5,7 @@ const Page = () => {
   return (
     <>
       <h1 className={`${montserrat.className} text-xl font-semibold mt-4`}>
-        Send plaintext email
+        Send Plaintext Email
       </h1>
       <div className="w-full md:w-1/2 mx-auto my-10">
         <SendPlaintext />

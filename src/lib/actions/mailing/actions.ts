@@ -497,3 +497,66 @@ export async function sendPlaintextEmail(formData: FormData) {
     };
   }
 }
+
+export async function sendTemplateEmail(formData: FormData) {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+
+  const rawFormData = Object.fromEntries(formData.entries());
+
+  if (!rawFormData.sendgrid_id) {
+    return {
+      message: "Error: failed to send email.",
+      success: false,
+    };
+  }
+
+  try {
+    // fetch customers
+    const customersData = await sql`
+     SELECT name, email 
+     FROM customers
+     `;
+
+    if (!customersData.rowCount) {
+      throw new Error("Failed to fetch customers");
+    }
+
+    const recipients = customersData.rows.map((customer) => ({
+      email: customer.email,
+      name: customer.name,
+    }));
+
+    // transform raw form data to useable data
+    const { sendgrid_id, ...rest } = Object.fromEntries(
+      Object.entries(rawFormData).map(([key, value]) => [
+        key,
+        value.toString(), // ensure all values are strings
+      ])
+    );
+
+    const otherDynamicValues = rest;
+
+    console.log("Template: ", sendgrid_id);
+    console.log("Rest: ", otherDynamicValues);
+
+    const emailInfo = {
+      recipients,
+      templateId: sendgrid_id,
+      otherDynamicValues,
+    };
+
+    await sendBatchEmails(emailInfo);
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending email: ", error);
+    return {
+      message: "Error: failed to send email.",
+      success: false,
+    };
+  }
+}
