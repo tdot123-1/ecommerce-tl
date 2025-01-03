@@ -2,6 +2,7 @@
 
 import { sendGrid } from "./sendgrid-object";
 
+// interface to inspect sendgrid errors
 interface SendGridError {
   response?: {
     body: {
@@ -14,12 +15,15 @@ interface SendGridError {
   };
 }
 
+// minimum required info for plaintext emails
 type EmailInfo = {
   to: string;
   subject: string;
   text: string;
   html?: string;
 };
+
+// send plaintext email to 1 recipient
 export const sendMail = async ({ to, subject, text, html }: EmailInfo) => {
   if (!process.env.SENDGRID_SENDER_EMAIL) {
     console.error("SENDER EMAIL NOT FOUND");
@@ -45,12 +49,14 @@ export const sendMail = async ({ to, subject, text, html }: EmailInfo) => {
   }
 };
 
+// required info for template emails
 type TemplateMailInfo = {
   to: string;
   templateId: string;
   dynamic_template_data: Record<string, string>;
 };
 
+// send template email to 1 recipient
 export const sendTemplateMail = async ({
   to,
   dynamic_template_data,
@@ -75,56 +81,66 @@ export const sendTemplateMail = async ({
     await sendGrid.send(msg);
     console.log(`Template email sent to ${to}`);
   } catch (error) {
+    // cast error as sendgrid error to inspect specific error msg
     const sendGridError = error as SendGridError;
 
+    // log response in case of sendgrid error
     if (sendGridError.response) {
       console.error(
         "Error sending template email:",
         sendGridError.response.body
       );
-      console.error("Errors:", sendGridError.response.body.errors); // Inspect errors
+      console.error("Errors:", sendGridError.response.body.errors);
     } else {
-      console.error("Error sending template email:", (error as Error).message); // Cast to Error
+      console.error("Error sending template email:", error);
     }
-    console.error("Error sending template email: ", error);
+    // throw error to caller
     throw new Error("Failed to send template email.");
   }
 };
 
 // send batch emails
-type RecipientInfo = {
+interface RecipientInfo {
   email: string;
   name: string;
 };
 
-type EmailBatchInfo = {
+interface EmailBatchInfo {
   recipients: RecipientInfo[];
   templateId: string;
   otherDynamicValues?: Record<string, string>;
 };
 
+// send template emails to all recipients
 export const sendBatchEmails = async ({
   recipients,
   templateId,
   otherDynamicValues,
 }: EmailBatchInfo) => {
   try {
-    const emailPromises = recipients.map(async ({ email, name }) => {
+    // generate email promises for each recipient
+    // name is different for each recipient, other values are the same across emails
+    const emailPromises = recipients.map(({ email, name }) => {
+      // generate dynamic values
       const dynamic_template_data = {
         name,
         ...otherDynamicValues,
       };
 
+      // form email info
       const emailInfo = {
         to: email,
-        templateId,
+        templateId: templateId.trim(),
         dynamic_template_data,
       };
 
-      await sendTemplateMail(emailInfo);
-      console.log(`Email sent to ${email}`);
+      // send template, log success
+      return sendTemplateMail(emailInfo).then(() => {
+        console.log(`Email sent to ${email}`);
+      });
     });
 
+    // resolve all promises
     await Promise.all(emailPromises);
     console.log("All emails sent successfully.");
   } catch (error) {
@@ -134,6 +150,7 @@ export const sendBatchEmails = async ({
   }
 };
 
+// send plaintext emails to all recipients
 export const sendBatchEmailsPlaintext = async (
   to: string[],
   subject: string,

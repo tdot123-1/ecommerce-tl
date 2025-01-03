@@ -88,7 +88,9 @@ const Page = () => {
         <h3 className="font-semibold">Send email</h3>
         <div className="flex gap-2 mt-2 pl-4">
           <Button>Use Template</Button>
-          <Button variant={`outline`}>Use Plaintext</Button>
+          <Link href={`/dashboard/mailing/send/plaintext`}>
+            <Button variant={`outline`}>Use Plaintext</Button>
+          </Link>
         </div>
       </div>
     </>
