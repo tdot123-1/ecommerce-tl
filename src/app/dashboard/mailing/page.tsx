@@ -1,5 +1,6 @@
 import ChangeDefaultTemplateWrapper from "@/app/ui/dashboard/mailing/change-default-template-wrapper";
 import MailTemplatesTable from "@/app/ui/dashboard/mailing/mail-templates-table";
+import TemplateDialog from "@/app/ui/dashboard/mailing/send-email/template/template-dialog";
 import SelectPromo from "@/app/ui/dashboard/mailing/send-promo/select-promo";
 import { montserrat } from "@/app/ui/fonts";
 import { Button } from "@/components/ui/button";
@@ -87,7 +88,7 @@ const Page = () => {
         </p>
         <h3 className="font-semibold">Send email</h3>
         <div className="flex gap-2 mt-2 pl-4">
-          <Button>Use Template</Button>
+          <TemplateDialog />
           <Link href={`/dashboard/mailing/send/plaintext`}>
             <Button variant={`outline`}>Use Plaintext</Button>
           </Link>

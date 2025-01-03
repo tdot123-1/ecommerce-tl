@@ -12,14 +12,17 @@ export const fetchAllTemplates = async () => {
 
   try {
     const data = await sql`
-    SELECT * FROM email_templates
+    SELECT name, id FROM email_templates
     `;
 
     if (!data.rowCount) {
       throw new Error("No templates found");
     }
 
-    return data.rows;
+    return data.rows.map((template) => ({
+      name: template.name,
+      id: template.id,
+    }));
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch email templates data.");

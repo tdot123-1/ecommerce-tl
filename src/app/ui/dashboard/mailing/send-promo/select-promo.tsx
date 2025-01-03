@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SelectPromoOptionsWrapper from "./select-promo-options-wrapper";
 
 interface SelectPromoProps {
@@ -26,10 +26,6 @@ const SelectPromo = ({ type }: SelectPromoProps) => {
     console.log("Value: ", value);
     setPromoId(value);
   };
-
-  useEffect(() => {
-    console.log("Promo: ", promoId);
-  }, [promoId]);
 
   return (
     <>
